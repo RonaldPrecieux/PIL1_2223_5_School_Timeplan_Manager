@@ -1,15 +1,22 @@
-
 <!DOCTYPE html>
 <html>
 
     <head>
         <meta charset="utf-8">
         <title>SchedEase|Home</title>
-        <link rel="stylesheet" href="style-index.css" type="text/css"/>
+        <link rel="stylesheet" href="/home/bildgb/Bureau/emplois/2css/style3.css" type="text/css"/>
     </head>    
 
     <body>
-        <div></div>
+        <div class="image-slider">
+            <div class="slider-container">
+                <img src="education.jpg" alt="Image 1">
+                <img src="lampe2.jpg" alt="Image 2">
+                <img src="ee.webp" alt="Image 3">
+            </div>
+
+        </div>
+        
         <header>
             <nav class="navbar">
                 <div class="desktop-navbar">
@@ -42,6 +49,35 @@
             </div>
 
         </header>
+
+        <script>
+              document.addEventListener('DOMContentLoaded', function() {
+                const slides = document.querySelectorAll('.slider-container img');
+                let currentSlideIndex = 0;
+                const intervalDuration = 2000; // Durée entre chaque transition (en millisecondes)
+
+                function showSlide(index) {
+                    slides.forEach(function(slide) {
+                        slide.style.opacity = '0';
+                    });
+
+                    slides[index].style.opacity = '1';
+                }
+
+                function nextSlide() {
+                    currentSlideIndex++;
+                    if (currentSlideIndex >= slides.length) {
+                        currentSlideIndex = 0;
+                    }
+
+                    showSlide(currentSlideIndex);
+                }
+
+                showSlide(currentSlideIndex); // Affiche le premier slide
+
+                setInterval(nextSlide, intervalDuration); // Change d'image toutes les 2 secondes (ajustez selon vos préférences)
+            });
+        </script>
         <main>
 
         </main>
