@@ -1,0 +1,52 @@
+{% load static %} <!--Indispensable pour charger les fichier statiques comme du CSS ou de JavaScript-->
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <title>Skedise|Login</title>
+        <link rel="stylesheet" href="{% static 'showtimeplan/style-login.css' %}"> <!--Gabarit pour que le fichier css s'applique au html-->
+    </head>    
+
+    <body>
+        <div></div>
+        <header>
+            <a class="navbar-logo" href="index.html">Skedise</a>
+        </header>
+        <main>
+            <div class="text">
+                <div class="a"><p>Améliorez la gestion de vos emplois du temps <br>
+                    avec Skedise</p>
+                </div>
+                <div class="b">
+                    <p>Pas de compte ? <a href="#">Inscrivez vous</a></p>
+                </div>
+                </div>
+            </div>
+            <form action="schedule.html">
+                <div class="login-box">
+                    <div class="login-header">
+                        <header>Connexion</header>
+                    </div>
+                    <div class="input-box">
+                        <input type="text" class="input-field" placeholder="Email" autocomplete="off" required>
+                    </div>
+                    <div class="input-box">
+                        <input type="password" class="input-field" placeholder="Mot de passe" autocomplete="off" required>
+                    </div>
+                    <div class="forgot">
+                        <section>
+                            <input type="checkbox"  id="check">
+                            <label for="check">Se souvenir</label>
+                        </section>
+                        <a href="#">Mot de passe oublié</a>
+                    </div>
+                    <div class="input-submit">
+                       <button class="submit-btn" id="submit"></button>
+                        <label for="submit">Soumettre</label>
+                    </div>
+                </div>
+            </form>
+        </main>
+    </body>
+</html>
