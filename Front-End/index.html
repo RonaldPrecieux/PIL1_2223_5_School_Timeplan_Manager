@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <title>SchedEase|Home</title>
+        <link rel="stylesheet" href="style-index.css" type="text/css"/>
+    </head>    
+
+    <body>
+        <div class="image-slider">
+            <div class="slider-container">
+                <img src="education.jpg" alt="Image 1">
+                <img src="lampe2.jpg" alt="Image 2">
+                <img src="ee.webp" alt="Image 3">
+            </div>
+
+        </div>
+        
+        <header>
+            <nav class="navbar">
+                <div class="desktop-navbar">
+                <!-- <div class="mobile-navbar"></div> -->
+                    <a class="navbar-logo" href="index.html">SchedEase</a> 
+                    <ul style="list-style: none;" class="navbar-list">
+                        <li><a href="schedule.html">Schedule Model </a></li> 
+                    </ul>
+                    <div ><a href="login">Log in |</a><a href="register">Sign in</a></div>
+                    <!-- <label class="hamburger">
+                        <input type="checkbox">
+                        <svg viewBox="0 0 32 32">
+                            <path class="line line-top-bottom" d="M27 10 13 10C10.8 10 9 8.2 9 6 9 3.5 10.8 2 13 2 15.2 2 17 3.8 17 6L17 26C17 28.2 18.8 30 21 30 23.2 30 25 28.2 25 26 25 23.8 23.2 22 21 22L7 22"></path>
+                            <path class="line" d="M7 16 27 16"></path>
+                        </svg>
+                    </label> -->
+                </div>
+            </nav> 
+            <div class="header-content">
+
+                <div class="header-title" class="animated-text">
+                    <h1>Avec SchedEase, <br>Je <span class="animation"></span></h1>
+                </div>
+                <div class="header-text">
+                    <p>SchedEase est une solution pratique pour la gestion de vos emplois du temps. SchedEase est utile, aussi bien pour les étudiants que pour les enseignants. Découvrez comment utiliser cet outil pour maximiser votre temps. </p>
+                </div>
+                <div class="header-block">
+                    <button>Découvrir</button> <button>Inscription</button>
+                </div>
+            </div>
+
+        </header>
+
+        <script>
+              document.addEventListener('DOMContentLoaded', function() {
+                const slides = document.querySelectorAll('.slider-container img');
+                let currentSlideIndex = 0;
+                const intervalDuration = 2000; // Durée entre chaque transition (en millisecondes)
+
+                function showSlide(index) {
+                    slides.forEach(function(slide) {
+                        slide.style.opacity = '0';
+                    });
+
+                    slides[index].style.opacity = '1';
+                }
+
+                function nextSlide() {
+                    currentSlideIndex++;
+                    if (currentSlideIndex >= slides.length) {
+                        currentSlideIndex = 0;
+                    }
+
+                    showSlide(currentSlideIndex);
+                }
+
+                showSlide(currentSlideIndex); // Affiche le premier slide
+
+                setInterval(nextSlide, intervalDuration); // Change d'image toutes les 2 secondes (ajustez selon vos préférences)
+            });
+        </script>
+        <main>
+
+        </main>
+        <footer>
+
+        </footer>
+    </body>
+</html>
