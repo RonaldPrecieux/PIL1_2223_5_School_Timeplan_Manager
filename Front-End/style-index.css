@@ -1,4 +1,4 @@
- /* Pour importer la polie en local */
+ /* Pour importer la police en local */
 @font-face{
     font-family: 'Euclid Circular A';
     src: local('EuclidCircularA-Regular'),
@@ -9,8 +9,9 @@ body{
     height: 100%;
     width: 100%;
     font-family: 'Euclid Circular A',sans-serif; 
-    background-color:  #4ECDC4;
+    background-color:  beige;
     background-size: cover;
+    background-image: linear-gradient(to bottom, rgb(247, 234, 234), rgb(143, 143, 224),white, rgb(63, 63, 153));
 }
 /* navbar correspond à la barre de navigation */
 .navbar .desktop-navbar{
@@ -106,7 +107,7 @@ h1{
 .header-text {
     max-width: 600px;
     padding: 0px 25px;
-}
+    font-family: Roobert,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";}
 
 .header-text {
     display: flex;
@@ -116,11 +117,13 @@ h1{
     margin:  auto 70px;
     font-weight: 700;
     text-align: center;
+    margin-left: 50px;
 }
 
 .header-block{
     margin: auto 200px;
     margin-top: 20px;
+    margin-left: 160px;
 }
 button {
     appearance: none;
@@ -147,6 +150,7 @@ button {
     -webkit-user-select: none;
     touch-action: manipulation;
     will-change: transform;
+    margin-right: 10px;
     
 }
 
