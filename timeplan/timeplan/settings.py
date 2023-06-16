@@ -1,3 +1,4 @@
+
 """
 Django settings for timeplan project.
 
@@ -9,7 +10,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+import os # Ce module doit être importé pour que le CSS s'affiche !
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -37,7 +38,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "showtimeplan",#Sans ca les templates ne s'execute pas.
+    "showtimeplan", #Sans ça les templates ne s'executent pas. 
 ]
 
 MIDDLEWARE = [
@@ -86,7 +87,7 @@ DATABASES = {
         'ENGINE':'django.db.backends.mysql',
         'NAME':'mydjangodb',
         'USER':'root',
-        'PASSWORD':'root',
+        'PASSWORD':'Logarithmeneperien18#', #A ce niveau vous devez redéfinir le mot de passe pour qu'il corresponde au mot de passe de votre root sql
         'HOST':'localhost',
         'PORT':'3306'
     }
@@ -127,8 +128,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = "static/"
-
+STATIC_URL = "/static/"
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+#Cette partie est indispensable pour importer des fichiers statiques comme du .css ou du .js
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 

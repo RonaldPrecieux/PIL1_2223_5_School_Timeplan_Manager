@@ -20,6 +20,8 @@ from showtimeplan import views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("register/", views.formreg,name="formreg"),#Pourquoi cela marche alors que ce n'est pas lui qui traite le formulaire
     path("insertuser/", views.insertuser, name="insertuser"),
+    path("", views.index, name ="accueil"), 
+    path("login/", views.login, name = "login"), # C'est la page de connexion
+    path("register/", views.register, name="register"), #Page d'inscription
 ]
