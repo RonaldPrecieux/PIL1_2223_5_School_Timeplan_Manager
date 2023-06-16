@@ -1,6 +1,6 @@
 {% load static %} <!--Indispensable pour charger les fichier statiques comme du CSS ou de JavaScript-->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,13 +12,15 @@
     <p><b>Skedise</b></p>
     <div class="intro">
         <h1>Devenez cinq fois plus productif avec Skedise</h1>
-        <p>Vous avez un compte ? <a href="login.html">Connectez-vous !</a></p>
+        <p>Vous avez un compte ? <a href="{% url 'login' %}">Connectez-vous !</a></p>
     </div>
-    <form action ="" method="post">
+    <form action ="../insertuser/" method="post">
+        {%csrf_token %}
         <legend>Inscription</legend><br>
         <input type ="text" id="nom" name="Nom" required placeholder="nom"><br><br>
         <input type ="text" id="prenom" name="Prenom" required placeholder="prenom"><br><br>
         <input type ="email" id="email" name="Email" required placeholder="email"><br><br>
+        <input type ="tel" id="phone" name="Phone" required placeholder="Numéro de téléphone"><br><br>
         <input type ="password" id="password" name="Mot_de_passe" required placeholder="mot de passe"><br><br>
         <input type ="password" id="confirm_password" name="Mot_de_passe_confirm" required placeholder="confirmer mot de passe"><br><br>
         <input type="submit" value ="Soumettre">
