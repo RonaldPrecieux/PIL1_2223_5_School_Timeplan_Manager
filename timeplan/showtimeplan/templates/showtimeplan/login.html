@@ -6,6 +6,12 @@
         <meta charset="utf-8">
         <title>Skedease|Login</title>
         <link rel="stylesheet" href="{% static 'showtimeplan/style-login.css' %}"> <!--Gabarit pour que le fichier css s'applique au html-->
+        <style>
+            .error{
+                color: red;
+                
+            }
+        </style>
     </head>    
 
     <body>
@@ -23,17 +29,22 @@
                 </div>
                 </div>
             </div>
-            <form action="schedule.html">
+            <form action="{% url 'login' %}" method ="post">
+                {% csrf_token %}
+                
                 <div class="login-box">
                     <div class="login-header">
                         <header>Connexion</header>
                     </div>
                     <div class="input-box">
-                        <input type="text" class="input-field" placeholder="Email" autocomplete="off" required>
+                        <input type="email" class="input-field" placeholder="Email" autocomplete="off" required id ="email" name="email" value="{{ email_value }}">
                     </div>
                     <div class="input-box">
-                        <input type="password" class="input-field" placeholder="Mot de passe" autocomplete="off" required>
+                        <input type="password" class="input-field" placeholder="Mot de passe" autocomplete="off" required id ="password" name="mot_de_passe" value ="{{ password_value }}" minlength="8" title="(Au moins 8 caractères)">
                     </div>
+                    {% if error_message %}
+                    <p class="error">{{ error_message }}</p>
+                    {% endif %}
                     <div class="forgot">
                         <section>
                             <input type="checkbox"  id="check">
@@ -42,11 +53,28 @@
                         <a href="#">Mot de passe oublié</a>
                     </div>
                     <div class="input-submit">
-                       <button class="submit-btn" id="submit"></button>
-                        <label for="submit">Soumettre</label>
+                        <input type="submit" value="Soumettre" class="submit-btn">
                     </div>
+                    
                 </div>
             </form>
         </main>
+        <script>
+            // Fonction pour mettre le curseur à la fin du champ email
+            function setCursorToEnd() {
+                var emailField = document.getElementById('email');
+                var emailValue = emailField.value;
+                emailField.value = '';
+                emailField.value = emailValue;
+                emailField.focus();
+            }
+        
+            // Exécuter la fonction lorsque le document est prêt
+            document.addEventListener('DOMContentLoaded', function() {
+                {% if error_message %}
+                    setCursorToEnd();
+                {% endif %}
+            });
+        </script>  
     </body>
 </html>

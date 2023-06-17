@@ -42,13 +42,14 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "django.middleware.csrf.CsrfViewMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    
 ]
 
 ROOT_URLCONF = "timeplan.urls"
@@ -85,7 +86,7 @@ DATABASES = {
 DATABASES = {
     "default": {
         'ENGINE':'django.db.backends.mysql',
-        'NAME':'mydjangodb',
+        'NAME':'base_pi',
         'USER':'root',
         'PASSWORD':'Logarithmeneperien18#', #A ce niveau vous devez redéfinir le mot de passe pour qu'il corresponde au mot de passe de votre root sql
         'HOST':'localhost',
