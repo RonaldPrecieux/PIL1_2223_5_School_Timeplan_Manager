@@ -24,4 +24,5 @@ urlpatterns = [
     path("", views.index, name ="accueil"), 
     path("login/", views.login, name = "login"), # C'est la page de connexion
     path("register/", views.register, name="register"), #Page d'inscription
+    path("bienvenue/<str:prenom>/", views.bienvenue, name ="bienvenue"),#Page temporaire
 ]

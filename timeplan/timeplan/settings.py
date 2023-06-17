@@ -131,6 +131,7 @@ USE_TZ = True
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
+    
 ]
 #Cette partie est indispensable pour importer des fichiers statiques comme du .css ou du .js
 # Default primary key field type
