@@ -1,17 +1,23 @@
 from django.db import models
-from django.core.validators import MaxValueValidator, MinValueValidator
+from django.core.exceptions import ValidationError
+from django.contrib.auth.hashers import make_password
+from django.core.validators import MinLengthValidator
+
 class User(models.Model):
-    nom = models.fields.CharField(max_length=100, default ="")
-    prenom = models.fields.CharField(max_length=100, default ="")
-    email = models.EmailField(unique=True, default="")
-    numero_telephone = models.CharField(max_length=20, default= 555)
-    mot_de_passe = models.CharField(max_length=128, default ="")
-    confirmer_mot_de_passe = models.CharField(max_length=128, editable=False, default ="")
+    nom = models.CharField(max_length=120, validators=[MinLengthValidator(3)])
+    prenom = models.CharField(max_length=120, validators=[MinLengthValidator(3)])
+    email = models.EmailField(unique=True)
+    numero_telephone = models.CharField(max_length=20)
+    mot_de_passe = models.CharField(max_length=128)
+    confirmer_mot_de_passe = models.CharField(max_length=128)
     
     class Meta:
-        db_table="etudiants"
+        db_table = 'etudiants_enregistres'
 
-    """def save(self, *args, **kwargs):
-        # Hacher le mot de passe avant de l'enregistrer
-        self.mot_de_passe = make_password(self.mot_de_passe)
-        super().save(*args, **kwargs)"""
+def save(self, *args, **kwargs):
+    # Hacher le mot de passe avant de l'enregistrer
+    self.mot_de_passe = make_password(self.mot_de_passe)
+    super(User, self).save(*args, **kwargs)
+    
+
+        
