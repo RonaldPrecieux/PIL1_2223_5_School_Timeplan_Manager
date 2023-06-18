@@ -51,3 +51,20 @@ def bienvenue(request, prenom):
 
 def bienvenue_connexion(request, prenom):
     return render(request, 'showtimeplan/bienvenue_connexion.html', {'prenom' : prenom})
+
+def cherche_le_compte(request):
+    if request.method == 'POST':
+        email=request.POST['email']
+        try:
+            user=User.objects.get(email=email)
+            context={
+                'prenom':user.prenom,
+                'nom':user.nom
+            }
+            return redirect('recuperation_compte',context )
+        except User.DoesNotExist:
+            context={
+                'prenom':user.prenom,
+                'nom':user.nom
+            }
+            return redirect('account_no_found',context)

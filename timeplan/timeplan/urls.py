@@ -26,4 +26,5 @@ urlpatterns = [
     path("register/", views.register, name="register"), #Page d'inscription
     path("bienvenue/<str:prenom>/", views.bienvenue, name ="bienvenue"),#Page temporaire
     path("bienvenue_connexion/<str:prenom>/", views.bienvenue_connexion, name="bienvenue_connexion"),#Page temporaire de connexion
+    path("search_acount/", views.cherche_le_compte,name="trouver_mon_compte")
 ]
