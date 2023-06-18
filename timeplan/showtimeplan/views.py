@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from showtimeplan.forms import UserForm
 from showtimeplan.models import User
+from django.urls import reverse
 def insertuser(request):
     if request.method == 'POST':
         form = UserForm(request.POST)
@@ -52,19 +53,68 @@ def bienvenue(request, prenom):
 def bienvenue_connexion(request, prenom):
     return render(request, 'showtimeplan/bienvenue_connexion.html', {'prenom' : prenom})
 
+
+def searching_account_page(request):
+    return render(request,'showtimeplan/Search_account.html')
+
+
+"""
 def cherche_le_compte(request):
     if request.method == 'POST':
-        email=request.POST['email']
-        try:
-            user=User.objects.get(email=email)
-            context={
-                'prenom':user.prenom,
-                'nom':user.nom
-            }
-            return redirect('recuperation_compte',context )
-        except User.DoesNotExist:
-            context={
-                'prenom':user.prenom,
-                'nom':user.nom
-            }
-            return redirect('account_no_found',context)
+        if 'email' in request.POST:
+            email = request.POST['email']
+            try:
+                user = User.objects.get(email=email)
+                url = reverse('recuperation_de_compte', args=[user.id, user.prenom, user.nom])
+               # url = reverse('recuperation_de_compte', kwargs={'id': user.id, 'prenom': user.prenom, 'nom': user.nom})
+                return redirect(url)
+            except User.DoesNotExist:
+               return render(request,'showtimeplan/timetable.html')
+    return render(request, 'showtimeplan/bienvenue_connexion.html')
+
+
+def recuperation_compte(request, id, prenom, nom):
+    
+    prenom = request.GET.get('prenom')
+    nom = request.GET.get('nom')
+    
+    context = {
+        'prenom': prenom,
+        'nom': nom
+    }
+    
+    return render(request, 'showtimeplan/recuperation_de_compte.html', context)
+"""
+
+from django.urls import reverse
+
+def cherche_le_compte(request):
+    if request.method == 'POST':
+        if 'email' in request.POST:
+            email = request.POST['email']
+            try:
+                user = User.objects.get(email=email)
+                context = {
+                    'prenom': user.prenom,
+                    'nom': user.nom
+                }
+                return redirect('recuperation_de_compte', id=user.id, **context)
+            except User.DoesNotExist:
+               return render(request,'showtimeplan/timetable.html')
+    return render(request, 'showtimeplan/bienvenue_connexion.html')
+
+
+
+def recuperation_compte(request, id, **kwargs):
+    prenom = kwargs.get('prenom')
+    nom = kwargs.get('nom')
+    
+    context = {
+        'prenom': prenom,
+        'nom': nom
+    }
+    
+    return render(request, 'showtimeplan/recuperation_de_compte.html', context)
+
+    
+        

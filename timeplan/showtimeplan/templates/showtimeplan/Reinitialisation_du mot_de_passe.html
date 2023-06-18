@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Confirmation de compte</title>
+    <style>
+        /* Styles CSS */
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            color: #333;
+        }
+        
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Confirmation de compte</h1>
+        <p>Veuillez saisir le code de confirmation et votre nouveau mot de passe.</p>
+        
+        <form id="confirmationForm">
+            <label for="confirmationCode">Code de confirmation:</label>
+            <input type="text" id="confirmationCode" required>
+            
+            <label for="newPassword">Nouveau mot de passe:</label>
+            <input type="password" id="newPassword" required>
+            
+            <label for="confirmPassword">Confirmez le mot de passe:</label>
+            <input type="password" id="confirmPassword" required>
+            
+            <button type="submit">Confirmer</button>
+        </form>
+    </div>
+
+    <script>
+        // Validation côté client avec JavaScript
+        document.getElementById('confirmationForm').addEventListener('submit', function(event) {
+            var confirmationCode = document.getElementById('confirmationCode').value;
+            var newPassword = document.getElementById('newPassword').value;
+            var confirmPassword = document.getElementById('confirmPassword').value;
+            
+            
+            if (newPassword !== confirmPassword) {
+                alert('Les mots de passe ne correspondent pas.');
+                event.preventDefault();
+                /*L'evenement de soumission sera empecher*/
+            }
+        });
+    </script>
+</body>
+</html>
