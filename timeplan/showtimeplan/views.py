@@ -100,7 +100,7 @@ def traiter_reinit_mot_de_passe(request, id):
             user = User.objects.get(id=id)
             if int(user.code_de_confirmation) == code:
                 # Mettre à jour le mot de passe de l'utilisateur
-                user.password = make_password(mot_de_passe)
+                user.mot_de_passe = mot_de_passe
                 user.save()
                 prenom_user = user.prenom
                 return redirect("bienvenue_recuperation", prenom=prenom_user)
