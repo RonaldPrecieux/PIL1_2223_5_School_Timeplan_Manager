@@ -1,0 +1,68 @@
+.img1
+{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.a2
+{
+    font-size: 20px;
+    font-weight: bold;
+    color: black;
+    margin-top: 20px;
+}
+.gras
+{
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+}
+header
+{
+    height: 70px;
+    background-color:white;
+    border-radius: 10px;
+    width: 100%;
+    box-shadow:6px 6px 6px  black;
+    background-color:#96B0C9;
+}
+
+nav a:hover
+{
+    color: rgb(89, 206, 35);
+}
+
+.menu
+{
+    padding-top: 15px;
+}
+table
+{
+   border-collapse: collapse;
+}
+
+
+td
+{
+  border: 2px solid black;
+  height: 100px;
+
+}
+th
+{
+    border: 2px solid black;
+}
+.tableau
+{
+  height: 500px;
+  width: 100%;
+  margin-top: 40px ;
+  
+
+
+}
+.bg
+{
+    background-color: #96B0C9;
+}
