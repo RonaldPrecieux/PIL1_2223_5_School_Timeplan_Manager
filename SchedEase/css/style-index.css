@@ -1,0 +1,171 @@
+/* Pour importer la polie en local */
+@font-face{
+    font-family: 'Euclid Circular A';
+    src: local('EuclidCircularA-Regular'),
+    format('opentype')
+}
+body{
+    margin: 0 auto;
+    height: 100%;
+    width: 100%;
+    font-family: 'Euclid Circular A',sans-serif;
+    overflow-y: hidden; 
+    overflow-x: hidden;
+}
+/* navbar correspond à la barre de navigation */
+.navbar .desktop-navbar{
+    display: flex;
+    align-items: center;
+}
+
+.navbar{
+    padding: 20px 10px;
+}
+
+.navbar .desktop-navbar {
+    justify-content: space-between;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 10px 40px;
+}
+
+.navbar-logo{
+    font-family: 'Montserrat',sans-serif;
+    font-weight: 600;
+    font-size: 1.4em;
+}
+
+header{
+    margin: 0 10px;
+    padding: 0;
+    margin-bottom: 120px;
+}
+
+.header-content{
+    padding-top: 50px;
+    max-width: 1440px;
+    margin: 0 auto;
+}
+
+a{
+    text-decoration: none;
+    color: #1c1c1c;
+}
+
+.header-title{
+    display: flex;
+    padding: 0 21px;
+    margin-bottom: 0px;
+    height: auto;
+    background-image: linear-gradient(108deg,#000 30.21%,#a9a9a9 32.87%,#000 35.46%,#ae6088 45.71%,#f6a45a 56.43%,#368ea3 67.77%,#eb963c 95.76%);
+   -webkit-background-clip: text;
+    background-clip: text;
+   -webkit-text-fill-color: transparent;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin: 10px;
+    min-width: 80px;
+    font-family: 'Montserrat';
+}
+
+.header-title {
+    position: relative;
+}
+.header-title span::before{
+    content: "m'organise mieux";
+    animation: words 10s infinite;
+}
+
+
+@keyframes words {
+    0%,25%{
+        content: 'suis productif';
+    }
+    26%,50%{
+        content: 'suis plus rapide';
+    }
+    51%,75%{
+        content: ' m\'organise mieux';
+    }
+    76%,100%{
+        content: 'suis meilleur';
+    }
+}
+
+
+h1{
+    font-weight: 700;
+    font-size: 80px;
+    text-align: center;
+    margin-bottom: 1px;
+    margin-top: 40px;
+    
+}
+
+.header-text {
+    max-width: 600px;
+    padding: 0px 25px;
+}
+
+.header-text {
+    display: flex;
+    justify-content: center;
+    max-width: 505px;
+    padding: 0px 15px;
+    margin:  auto ;
+    font-weight: 700;
+    text-align: center;
+    font-size: 1.2em;
+}
+
+.header-block{
+    margin: auto 200px;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+button {
+    appearance: none;
+    background-color: #1c1c1c;
+    border: 0.125em solid #1A1A1A;
+    border-radius: 1.2em;
+    box-sizing: border-box;
+    color: #FFF;
+    cursor: pointer;
+    display: inline-block;
+    font-family: Roobert,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+    font-size: 16px;
+    font-weight: 600;
+    line-height: normal;
+    margin: 0;
+    margin-right: 7px;
+    min-height: 3em;
+    min-width: 0;
+    outline: none;
+    padding: 1em 2em;
+    text-align: center;
+    text-decoration: none;
+    transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    will-change: transform;
+}
+
+button:disabled {
+ pointer-events: none;
+}
+
+button:hover {
+ color: #fff;
+ background-color: #1A1A1A;
+ box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
+ transform: translateY(-2px);
+}
+
+button:active {
+ box-shadow: none;
+ transform: translateY(0);
+}
+

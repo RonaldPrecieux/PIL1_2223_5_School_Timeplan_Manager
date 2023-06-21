@@ -1,0 +1,367 @@
+*{
+  font-family: "Euclid Circular A";
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #f5f5f5; 
+  /* background-image: linear-gradient(108deg,#000 30.21%,#a9a9a9 32.87%,#000 35.46%,#ae6088 45.71%,#f6a45a 56.43%,#368ea3 67.77%,#eb963c 95.76%);; */
+  overflow-x: hidden; /* Empêche le défilement horizontal */
+  overflow-y: hidden; /* Empêche le défilement vertical */
+}
+nav{
+  height: 10px;
+  background-color: #fff;
+  margin: 0 auto;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 0 5px 0 rgba(196, 190, 190, 0.2), 0 5px 5px 0 rgba(145, 141, 141, 0.24);
+}
+nav a {
+  text-decoration: none;
+  color: #000;
+}
+.navbar-logo{
+  font-weight: 600;
+  font-size: 1.4em;
+  margin: 0 20px 0 0;
+}
+.search {
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+}
+.search-input {
+  font-size: inherit;
+  background-color: #f4f2f2;
+  border: none;
+  color: #646464;
+  padding: 0.4rem 0.8rem;
+  border-radius: 30px;
+  width: 12em;
+  transition: all ease-in-out .5s;
+  margin-right: -2rem;
+}
+
+.search-input:hover, .search-input:focus {
+  box-shadow: 0 0 1em #00000013;
+}
+
+.search-input:focus {
+  outline: none;
+  background-color: #f0eeee;
+  opacity: 1;
+  width: 250px;
+}
+
+.search-input::-webkit-input-placeholder {
+  font-weight: 100;
+  color: #ccc;
+}
+
+.search-input:focus + .search-button {
+  background-color: #f0eeee;
+}
+
+.search-button {
+  border: none;
+  background-color: #f4f2f2;
+  margin-top: .1em;
+}
+
+.search-button:hover {
+  cursor: pointer;
+}
+
+.search-icon {
+  height: 1.3em;
+  width: 1.3em;
+  fill: #b4b4b4;
+}
+
+
+
+
+.sidebar {
+  background-color: #368ea3;
+  width: 200px;
+  height: 100vh; /* Hauteur équivalente à la taille de l'écran */
+  position: fixed; /* Position fixe pour rester visible lors du défilement */
+  overflow: auto; /* Permet le défilement si le contenu dépasse la hauteur */
+}
+.sidebar a {
+  display: block; /* Affiche les liens en tant que blocs */
+  padding: 16px; /* Ajoute de l'espace autour des liens */
+  text-decoration: none; /* Supprime la soulignement des liens */
+  color: #fff; /* Couleur du texte des liens */
+  justify-content: center;
+  text-align: center;
+}
+.sidebar a:hover {
+  background-color: #555; /* Couleur de fond lors du survol */
+  color: white; /* Couleur du texte lors du survol */
+}
+
+.profile{
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  margin: 10px;
+}
+.profile-pic{
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.profile-pic img{
+  width: 100%;
+  height: 100%;
+}
+/*.content {
+  margin-left: 200px;  Marge pour laisser de la place à la sidebar
+  padding: 16px; Ajoute de l'espace autour du contenu 
+}*/
+main{
+  margin-left: 200px; /* Marge pour laisser de la place à la sidebar */
+  padding: 16px; /* Ajoute de l'espace autour du contenu */
+}
+
+hr{
+  border-color: #444242;
+  border: 0.1px solid;
+}
+
+
+.add-but button {
+  border: none;
+  background-color: #4fb0e0;
+  border-radius: 0.9em;
+  padding: 0.6em;
+  transition: all ease-in-out 0.2s;
+  font-size: 16px;
+  margin-bottom: 15px;
+ }
+.add-but button span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  font-weight: 600;
+ }
+.add-but button:hover {
+  background-color: #0071e2;
+}
+
+.form-nav {
+  margin-left: 90%;
+  padding: 10px;
+  width: 100%;
+  height: 20px;
+  background-color: none;
+  display: flex;
+  align-items: right;
+}
+
+.close {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+}
+
+.line {
+  position: absolute;
+  width: 20px;
+  height: 3px;
+  background-color: #6B6C7B;
+  border-radius: 30px;
+}
+
+.line.one {
+  transform: rotate(45deg)
+}
+
+.line.two {
+  transform: rotate(135deg)
+}
+
+.form_main {
+  width: 280px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: rgb(255, 255, 255);
+  padding: 0px 30px 30px 30px;
+  border-radius: 30px;
+  box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.062);
+  display: none;
+  position: fixed;
+  z-index: 9999;
+}
+
+.heading {
+  font-size: 2em;
+  color: #2e2e2e;
+  font-weight: 700;
+  margin: 5px 0 10px 0;
+}
+
+.inputContainer {
+  width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.inputField {
+  width: 100%;
+  height: 50px;
+  background-color: rgb(236, 236, 236);
+  border: none;
+  border-radius: 15px;
+  margin: 05px 0;
+  color: black;
+  font-size: 1em;
+  font-weight: 500;
+  box-sizing: border-box;
+  padding: 15px;
+}
+
+.inputField:focus {
+  outline: none;
+}
+
+.inputField::placeholder {
+  color: rgb(80, 80, 80);
+  font-size: 1em;
+  font-weight: 500;
+}
+
+.prof {
+  margin-bottom: 10px;
+}
+
+.form-sub {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.form-sub button {
+  background-color: #1A1A1A;
+  border: 0.125em solid #1A1A1A;
+  border-radius: 0.9375em;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-weight: 600;
+  margin-top: 10px;
+  margin: 0 auto;
+  min-height: 0.75em;
+  min-width: 0;
+  outline: none;
+  padding: 1em 2.3em;
+  text-align: center;
+  text-decoration: none;
+  transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
+  touch-action: manipulation;
+  will-change: transform;
+}
+
+.form-sub button:disabled {
+  pointer-events: none;
+}
+
+.form-sub button:hover {
+  border: none;
+  color: #1A1A1A;
+  background-color: rgb(189, 189, 189);
+  box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
+  transform: translateY(-2px);
+}
+
+.form-sub button:active {
+  box-shadow: none;
+  transform: translateY(0);
+}
+
+.close-checkbox {
+  display: none;
+}
+table {
+  margin: 0;
+  max-width: 1120px;
+  border-spacing: 10px;
+}
+.cal{
+ max-width: 1120px;
+}
+
+th, td{
+  height: 40px;
+  width: 300px;
+  padding: auto;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.25); /* Couleur de fond avec transparence */
+  backdrop-filter: blur(12px); /* Flou de l'arrière-plan */
+  border: 1px solid rgba(255, 255, 255, 0.25); /* Bordure avec transparence */
+   
+}
+th{
+  padding: auto;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+td{
+  background-color: #ebebeb;
+  height: 61vh;
+  max-height: 61vh;
+  overflow: auto;
+  border-radius: 0px 0px 10px 10px;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
+}
+th:hover{
+  color: #fff;
+  background-color: #1A1A1A;
+  border: 1px solid black;
+  transform: scale(1.05);
+}
+th:active, td:active{
+  transform: scale(1.05)
+  rotateZ(1.7deg);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+td:active{
+  background-color: #d3d3d3;
+}
+
+
+@media screen and (max-width: 600px) {
+  /* Styles spécifiques aux écrans de taille inférieure à 600px */
+  .sidebar {
+    width: 100%; /* La sidebar occupe la largeur complète de l'écran */
+    height: auto; /* La hauteur s'ajuste au contenu */
+    position: relative; /* Position relative pour rester dans le flux du document */
+  }
+  
+  .sidebar a {
+    text-align: center; /* Centre les liens */
+    padding: 10px 0; /* Ajoute de l'espace vertical autour des liens */
+  }
+  
+  .content {
+    margin-left: 0; /* Aucune marge à gauche */
+  }
+}
+
+

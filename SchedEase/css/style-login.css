@@ -1,0 +1,150 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Euclid Circular A',sans-serif;
+}
+
+body{
+    margin: 0 auto;
+    margin-top: 30px;
+    background: #dfdfdf;
+}
+.navbar-logo{
+    font-family: 'Montserrat',sans-serif;
+    font-weight: 600;
+    font-size: 1.4em;
+    color: #222;
+    text-decoration: none;
+    padding: 60px;
+
+}
+
+.text{
+    display: block;
+    position: absolute;
+    width: 606px;
+    height: 224px;
+    left: 650px;
+    top: 250px;
+}
+
+.text .a{
+    font-style: normal;
+    font-weight: 900;
+    font-size: 49px;
+    line-height: 63px;
+    text-align: center;
+    padding-bottom: 10px;
+    background-image: linear-gradient(108deg,#000 40.21%,#000 50.46%,#ae6088 58.71%,#f6a45a 68.43%,#368ea3 78.77%,#eb963c 90.76%);
+   -webkit-background-clip: text;
+    background-clip: text;
+   -webkit-text-fill-color: transparent;
+}
+
+.text .b{
+    text-align: center;
+}
+.login-box{
+    min-height: 90vh;
+}
+.login-box{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 440px;
+    height: 440px;
+    padding: 30px;
+    padding-left: 60px;
+    margin-left: 50px;
+}
+.login-header{
+    text-align: center;
+    margin: 10px 0 40px 0;
+}
+.login-header{
+    color: #333;
+    font-size: 30px;
+    font-weight: 600;
+}
+.input-box .input-field {
+    width: 100%;
+    height: 60px;
+    font-size: 17px;
+    padding: 0 25px;
+    margin-bottom: 15px;
+    border-radius: 30px;
+    border: none;
+    box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.05); 
+    outline: none;
+    transition: .3s;
+}
+::placeholder{
+    font-weight: 500;
+    color: #222;
+}
+.input-field:focus{
+    width: 105%;
+}
+.forgot{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 40px;
+}
+section{
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #555;
+}
+#check{
+    margin-right: 10px;
+}
+a{
+    text-decoration: none;
+    color: darkblue;
+
+}
+main a:hover{
+    text-decoration: underline;
+}
+
+section a{
+    color: #555;
+}
+.input-submit{
+    position: relative;
+}
+.submit-btn{
+    width: 100%;
+    height: 60px;
+    background: #222;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: .3s;
+}
+.input-submit label{
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    color: #fff;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%, -50%);
+    cursor: pointer; 
+}
+.submit-btn:hover{
+    background: #000;
+    transform: scale(1.05,1);
+}
+
+.b a{
+    color: #000;
+    font-weight: 600;
+}
+/* .arrow{
+    height: 150px ;
+    margin: -150px 0px -100px 230px;
+    transform: rotate(-50deg);
+} */
