@@ -24,7 +24,10 @@ body{
     height: 1px;
     width: 190px;
 }
-
+.recherche:hover{
+    font-size: 15px;
+   border-radius: 10px;
+}
 input{
     position: relatives;
     margin-left: 10px;
@@ -144,6 +147,7 @@ button{
 }
 #date-case:hover{
     font-size: 15px;
+    box-shadow: 10px 10px 10px black;
     background-color:rgba(142, 161, 173, 0.781);
 }
 tbody{
@@ -158,7 +162,7 @@ span:hover{
     background-color: rgba(128, 128, 128, 0.212);
 }
 .bg-light-gray {
-    background-color:beige;
+    background-color:rgba(209, 140, 230, 0.671);
 }
 .table-bordered thead td, .table-bordered thead th {
     border-bottom-width: 2px;
@@ -202,19 +206,19 @@ span:hover{
 
 
 .bg-sky {
-    background-color: #02c2c7
+    background-color: #02c0c793
 }
 
 .bg-orange {
-    background-color: #e95601
+    background-color: #e9560183
 }
 
 .bg-green {
-    background-color: #5bbd2a
+    background-color: #5bbd2a96
 }
 
 .bg-yellow {
-    background-color: #f0d001
+    background-color: #f0d001a1
 }
 
 .bg-pink {
@@ -225,8 +229,8 @@ span:hover{
     background-color: #9d60ff
 }
 
-.bg-lightred {
-    background-color: #ff5722
+.bg-red {
+    background-color: rgba(255, 0, 0, 0.637)
 }
 
 .padding-15px-lr {
@@ -262,11 +266,11 @@ span:hover{
 }
 
 .table-bordered td, .table-bordered th {
-    border: 1px solid #dee2e6;
+    border: 1px solid #e6e3de;
 }
 .table td, .table th {
     padding: .65rem;
     vertical-align: top;
     border-radius: 2px;
-    border-top: 1px solid #e6e5de;
+    border-top: 1px solid #07070769;
 }
