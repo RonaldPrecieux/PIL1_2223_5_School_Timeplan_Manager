@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "showtimeplan", #Sans ça les templates ne s'executent pas. 
+    "EditTimeplan",
 ]
 
 MIDDLEWARE = [
@@ -75,7 +76,7 @@ WSGI_APPLICATION = "timeplan.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-"""""
+"""
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
@@ -88,7 +89,7 @@ DATABASES = {
         'ENGINE':'django.db.backends.mysql',
         'NAME':'mydjangotest',
         'USER':'root',
-        'PASSWORD':'root', #A ce niveau vous devez redéfinir le mot de passe pour qu'il corresponde au mot de passe de votre root sql
+        'PASSWORD':'Logarithmeneperien18#', #A ce niveau vous devez redéfinir le mot de passe pour qu'il corresponde au mot de passe de votre root sql
         'HOST':'localhost',
         'PORT':'3306'
     }
@@ -142,7 +143,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 #Configuration des parametre d'envoi d'email
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = "587 (STARTTLS)"
-EMAIL_HOST_USER = 'schedease3@gmail.com'
-EMAIL_HOST_PASSWORD = 'SchedEase100%'
+EMAIL_PORT = "587"
+EMAIL_HOST_USER = 'friedricht109@gmail.com'
+EMAIL_HOST_PASSWORD = 'iygrcpxwtndfqqqr'
 EMAIL_USE_TLS = True  # ou False si votre serveur ne prend pas en charge TLS

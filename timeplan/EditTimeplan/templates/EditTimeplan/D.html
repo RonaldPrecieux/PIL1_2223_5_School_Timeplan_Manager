@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tableau de bord administrateur</title>
+    <style>
+        /* Styles CSS précédents... */
+
+        .schedule-form {
+            display: none;
+            margin-top: 20px;
+            margin-bottom: 40px;
+        }
+
+        /* Styles CSS pour les boutons d'action */
+        .action-buttons {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+
+        .action-buttons button {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Code HTML précédent... -->
+
+    <div class="main-content">
+        <div class="action-buttons">
+            <button class="add-button">+ Ajouter un emploi du temps</button>
+        </div>
+
+        <table class="schedule-table">
+            <thead>
+                <tr>
+                    <th>Nom du cours</th>
+                    <th>Jour</th>
+                    <th>Heure de début</th>
+                    <th>Heure de fin</th>
+                    <th>Enseignant</th>
+                    <th>Salle</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Les emplois du temps seront ajoutés dynamiquement ici -->
+            </tbody>
+        </table>
+
+        <form class="schedule-form">
+            <label for="course-name">Nom du cours :</label>
+            <input type="text" id="course-name" required>
+
+            <label for="day">Jour :</label>
+            <input type="text" id="day" required>
+
+            <label for="start-time">Heure de début :</label>
+            <input type="time" id="start-time" required>
+
+            <label for="end-time">Heure de fin :</label>
+            <input type="time" id="end-time" required>
+
+            <label for="teacher">Enseignant :</label>
+            <input type="text" id="teacher" required>
+
+            <label for="room">Salle :</label>
+            <input type="text" id="room" required>
+
+            <div class="action-buttons">
+                <button type="submit">Enregistrer</button>
+                <button type="button" class="cancel-button">Annuler</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const addButton = document.querySelector(".add-button");
+        const cancelButton = document.querySelector(".cancel-button");
+        const scheduleForm = document.querySelector(".schedule-form");
+        const scheduleTable = document.querySelector(".schedule-table");
+
+        addButton.addEventListener("click", () => {
+            // Afficher le formulaire en dessous du dernier cours enregistré
+            scheduleForm.style.display = "block";
+            scheduleTable.insertAdjacentElement("afterend", scheduleForm);
+        });
+
+        cancelButton.addEventListener("click", () => {
+            // Réinitialiser le formulaire et le cacher
+            scheduleForm.reset();
+            scheduleForm.style.display = "none";
+        });
+
+        scheduleForm.addEventListener("submit", (event) => {
+            event.preventDefault();
+
+            // Récupérer les valeurs du formulaire
+            const courseName = document.getElementById("course-name").value;
+            const day = document.getElementById("day").value;
+            const startTime = document.getElementById("start-time").value;
+            const endTime = document.getElementById("end-time").value;
+            const teacher = document.getElementById("teacher").value;
+            const room = document.getElementById("room").value;
+
+            // Ajouter une nouvelle ligne au tableau
+            const newRow = document.createElement("tr");
+            newRow.innerHTML = `
+                <td>${courseName}</td>
+                <td>${day}</td>
+                <td>${startTime}</td>
+                <td>${endTime}</td>
+                <td>${teacher}</td>
+                <td>${room}</td>
+                <td>
+                    <button class="edit-button">Modifier</button>
+                    <button class="delete-button">Supprimer</button>
+                </td>
+            `;
+            scheduleTable.querySelector("tbody").appendChild(newRow);
+
+            // Réinitialiser le formulaire et le cacher
+            scheduleForm.reset();
+            scheduleForm.style.display = "none";
+        });
+
+        scheduleTable.addEventListener("click", (event) => {
+            const target = event.target;
+
+            if (target.classList.contains("edit-button")) {
+                // Récupérer la ligne parente du bouton Modifier
+                const row = target.parentNode.parentNode;
+
+                // Récupérer les valeurs de la ligne
+                const courseName = row.cells[0].textContent;
+                const day = row.cells[1].textContent;
+                const startTime = row.cells[2].textContent;
+                const endTime = row.cells[3].textContent;
+                const teacher = row.cells[4].textContent;
+                const room = row.cells[5].textContent;
+
+                // Remplir le formulaire avec les valeurs
+                document.getElementById("course-name").value = courseName;
+                document.getElementById("day").value = day;
+                document.getElementById("start-time").value = startTime;
+                document.getElementById("end-time").value = endTime;
+                document.getElementById("teacher").value = teacher;
+                document.getElementById("room").value = room;
+
+                // Afficher le formulaire
+                scheduleForm.style.display = "block";
+                scheduleTable.insertAdjacentElement("afterend", scheduleForm);
+            } else if (target.classList.contains("delete-button")) {
+                // Supprimer la ligne parente du bouton Supprimer
+                const row = target.parentNode.parentNode;
+                row.remove();
+            }
+        });
+    </script>
+</body>
+</html>

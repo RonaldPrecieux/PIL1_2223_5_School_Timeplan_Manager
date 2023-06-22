@@ -1,0 +1,356 @@
+<!-- {% load static %} -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="Utf-8">
+    <link rel="stylesheet" type="text/css" href="{% static 'EditTimeplan/styleAdmin.css' %}">
+  </head>
+  <body>
+      <header>
+          <nav>
+              <div class="logo">
+                <a class="navbar-logo" href="{% url 'accueil' %}">Skedease</a>
+              </div>
+          </nav>
+      </header>
+      <main>
+        <section class="cal">
+          <div class="add-but">
+            <button> 
+              <span>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"></path><path fill="currentColor" d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2z"></path></svg> Créer
+              </span>
+            </button>
+          </div>
+          <form id="close" class="form_main" action="{% url 'save_cours' %}" method="post">
+            {% csrf_token %} 
+            <div class="form-nav">
+                <label for="close-checkbox" class="close">
+                  <div class="line one"></div>
+                  <div class="line two"></div>
+                </label>
+                <input type="checkbox" id="close-checkbox" class="close-checkbox">
+            </div>
+            <p class="heading">Nouveau cours</p>
+            <div class="date">
+              <input type="date" name="date" class="inputField" required>
+            </div>
+            <div class="inputContainer">
+                <input type="time" id="start-time" name="start-time" class="inputField" value="07:00" required>
+                <input type="time" id="end-time" name="end-time" class="inputField"  required>
+            </div>
+            
+            <div class="day">
+              <input type="text" placeholder="Jour" name="day" class="inputField" required>
+          </div>
+            <div class="mat">
+                <input type="text" placeholder="Matière" name="matiere" class="inputField autocomplete" id="matiere"  required autofocus>
+
+            </div>
+          <div class="prof">    <!--Je veux afficher automatiquement le nom du professeur.Je le ferais plustard -->
+                <input type="text" placeholder="Nom du professeur"  name="professeur" class="inputField" required>
+            </div>
+          <div class="groupe">
+              <input type="text" placeholder="Groupe" name="groupe" class="inputField autocomplete" list="groupe-list"  required autofocus>
+              <datalist id="groupe-list">
+                <option value="Groupe1"></option>
+                <option value="Groupe2"></option>
+                <option value="Groupe1 & Groupe 2"></option>
+              </datalist>
+
+          </div>
+            <div class="salle">
+              <input type="text" placeholder="Salle" name="salle" class="inputField" required>
+          </div>
+            <div class="form-sub">
+                <button id="button">Save</button>
+                <!-- Apparement ce botton joue le meme role que submit meme lorsqu'on precise pas le type submit -->
+            </div>
+          </form>
+                  <!-- Au cas ou j'oublie stp rajoute les required   et demande a friedrich de m'envoyer ca fonction js qui efface tous ce qui est 
+                  dans le formulaire apprès l'envoie et qui olace le curseur sur le premier innput du formulaire
+                  -Donne aussi un peu de couleur au table qui sont sur les jours -->
+          <script>
+            const createButton = document.querySelector('.add-but button');
+            const formMain = document.getElementById('close');
+            const closeCheckbox = document.getElementById('close-checkbox');
+
+            createButton.addEventListener('click', function() {
+              if (formMain.style.display === 'flex') {
+                formMain.style.display = 'none';
+              } else {
+                formMain.style.display = 'flex';
+              }
+            });
+
+            closeCheckbox.addEventListener('change', function() {
+              if (this.checked) {
+                formMain.style.display = 'none';
+              } else {
+                formMain.style.display = 'flex';
+              }
+            });
+            // //fonction pour mettre le curseur à la fin du champs email
+            // function setCursorToEnd() {
+            //   var emailField = document.getElementById('email');
+            //   var emailValue = emailField.value;
+            //   emailField.value = '';
+            //   emailField.value = emailValue;
+            //   emailField.focus();
+            // }
+
+            // //Exécuter le fonction lorsqe le document est prêt
+            // document.addEventListener('DOMContentLoaded', function() {
+            //   {% if error_message %}
+            //       setCursorToEnd();
+            //   {% endif %}
+            // });
+
+          </script>
+      
+      
+      
+       
+
+
+            
+
+
+          
+            <hr>
+              <a href="#" class="show-form-link">Afficher le formulaire</a>
+                <div id="conteneur-formulaire" style="display: none;">
+                  <form id="modify" class="form_modify" action="">
+                    <div class="form-modify">
+                      <label for="close-checkbox-modify" class="close-modify">
+                        <div class="line one"></div>
+                        <div class="line two"></div>
+                      </label>
+                      <input type="checkbox" id="close-checkbox-modify" class="close-checkbox-modify">
+                    </div>
+                    <p class="heading">Modifier cours</p>
+                    <div class="inputContainer">
+                      <input type="time" id="start-time" name="start-time" class="inputField"  required>
+                      <input type="time" id="end-time" name="end-time" class="inputField"  required>
+                  </div>
+                  <div class="day">
+                    <input type="text" placeholder="Jour" name="day" class="inputField" required>
+                </div>
+                  <div class="mat">
+                      <input type="text" placeholder="Matière" name="matiere" class="inputField autocomplete" id="matiere"  required autofocus>
+      
+                  </div>
+                <div class="prof">  
+                      <input type="text" placeholder="Nom du professeur"  name="professeur" class="inputField" required>
+                  </div>
+                <div class="groupe">
+                    <input type="text" placeholder="Groupe" name="groupe" class="inputField autocomplete" list="groupe-list"  required autofocus>
+                    <datalist id="groupe-list">
+                      <option value="Groupe1"></option>
+                      <option value="Groupe2"></option>
+                      <option value="Groupe1 & Groupe 2"></option>
+                    </datalist>
+      
+                </div>
+                  <div class="salle">
+                    <input type="text" placeholder="Salle" name="salle" class="inputField" required>
+                </div>
+                  <div class="form-sub">
+                      <button id="button">Save</button>
+                  </div>
+                </form>
+                </div>
+              </section>
+              
+              <script>
+                document.addEventListener('click', function(event) {
+                  var showFormLink = event.target.closest('.show-form-link');
+                  if (showFormLink) {
+                    event.preventDefault();
+                    var formContainer = document.getElementById('conteneur-formulaire');
+                    formContainer.style.display = 'block';
+                  }
+                });
+              
+                document.addEventListener('change', function(event) {
+                  var closeCheckbox = event.target.closest('.close-checkbox-modify');
+                  if (closeCheckbox) {
+                    var formContainer = document.getElementById('conteneur-formulaire');
+                    formContainer.style.display = 'none';
+                  }
+                });
+              </script>
+          
+            <table>
+              <tr class="week-days">
+                <th>Lundi</th>
+                <th>Mardi</th>
+                <th>Mercredi</th>
+                <th>Jeudi</th>
+                <th>Vendredi</th>
+                <th>Samedi</th>
+              </tr>
+              <tr class="tab-cont">
+                <td>
+                  {% for cours in CoursProgrammer %}
+                  
+                    {% if cours.jour == "Lundi" %}
+                    <a href="#" class="show-form-link">
+                      <div class="cours">
+                      <!-- Afficher les informations du cours -->
+                      <p>{{ cours.groupe }} {{ cours.salle }}</p>
+                      <p>{{ cours.heure_debut }}/{{ cours.heure_fin }}</p>
+                      <p>{{ cours.teacher }}</p>
+                      </div>
+                    </a>
+                    {% endif %}
+                  {% empty %}
+                    <p>Aucun cours programmé</p>
+                  {% endfor %}
+                </td>
+                <td class="tdcolor">
+                  {% for cours in CoursProgrammer %}
+                    {% if cours.jour == "Mardi" %}
+                    <a href="#" class="show-form-link">
+                     <div class="cours">
+                      <!-- Afficher les informations du cours -->
+                      <p>{{ cours.groupe }} {{ cours.salle }}</p>
+                      <p>{{ cours.heure_debut }}/{{ cours.heure_fin }}</p>
+                      <p>{{ cours.teacher }}</p></div>
+                    </a>
+                    {% endif %}
+                  {% empty %}
+                    <p>Aucun cours programmé</p>
+                  {% endfor %}
+                </td>
+                <td>
+                  {% for cours in CoursProgrammer %}
+                    {% if cours.jour == "Mercredi" %}
+                    <a href="#" class="show-form-link">
+                      <div class="cours">
+                      <!-- Afficher les informations du cours -->
+                      <p>{{ cours.groupe }} {{ cours.salle }}</p>
+                      <p>{{ cours.heure_debut }}/{{ cours.heure_fin }}</p>
+                      <p>{{ cours.teacher }}</p>
+                      </div>
+                  </a>
+                    {% endif %}
+                  {% empty %}
+                    <p>Aucun cours programmé</p>
+                  {% endfor %}
+                </td>
+                <td class="tdcolor">
+                  {% for cours in CoursProgrammer %}
+                    {% if cours.jour == "Jeudi" %}
+                    <a href="#" class="show-form-link">
+                      <div class="cours">
+                      <!-- Afficher les informations du cours -->
+                      <p>{{ cours.groupe }} {{ cours.salle }}</p>
+                      <p>{{ cours.heure_debut }}/{{ cours.heure_fin }}</p>
+                      <p>{{ cours.teacher }}</p>
+                      </div>
+                    </a>
+                    {% endif %}
+                  {% empty %}
+                    <p>Aucun cours programmé</p>
+                  {% endfor %}
+                </td>
+                <td>
+                {% for cours in CoursProgrammer %}
+                {% if cours.jour == "Vendredi" %}
+                <a href="#" class="show-form-link">
+                  <div class="cours">
+                  <!-- Afficher les informations du cours -->
+                  <p>{{ cours.groupe }} {{ cours.salle }}</p>
+                  <p>{{ cours.heure_debut }}/{{ cours.heure_fin }}</p>
+                  <p>{{ cours.teacher }}</p>
+                  </div>
+                </a>
+                {% endif %}
+              {% empty %}
+                <p>Aucun cours programmé</p>
+              {% endfor %}
+            </td>
+            <td class="tdcolor">
+            {% for cours in CoursProgrammer %}
+            {% if cours.jour == "Samedi" %}
+            <a href="#" class="show-form-link">
+              <div class="cours">
+              <!-- Afficher les informations du cours -->
+              <p>{{ cours.groupe }} {{ cours.salle }}</p>
+              <p>{{ cours.heure_debut }}/{{ cours.heure_fin }}</p>
+              <p>{{ cours.teacher }}</p>
+              </div>
+            </a>
+                  {% endif %}
+                {% empty %}
+                  <p>Aucun cours programmé</p>
+                {% endfor %}
+              </td>
+                <!-- Répétez le même modèle pour les autres jours de la semaine -->
+              </tr>
+            </table>
+        </section>
+
+              <!-- Il faut passer les autres jour ici -->
+             
+
+          <!-- <section class="cal">
+            <tr class="tab-cont">
+            <td><td>Donnée</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr> -->
+        
+
+       <!--   <table>
+         <tr class="week-days">
+            <th>Lundi</th>
+            <th>Mardi</th>
+            <th>Mercredi</th>
+            <th>Jeudi</th>
+            <th>Vendredi</th>
+            <th>Samedi</th>
+          </tr>
+          <tr class="tab-cont">
+            <td>
+              {% for cours in cours_programmes %}
+                {% if cours.jour == "Lundi" %} -->
+                  <!-- Afficher les informations du cours -->
+                  <!-- {{ cours.matiere }} - {{ cours.heure_debut }} à {{ cours.heure_fin }}<br>
+                {% endif %}
+              {% empty %}
+                Aucun cours programmé
+              {% endfor %}
+            </td>
+            <td>
+              {% for cours in cours_programmes %}
+                {% if cours.jour == "Mardi" %} -->
+                  <!-- Afficher les informations du cours -->
+                  <!-- {{ cours.matiere }} - {{ cours.heure_debut }} à {{ cours.heure_fin }}<br>
+                {% endif %}
+              {% empty %}
+                Aucun cours programmé
+              {% endfor %}
+            </td> -->
+            <!-- Répétez le même modèle pour les autres jours de la semaine -->
+          <!-- </tr>
+        </table>
+         -->
+        
+        
+        <!-- <div class="content">
+          <form method="get" action="">
+              <label for="Lundi">Lundi 
+                
+              </label>
+              <input type="text" name="Lundi" id="Lundi" maxlength="10" required>
+          </form>
+        </div> -->
+      </section> 
+      </main>
+  </body>
+</html>

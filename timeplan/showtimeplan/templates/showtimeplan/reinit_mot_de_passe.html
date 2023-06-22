@@ -27,7 +27,7 @@
             margin-top: 10px;
         }
         
-        input[type="text"],
+        input[type="number"],
         input[type="password"] {
             width: 100%;
             padding: 10px;
@@ -47,41 +47,36 @@
             border-radius: 4px;
             cursor: pointer;
         }
+        .error{
+            color: red;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Confirmation de compte</h1>
+        <p>Un email a été envoyé à votre adresse email avec succès. Vérifiez votre boîte pour obtenir le code de validation</p>
         <p>Veuillez saisir le code de confirmation et votre nouveau mot de passe.</p>
-        
-        <form id="confirmationForm">
+        <h1>Code de réinitialisation du mot de passe :</h1>
+        <form id="confirmationForm" method="post" action="{% url 'traiter_reinit_mot_de_passe' id=id %}">
+            {% csrf_token %}
             <label for="confirmationCode">Code de confirmation:</label>
-            <input type="text" id="confirmationCode" required>
-            
+            <input type="number" id="confirmationCode" required name="code" pattern="[0-9]{6}" title="(Chiffres uniquement et une longueur totale de 8 chiffres)" {% if code %}value="{{ code }}"{% endif %}>
             <label for="newPassword">Nouveau mot de passe:</label>
-            <input type="password" id="newPassword" required>
-            
-            <label for="confirmPassword">Confirmez le mot de passe:</label>
-            <input type="password" id="confirmPassword" required>
-            
+            <input type="password" id="newPassword" required name="mot_de_passe" minlength="8" title="(Au moins 8 caractères)" autocomplete="off" {% if mot_de_passe %}value="{{ mot_de_passe }}"{% endif %} >
+            {% if error_message %}
+                <p class="error">{{ error_message }}</p>
+            {% endif %}
             <button type="submit">Confirmer</button>
         </form>
     </div>
-
     <script>
-        // Validation côté client avec JavaScript
-        document.getElementById('confirmationForm').addEventListener('submit', function(event) {
-            var confirmationCode = document.getElementById('confirmationCode').value;
-            var newPassword = document.getElementById('newPassword').value;
-            var confirmPassword = document.getElementById('confirmPassword').value;
-            
-            
-            if (newPassword !== confirmPassword) {
-                alert('Les mots de passe ne correspondent pas.');
-                event.preventDefault();
-                /*L'evenement de soumission sera empecher*/
-            }
-        });
+         document.addEventListener('DOMContentLoaded', function() {
+        var codeInput = document.getElementById('confirmationCode');
+        codeInput.focus();
+        codeInput.setSelectionRange(codeInput.value.length, codeInput.value.length);
+    });
+       
     </script>
 </body>
 </html>

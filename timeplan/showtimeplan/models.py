@@ -9,7 +9,7 @@ class User(models.Model):
     email = models.EmailField(unique=True)
     numero_telephone = models.CharField(max_length=20)
     mot_de_passe = models.CharField(max_length=128)
-    code_de_confirmation= models.IntegerField(max_length=8,null=True,default=None)
+    code_de_confirmation= models.IntegerField(null=True,default=None)
     
     class Meta:
         db_table = 'etudiants_enregistres'

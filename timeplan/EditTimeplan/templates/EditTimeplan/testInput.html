@@ -1,0 +1,85 @@
+<div class="mat">
+  <input type="text" placeholder="Matière" name="matiere" class="inputField" list="matiere-list" autofocus>
+  <datalist id="matiere-list">
+    <option value="Mathématiques"></option>
+    <option value="Physique"></option>
+    <option value="Chimie"></option>
+    <!-- Autres options disponibles -->
+  </datalist>
+</div>
+
+
+
+
+
+User
+Comment faire pour que la suite du mot soit completer automatiquement et que lorsque le mot qu'il tape est trouver il clique juste sur entrer et il passe au input suivant
+
+ChatGPT
+Pour permettre la complétion automatique du mot saisi par l'utilisateur et passer automatiquement à l'input suivant lorsque le mot est trouvé, vous pouvez utiliser JavaScript pour gérer ces fonctionnalités.
+
+Voici une approche que vous pouvez suivre :
+
+Modifiez votre HTML pour ajouter des classes aux éléments <input> pour faciliter leur manipulation :
+html
+Copy code
+<div class="mat">
+  <input type="text" placeholder="Matière" name="matiere" class="inputField autocomplete" id="matiere" autofocus>
+</div>
+<div class="prof">
+  <input type="text" placeholder="Nom du professeur" name="professeur" class="inputField autocomplete" id="professeur">
+</div>
+Ajoutez du JavaScript pour gérer la complétion automatique et la navigation entre les champs :
+javascript
+Copy code
+// Récupérer les éléments input et les convertir en tableaux
+const inputs = Array.from(document.querySelectorAll('.autocomplete'));
+
+// Définir les options disponibles pour chaque champ
+const options = {
+  matiere: ['Mathématiques', 'Physique', 'Chimie'],
+  professeur: ['John Doe', 'Jane Smith', 'Robert Johnson']
+};
+
+inputs.forEach(input => {
+  // Gérer l'événement de saisie pour la complétion automatique
+  input.addEventListener('input', function() {
+    const value = this.value.toLowerCase();
+    const suggestions = options[this.id].filter(option => option.toLowerCase().startsWith(value));
+    const datalist = document.querySelector(`#${this.id}-list`);
+
+    // Vider la liste des suggestions existantes
+    while (datalist.firstChild) {
+      datalist.removeChild(datalist.firstChild);
+    }
+
+    // Ajouter les nouvelles suggestions à la liste
+    suggestions.forEach(suggestion => {
+      const option = document.createElement('option');
+      option.value = suggestion;
+      datalist.appendChild(option);
+    });
+  });
+
+  // Gérer l'événement de pression de la touche "Enter" pour passer au champ suivant
+  input.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const index = inputs.indexOf(this);
+      if (index < inputs.length - 1) {
+        inputs[index + 1].focus();
+      }
+    }
+  });
+});
+Assurez-vous d'ajuster les options disponibles dans l'objet options en fonction de vos besoins. Cela permettra de fournir des suggestions appropriées à l'utilisateur.
+
+Avec ce code, lorsque l'utilisateur saisit du texte dans l'un des champs <input> avec la classe "autocomplete", il verra des suggestions automatiques en fonction des options disponibles. Lorsqu'il sélectionne une suggestion en appuyant sur "Enter" ou en cliquant dessus, le focus passera automatiquement à l'input suivant.
+
+N'oubliez pas d'inclure ce code JavaScript dans votre page HTML, soit en l'insérant directement dans la balise <script></script>, soit en le liant à un fichier JavaScript externe.
+
+Cette solution utilise uniquement JavaScript pour gérer la complétion automatique et la navigation entre les champs. Aucune bibliothèque externe n'est nécessaire.
+
+
+
+

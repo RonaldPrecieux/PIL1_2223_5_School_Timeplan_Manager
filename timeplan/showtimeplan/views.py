@@ -2,40 +2,79 @@ from django.shortcuts import render, redirect
 from showtimeplan.forms import UserForm
 from showtimeplan.models import User
 from django.urls import reverse
-def insertuser(request):
+from django.core.mail import send_mail
+from django.conf import settings
+from django.urls import reverse
+from django.contrib.auth import views as auth_views
+from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import check_password
+from django.contrib.auth.decorators import login_required
+from EditTimeplan.models import AdminUser
+import random
+
+def insertuser(request): #Vue de création de compte avec mot de passe haché
     if request.method == 'POST':
         form = UserForm(request.POST)
         if form.is_valid():
             email = form.cleaned_data['email']
             if User.objects.filter(email=email).exists():
                 form.add_error('email', 'Email déjà utilisé')
-                
-            form.save()
-            prenom_user = form.cleaned_data['prenom']
-            return redirect("bienvenue", prenom=prenom_user)
+            else:
+                user = form.save(commit=False)
+                password = form.cleaned_data['mot_de_passe']
+                hashed_password = make_password(password)
+                user.mot_de_passe = hashed_password
+                user.save()
+                prenom_user = form.cleaned_data['prenom']
+                return redirect("bienvenue", prenom=prenom_user)
     else:
         form = UserForm()
-        
+
     context = {'form': form}
     return render(request, 'showtimeplan/register.html', context)
+
 
 def index(request):
     return render(request, "showtimeplan/index.html")
 
 
-
-def login(request):     #Vue d'identification. Elle vous identifie à partie de votre mot de passe et votre email et vous connecte à votre compte
+def login(request):
     if request.method == 'POST':
         email = request.POST.get('email')
         mot_de_passe = request.POST.get('mot_de_passe')
+
+        # Recherche de l'utilisateur dans la première table (AdminUser)
         try:
-            user = User.objects.get(email=email, mot_de_passe=mot_de_passe) #Cette ligne permet de vérifier si l'utilisateur existe dans la base de données. Elle lance une recherche de l'email et du mot de passe qu'il a entré dans le champ de recherche dans la base de données
-            return redirect('bienvenue_connexion', prenom=user.prenom)
+            admin_user = AdminUser.objects.get(email=email)
+            if check_password(mot_de_passe, admin_user.mot_de_passe):
+                return redirect('bienvenue_connexion', prenom=admin_user.prenom)
+            else:
+                context = {
+                    'error_message': 'Email ou mot de passe incorrect. Réessayez !',
+                    'email_value': email,  
+                    'password_value': mot_de_passe,
+                }
+                return render(request, 'showtimeplan/login.html', context)
+        except AdminUser.DoesNotExist:
+            pass
+
+        # Recherche de l'utilisateur dans la seconde table (User)
+        try:
+            user = User.objects.get(email=email)
+            if check_password(mot_de_passe, user.mot_de_passe):
+                return redirect('bienvenue_connexion', prenom=user.prenom)
+            else:
+                context = {
+                    'error_message': 'Email ou mot de passe incorrect. Réessayez !',
+                    'email_value': email,  
+                    'password_value': mot_de_passe,
+                }
+                return render(request, 'showtimeplan/login.html', context)
         except User.DoesNotExist:
             context = {
-            'error_message': 'Email ou mot de passe incorrect. Réessayez !',
-            'email_value': email,  
-            'password_value': mot_de_passe,
+                'error_message': 'Email ou mot de passe incorrect. Réessayez !',
+                'email_value': email,  
+                'password_value': mot_de_passe,
             }
             return render(request, 'showtimeplan/login.html', context)
 
@@ -50,71 +89,106 @@ def register(request):
 def bienvenue(request, prenom):
     return render(request, 'showtimeplan/bienvenue.html', {'prenom' : prenom})
 
+
 def bienvenue_connexion(request, prenom):
     return render(request, 'showtimeplan/bienvenue_connexion.html', {'prenom' : prenom})
 
 
-def searching_account_page(request):
-    return render(request,'showtimeplan/Search_account.html')
-
-
-"""
-def cherche_le_compte(request):
+def mot_de_passe_oublie(request):
     if request.method == 'POST':
-        if 'email' in request.POST:
-            email = request.POST['email']
-            try:
-                user = User.objects.get(email=email)
-                url = reverse('recuperation_de_compte', args=[user.id, user.prenom, user.nom])
-               # url = reverse('recuperation_de_compte', kwargs={'id': user.id, 'prenom': user.prenom, 'nom': user.nom})
-                return redirect(url)
-            except User.DoesNotExist:
-               return render(request,'showtimeplan/timetable.html')
-    return render(request, 'showtimeplan/bienvenue_connexion.html')
-
-
-def recuperation_compte(request, id, prenom, nom):
-    
-    prenom = request.GET.get('prenom')
-    nom = request.GET.get('nom')
-    
-    context = {
-        'prenom': prenom,
-        'nom': nom
-    }
-    
-    return render(request, 'showtimeplan/recuperation_de_compte.html', context)
-"""
-
-from django.urls import reverse
-
-def cherche_le_compte(request):
-    if request.method == 'POST':
-        if 'email' in request.POST:
-            email = request.POST['email']
-            try:
-                user = User.objects.get(email=email)
-                context = {
-                    'prenom': user.prenom,
-                    'nom': user.nom
-                }
-                return redirect('recuperation_de_compte', id=user.id, **context)
-            except User.DoesNotExist:
-               return render(request,'showtimeplan/timetable.html')
-    return render(request, 'showtimeplan/bienvenue_connexion.html')
-
-
-
-def recuperation_compte(request, id, **kwargs):
-    prenom = kwargs.get('prenom')
-    nom = kwargs.get('nom')
-    
-    context = {
-        'prenom': prenom,
-        'nom': nom
-    }
-    
-    return render(request, 'showtimeplan/recuperation_de_compte.html', context)
-
-    
+        email = request.POST['email']
+        try:
+            admin_user = AdminUser.objects.get(email=email)
+            code = random.randint(100000, 999999)
+            admin_user.reset_code = code
+            admin_user.save()
+            
+            # Envoyer l'email de réinitialisation pour l'administrateur
+            subject = 'Réinitialisation du mot de passe (Admin)'
+            message = f'Votre code de réinitialisation du mot de passe est : {code}'
+            email_from = settings.EMAIL_HOST_USER
+            recipient_list = [email]
+            send_mail(subject, message, email_from, recipient_list, fail_silently=False)
+            if send_mail:
+                print("Email envoyé avec succès (Admin) !")
+                admin_user.Code_confirmation = code
+                admin_user.save()
+                id = admin_user.id
+                return redirect("afficher_page_reinit_mot_de_passe", id=id)
         
+        except AdminUser.DoesNotExist:
+            try:
+                user = User.objects.get(email=email)
+                code = random.randint(100000, 999999)
+                user.reset_code = code
+                user.save()
+                
+                # Envoyer l'email de réinitialisation pour l'utilisateur
+                subject = 'Réinitialisation du mot de passe (User)'
+                message = f'Votre code de réinitialisation du mot de passe est : {code}'
+                email_from = settings.EMAIL_HOST_USER
+                recipient_list = [email]
+                send_mail(subject, message, email_from, recipient_list, fail_silently=False)
+                if send_mail:
+                    print("Email envoyé avec succès (User) !")
+                    user.code_de_confirmation = code
+                    user.save()
+                    id = user.id
+                    return redirect("afficher_page_reinit_mot_de_passe", id=id)
+            
+            except User.DoesNotExist:
+                pass  # L'adresse email n'est pas trouvée dans aucune des tables, vous pouvez afficher un message d'erreur
+
+    return render(request, 'showtimeplan/mot_de_passe_oublie.html')
+    
+def afficher_page_reinit_mot_de_passe(request, id):
+    return render(request, 'showtimeplan/reinit_mot_de_passe.html', {'id': id})
+
+
+def traiter_reinit_mot_de_passe(request, id):
+    if request.method == 'POST':
+        code = int(request.POST['code'])
+        mot_de_passe = request.POST['mot_de_passe']
+        
+        try:
+            admin_user = AdminUser.objects.get(id=id)
+            if int(admin_user.Code_confirmation) == code:
+                # Hacher le mot de passe
+                mot_de_passe_hache = make_password(mot_de_passe)
+                
+                # Mettre à jour le mot de passe de l'administrateur
+                admin_user.mot_de_passe = mot_de_passe_hache
+                admin_user.save()
+                
+                prenom_admin = admin_user.prenom
+                return redirect("bienvenue_recuperation", prenom=prenom_admin)
+        except AdminUser.DoesNotExist:
+            pass  # L'administrateur n'est pas trouvé dans la table AdminUser
+        
+        try:
+            user = User.objects.get(id=id)
+            if int(user.code_de_confirmation) == code:
+                # Hacher le mot de passe
+                mot_de_passe_hache = make_password(mot_de_passe)
+                
+                # Mettre à jour le mot de passe de l'utilisateur
+                user.mot_de_passe = mot_de_passe_hache
+                user.save()
+                
+                prenom_user = user.prenom
+                return redirect("bienvenue_recuperation", prenom=prenom_user)
+        except User.DoesNotExist:
+            pass  # L'utilisateur n'est pas trouvé dans la table User
+        
+        # Le code ou l'utilisateur n'est pas trouvé dans aucune des tables
+        error_message = "Le code saisi est incorrect ou l'utilisateur n'existe pas ! Réessayez !"
+        return render(request, 'showtimeplan/reinit_mot_de_passe.html', {'error_message': error_message, 'id': id, 'code': code, 'mot_de_passe': mot_de_passe})
+    
+    else:
+        return redirect("afficher_page_reinit_mot_de_passe", id=id)
+    
+def bienvenue_recuperation(request, prenom):
+    return render(request, 'showtimeplan/bienvenue_recuperation.html', {'prenom' : prenom})
+
+def login_required(request):
+    return render(request, "showtimeplan/login_required.html")

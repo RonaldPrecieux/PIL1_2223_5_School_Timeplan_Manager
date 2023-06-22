@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Administration de l'emploi du temps scolaire</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+    
+    h1 {
+      text-align: center;
+    }
+    
+    form {
+      margin-bottom: 20px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    
+    input[type="text"], select {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    
+    input[type="time"] {
+      width: 100px;
+    }
+    
+    input[type="submit"] {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #4285f4;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    th, td {
+      padding: 10px;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+  <h1>Administration de l'emploi du temps scolaire</h1>
+  
+  <form id="schedule-form">
+    <label for="jour">Jour :</label>
+    <select id="jour" name="jour">
+      <option value="Lundi">Lundi</option>
+      <option value="Mardi">Mardi</option>
+      <option value="Mercredi">Mercredi</option>
+      <option value="Jeudi">Jeudi</option>
+      <option value="Vendredi">Vendredi</option>
+    </select>
+    
+    <label for="promotion">Promotion :</label>
+    <select id="promotion" name="promotion">
+      <!-- Add options dynamically using JavaScript -->
+    </select>
+    
+    <label for="heure-debut">Heure de début :</label>
+    <input type="time" id="heure-debut" name="heure-debut">
+    
+    <label for="heure-fin">Heure de fin :</label>
+    <input type="time" id="heure-fin" name="heure-fin">
+    
+    <label for="matiere">Matière :</label>
+    <select id="matiere" name="matiere">
+      <!-- Add options dynamically using JavaScript -->
+    </select>
+    
+    <label for="salle">Salle :</label>
+    <select id="salle" name="salle">
+      <!-- Add options dynamically using JavaScript -->
+    </select>
+    
+    <input type="submit" value="Ajouter">
+  </form>
+  
+  <table id="schedule-table">
+    <tr>
+      <th>Jour</th>
+      <th>Promotion</th>
+      <th>Heure de début</th>
+      <th>Heure de fin</th>
+      <th>Matière</th>
+      <th>Salle</th>
+      <th>Action</th>
+    </tr>
+  </table>
+  
+  <script>
+    var form = document.getElementById("schedule-form");
+    var table = document.getElementById("schedule-table");
+    var promotions = [];
+    var matieres = [];
+    var salles = [];
+    
+    // Populate promotions, matieres, and salles arrays with data from backend
+    // ...
+
+    form.addEventListener("submit", function(event) {
+      event.preventDefault();
+      
+      var jour = document.getElementById("jour").value;
+      var promotion = document.getElementById("promotion").value;
+      var heureDebut = document.getElementById("heure-debut").value;
+      var heureFin = document.getElementById("heure-fin").value;
+      var matiere = document.getElementById("matiere").value;
+      var salle = document.getElementById("salle").value;
+      
+      var row = table.insertRow(-1);
+      var cell1 = row.insertCell(0);
+      var cell2 = row.insertCell(1);
+      var cell3 = row.insertCell(2);
+      var cell4 = row.insertCell(3);
+      var cell5 = row.insertCell(4);
+      var cell6 = row.insertCell(5);
+      var cell7 = row.insertCell(6);
+      
+      cell1.textContent = jour;
+      cell2.textContent = promotion;
+      cell3.textContent = heureDebut;
+      cell4.textContent = heureFin;
+      cell5.textContent = matiere;
+      cell6.textContent = salle;
+      cell7.innerHTML = '<button onclick="editRow(this)">Modifier</button> <button onclick="deleteRow(this)">Supprimer</button>';
+
+      // Sort rows by heureDebut
+      var rows = Array.from(table.rows);
+      rows.shift(); // Remove the header row
+      rows.sort(function(a, b) {
+        var timeA = a.cells[2].textContent;
+        var timeB = b.cells[2].textContent;
+        return timeA.localeCompare(timeB);
+      });
+      rows.forEach(function(row) {
+        table.appendChild(row);
+      });
+
+      form.reset();
+    });
+    
+    function editRow(button) {
+      var row = button.parentNode.parentNode;
+      var cells = row.getElementsByTagName("td");
+      
+      var jour = cells[0].textContent;
+      var promotion = cells[1].textContent;
+      var heureDebut = cells[2].textContent;
+      var heureFin = cells[3].textContent;
+      var matiere = cells[4].textContent;
+      var salle = cells[5].textContent;
+      
+      document.getElementById("jour").value = jour;
+      document.getElementById("promotion").value = promotion;
+      document.getElementById("heure-debut").value = heureDebut;
+      document.getElementById("heure-fin").value = heureFin;
+      document.getElementById("matiere").value = matiere;
+      document.getElementById("salle").value = salle;
+      
+      row.remove();
+    }
+    
+    function deleteRow(button) {
+      var row = button.parentNode.parentNode;
+      row.remove();
+    }
+  </script>
+</body>
+</html>

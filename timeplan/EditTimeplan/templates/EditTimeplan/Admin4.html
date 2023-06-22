@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Page d'administration - Emploi du temps</title>
+    <style>
+        .sidebar {
+            width: 200px;
+            height: 100vh;
+            background-color: #f2f2f2;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+
+        .content {
+            margin-left: 200px;
+            padding: 20px;
+        }
+
+        .form-container {
+            display: none;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <button id="add-button" style="background-color: green; color: white;">+</button>
+    </div>
+    <div class="content">
+        <div class="form-container">
+            <form id="schedule-form">
+                <label for="course-name">Nom du cours:</label>
+                <input type="text" id="course-name" name="course-name" required><br>
+
+                <label for="start-time">Heure de début:</label>
+                <input type="time" id="start-time" name="start-time" required><br>
+
+                <label for="end-time">Heure de fin:</label>
+                <input type="time" id="end-time" name="end-time" required><br>
+
+                <label for="teacher">Enseignant:</label>
+                <input type="text" id="teacher" name="teacher" required><br>
+
+                <button type="submit">Enregistrer</button>
+            </form>
+        </div>
+
+        <table id="schedule-table">
+            <thead>
+                <tr>
+                    <th>Nom du cours</th>
+                    <th>Heure de début</th>
+                    <th>Heure de fin</th>
+                    <th>Enseignant</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Les cours seront ajoutés dynamiquement ici -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        const addButton = document.getElementById("add-button");
+        const formContainer = document.querySelector(".form-container");
+        const scheduleTable = document.getElementById("schedule-table");
+
+        addButton.addEventListener("click", () => {
+            formContainer.style.display = "block";
+        });
+
+        const scheduleForm = document.getElementById("schedule-form");
+
+        scheduleForm.addEventListener("submit", (event) => {
+            event.preventDefault();
+
+            // Récupérer les valeurs du formulaire
+            const courseName = document.getElementById("course-name").value;
+            const startTime = document.getElementById("start-time").value;
+            const endTime = document.getElementById("end-time").value;
+            const teacher = document.getElementById("teacher").value;
+
+            // Ajouter une nouvelle ligne au tableau
+            const newRow = document.createElement("tr");
+            newRow.innerHTML = `
+                <td>${courseName}</td>
+                <td>${startTime}</td>
+                <td>${endTime}</td>
+                <td>${teacher}</td>
+            `;
+            scheduleTable.querySelector("tbody").appendChild(newRow);
+
+            // Réinitialiser le formulaire
+            scheduleForm.reset();
+
+            // Cacher le formulaire
+            formContainer.style.display = "none";
+        });
+    </script>
+</body>
+</html>

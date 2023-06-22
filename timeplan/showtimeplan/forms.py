@@ -9,4 +9,4 @@ class UserForm(forms.ModelForm):
     )
     class Meta:
         model = User
-        fields = ['nom', 'prenom', 'email', 'numero_telephone', 'mot_de_passe', 'confirmer_mot_de_passe']
+        fields = ['nom', 'prenom', 'email', 'numero_telephone', 'mot_de_passe']

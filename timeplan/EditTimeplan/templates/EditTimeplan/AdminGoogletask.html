@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Google Tasks</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    
+    #header {
+      background-color: #4285f4;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+    
+    #task-input {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border: none;
+    }
+    
+    #task-list {
+      list-style-type: none;
+      padding: 0;
+    }
+    
+    .task-item {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .task-item input[type="checkbox"] {
+      margin-right: 10px;
+    }
+    
+    .task-item span {
+      flex-grow: 1;
+    }
+  </style>
+</head>
+<body>
+  <div id="header">
+    <h1>Google Tasks</h1>
+  </div>
+  
+  <div id="task-container">
+    <input id="task-input" type="text" placeholder="Add a task">
+    <ul id="task-list">
+      <!-- Example task item -->
+      <li class="task-item">
+        <input type="checkbox">
+        <span>Sample task</span>
+      </li>
+    </ul>
+  </div>
+  
+  <script>
+    // Add task when pressing Enter key
+    document.getElementById("task-input").addEventListener("keydown", function(event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        addTask();
+      }
+    });
+    
+    // Add new task to the list
+    function addTask() {
+      var input = document.getElementById("task-input");
+      var task = input.value.trim();
+      input.value = "";
+      
+      if (task !== "") {
+        var taskItem = document.createElement("li");
+        taskItem.className = "task-item";
+        
+        var checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        
+        var span = document.createElement("span");
+        span.textContent = task;
+        
+        taskItem.appendChild(checkbox);
+        taskItem.appendChild(span);
+        
+        document.getElementById("task-list").appendChild(taskItem);
+      }
+    }
+  </script>
+</body>
+</html>
