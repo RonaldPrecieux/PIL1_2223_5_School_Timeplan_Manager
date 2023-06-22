@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.core.mail import send_mail
 from django.conf import settings
 from django.urls import reverse
+<<<<<<< HEAD
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.hashers import check_password
@@ -13,6 +14,13 @@ from EditTimeplan.models import AdminUser
 import random
 
 def insertuser(request): #Vue de création de compte avec mot de passe haché
+=======
+from django.contrib.auth.hashers import make_password
+import random
+
+
+def insertuser(request):
+>>>>>>> 232cd7c1601646cd859b349d4612fcb14483fd73
     if request.method == 'POST':
         form = UserForm(request.POST)
         if form.is_valid():
@@ -98,6 +106,7 @@ def mot_de_passe_oublie(request):
     if request.method == 'POST':
         email = request.POST['email']
         try:
+<<<<<<< HEAD
             admin_user = AdminUser.objects.get(email=email)
             code = random.randint(100000, 999999)
             admin_user.reset_code = code
@@ -138,6 +147,28 @@ def mot_de_passe_oublie(request):
             
             except User.DoesNotExist:
                 pass  # L'adresse email n'est pas trouvée dans aucune des tables, vous pouvez afficher un message d'erreur
+=======
+            user = User.objects.get(email=email)
+            code = (random.randint(100000, 999999))
+            user.reset_code = code
+            user.save()
+            
+            # Envoyer l'email de réinitialisation
+            subject = 'Réinitialisation du mot de passe'
+            message = f'Votre code de réinitialisation du mot de passe est: {code}'
+            email_from = settings.EMAIL_HOST_USER
+            recipient_list = [email]
+            send_mail(subject, message, email_from, recipient_list, fail_silently = False)
+            if send_mail:
+                print("Email envoyé avec succès !")
+                user.code_de_confirmation = code
+                user.save()
+                id = user.id
+                return redirect("afficher_page_reinit_mot_de_passe", id = id)
+            
+        except User.DoesNotExist:
+            pass  # L'adresse email n'est pas trouvée, vous pouvez afficher un message d'erreur
+>>>>>>> 232cd7c1601646cd859b349d4612fcb14483fd73
 
     return render(request, 'showtimeplan/mot_de_passe_oublie.html')
     
@@ -149,6 +180,7 @@ def traiter_reinit_mot_de_passe(request, id):
     if request.method == 'POST':
         code = int(request.POST['code'])
         mot_de_passe = request.POST['mot_de_passe']
+<<<<<<< HEAD
         
         try:
             admin_user = AdminUser.objects.get(id=id)
@@ -184,11 +216,30 @@ def traiter_reinit_mot_de_passe(request, id):
         error_message = "Le code saisi est incorrect ou l'utilisateur n'existe pas ! Réessayez !"
         return render(request, 'showtimeplan/reinit_mot_de_passe.html', {'error_message': error_message, 'id': id, 'code': code, 'mot_de_passe': mot_de_passe})
     
+=======
+        try:
+            user = User.objects.get(id=id)
+            if int(user.code_de_confirmation) == code:
+                # Mettre à jour le mot de passe de l'utilisateur
+                user.mot_de_passe = mot_de_passe
+                user.save()
+                prenom_user = user.prenom
+                return redirect("bienvenue_recuperation", prenom=prenom_user)
+            else:
+                error_message = "Le code saisi est incorrect! Réessayez !"
+                return render(request, 'showtimeplan/reinit_mot_de_passe.html', {'error_message': error_message, 'id': id, 'code': code, 'mot_de_passe': mot_de_passe})
+        except User.DoesNotExist:
+            error_message = ""
+            return render(request, 'showtimeplan/reinit_mot_de_passe.html', {'error_message': error_message, 'id': id, 'code': code, 'mot_de_passe': mot_de_passe})
+>>>>>>> 232cd7c1601646cd859b349d4612fcb14483fd73
     else:
         return redirect("afficher_page_reinit_mot_de_passe", id=id)
     
 def bienvenue_recuperation(request, prenom):
     return render(request, 'showtimeplan/bienvenue_recuperation.html', {'prenom' : prenom})
+<<<<<<< HEAD
 
 def login_required(request):
     return render(request, "showtimeplan/login_required.html")
+=======
+>>>>>>> 232cd7c1601646cd859b349d4612fcb14483fd73

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifier votre password</title>
+</head>
+<body>
+    <p>Vous avez entré le bon code de validation. Maintenant, choisissez un autre mot de passe</p>
+    <form action ="{% url 'modifier_mot_de_passe'}" method="post" id="modifierMotDePasseForm">
+        {% csrf_token %}
+        <label for="mot_de_passe">Entrez le nouveau mot de passe :</label>
+        <input type="password" id="mot_de_passe" name="mot_de_passe" required><br><br>
+
+        <label for="confirmer_mot_de_passe">Confirmer mot de passe :</label>
+        <input type ="password" id="confirmer_mot_de_passe" required><br><br>
+    </form>
+    <script>
+        document.getElementById('modifierMotDePasseForm').addEventListener('submit', function(event) {
+            var password1 = document.getElementById('mot_de_passe').value;
+            var password2 = document.getElementById('confirmer_mot_de_passe').value;
+            
+            if (password1 !== password2) {
+                event.preventDefault();
+                alert("Les mots de passe ne correspondent pas.");
+            }
+        });
+    </script>
+</body>
+</html>

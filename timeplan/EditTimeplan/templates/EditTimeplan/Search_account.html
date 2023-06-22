@@ -5,11 +5,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link type="text/css" rel="stylesheet" href="{%static 'showtimeplan\all_css_recuperation.css' %}">
-    <title>Document</title>
+    <link type="text/css" rel="stylesheet" href="{% static 'showtimeplan\all_css_recuperation.css' %}">
+    <title>Mot de passe oublié</title>
 </head>
 <body>
-    <form class="form_search_account" method="POST" action="{% url 'Fonction_de_recherche_de_compte' %}"> 
+    <p>Vous avez signalé un mot de passe oublié. Entrez votre adresse email:</p>
+    <form class="form_search_account" method="POST" action="{% url 'mot_de_passe_oublie' %}"> 
         {% csrf_token %}
         <input type="email" name="email" placeholder="Entrez l'adresse email lié a votre compte" required> 
         <button type="submit" id="search_account">Rechercher</button>
