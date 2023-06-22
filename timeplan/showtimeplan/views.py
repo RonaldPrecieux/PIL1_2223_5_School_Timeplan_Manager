@@ -20,7 +20,7 @@ import random
 
 
 def insertuser(request):
->>>>>>> 232cd7c1601646cd859b349d4612fcb14483fd73
+
     if request.method == 'POST':
         form = UserForm(request.POST)
         if form.is_valid():
