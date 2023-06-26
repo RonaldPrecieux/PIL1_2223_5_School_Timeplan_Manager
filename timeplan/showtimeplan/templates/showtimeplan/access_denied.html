@@ -1,0 +1,27 @@
+{% load static %} <!--Indispensable pour charger les fichiers statiques comme du CSS ou du JavaScript-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>SchedEase|Erreur d'accès</title>
+    <link rel="stylesheet" href="{% static 'showtimeplan/style-login.css' %}"> <!--Gabarit pour que le fichier CSS s'applique au HTML-->
+    <style>
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a class="navbar-logo" href="{% url 'accueil' %}">SchedEase</a>
+    </header>
+    <main>
+        <div class="error-container">
+            <h2>Erreur d'accès</h2>
+            <p class="error">{{ error_message }}</p>
+            <p>Veuillez vous connecter pour accéder à cette page.</p>
+            <a href="{% url 'login' %}">Connexion</a>
+        </div>
+    </main>
+</body>
+</html>

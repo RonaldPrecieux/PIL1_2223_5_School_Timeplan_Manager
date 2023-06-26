@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "showtimeplan", #Sans ça les templates ne s'executent pas. 
     "EditTimeplan",
+    
 ]
 
 MIDDLEWARE = [
@@ -87,9 +88,9 @@ DATABASES = {
 DATABASES = {
     "default": {
         'ENGINE':'django.db.backends.mysql',
-        'NAME':'mydjangotest',
+        'NAME':'my_djangotest',
         'USER':'root',
-        'PASSWORD':'root', #A ce niveau vous devez redéfinir le mot de passe pour qu'il corresponde au mot de passe de votre root sql
+        'PASSWORD':'Logarithmeneperien18#', #A ce niveau vous devez redéfinir le mot de passe pour qu'il corresponde au mot de passe de votre root sql
         'HOST':'localhost',
         'PORT':'3306'
     }
@@ -169,3 +170,4 @@ LOGGING = {
         },
     },
 }
+LOGIN_REDIRECT_URL = 'login'

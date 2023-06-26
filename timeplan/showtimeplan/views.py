@@ -10,12 +10,15 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.decorators import login_required
 from EditTimeplan.models import AdminUser
-
-
 import random
-def dashboardStudent(request):
-    return render(request,'showtimeplan/dashboardEtu.html')
 
+def dashboardStudent(request):
+    
+    return render(request, 'showtimeplan/dashboardEtu.html')
+    
+def access_denied(request):
+    error_message = "Vous n'êtes pas autorisé à accéder à cette page sans vous connecter."
+    return render(request, 'showtimeplan/access_denied.html', {'error_message': error_message})
 
    
  #Vue de création de compte avec mot de passe haché
@@ -31,7 +34,7 @@ def insertuser(request):
                 form.add_error('email', 'Email déjà utilisé')
             else:
                 user = form.save(commit=False)
-                password = form.cleaned_data['mot_de_passe']#A quoi ca sert?
+                password = form.cleaned_data['mot_de_passe'] #Ca sert à récupérer un mot de passe propre pour faciliter le hachage 
                 hashed_password = make_password(password)
                 user.mot_de_passe = hashed_password
                 user.save()

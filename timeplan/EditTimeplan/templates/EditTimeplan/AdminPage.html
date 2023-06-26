@@ -11,7 +11,7 @@
       <header>
           <nav>
               <div class="logo">
-                <a class="navbar-logo" href="../index.html">Skedease</a>
+                <a class="navbar-logo" href="{% url 'accueil' %}">Skedease</a>
               </div>
           </nav>
       </header>
@@ -183,14 +183,14 @@
                         <!-- Afficher les informations du cours --> 
                         <p class="jour No_visible">{{ cours.jour }}</p>
                         <p class="id_cours No_visible">{{ cours.id }}</p>
-                        <!-- Il ne doivent pas etre visible.Mais leurs precense me permet de recuperer
-                        certain precision tel que l'id pour modifier le cours dans la base de donné et afficher le jours dans le 
+                        <!-- Il ne doivent pas etre visibles.Mais leurs presence me permet de récupérer
+                        certaines precisions telles que l'id pour modifier le cours dans la base de données et afficher le jour dans le 
                       formulaire de modification 'G.Ronald"-->
                       
                         <p > <span class="groupe">{{ cours.groupe }}</span> <span class="salle">{{ cours.salle }}</span></p>
                         <p > <span class="heure_debut">{{ cours.heure_debut }}</span>/<span class="heure_fin">{{ cours.heure_fin }}</span> <span class="matiere">{{cours.matiere}}</span></p>
                         <p class="teacher">{{ cours.teacher }}</p>
-                        <button class="edit-button" onclick="editRow(this)">Modifié</button>
+                        <button class="edit-button" onclick="editRow(this)">Modifier</button>
                         <button><a href="">Suprimer</a></button>
                         
                       </div>

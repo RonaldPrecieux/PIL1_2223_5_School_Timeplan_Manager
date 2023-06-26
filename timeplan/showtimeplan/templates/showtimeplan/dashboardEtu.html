@@ -4,14 +4,14 @@
   <head>
     <meta charset="Utf-8">
     <link rel="stylesheet" type="text/css" href="{% static 'showtimeplan/StyleEtu.css' %}">
-    <title>SchedEase|Emploie-du-temps</title>
+    <title>SchedEase|Emploi-du-temps</title>
   </head>
 
   <body>
       <header>
           <nav>
             <div class="logo">
-              <a class="navbar-logo" href="../index.html">Skedease</a>
+              <a class="navbar-logo" href="{% url 'accueil' %}">Skedease</a>
             </div>
             <div class="hamburger-menu">
               <input type="checkbox" id="menu-toggle">
@@ -35,7 +35,7 @@
       <main>
         <section class="cal">
             <div class="titre">
-                <h1>Emploie du temps de la semaine du ... </h1>
+                <h1>Emploi du temps de la semaine du ... </h1>
             </div>
             <hr>
             <table>
