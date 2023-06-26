@@ -62,7 +62,7 @@ class AdminUser(models.Model):
 
 
     class Meta:
-        db_table = "Admin"
+        db_table = "admin"
 
     def save(self, *args, **kwargs):
         # Hacher le mot de passe avant de l'enregistrer
@@ -71,7 +71,7 @@ class AdminUser(models.Model):
 
 
 class CoursProgrammer(models.Model):
-    date = models.DateField()
+    #date = models.DateField()
     jour = models.CharField(max_length=100)
     promotion = models.CharField(max_length=128)
     heure_debut = models.TimeField()  #Je reviendrais regler l'erreur de format qui se pose lorsqu'on met TimeField
@@ -95,7 +95,8 @@ class CoursProgrammer(models.Model):
 
 #Inserons la les groupe de la L1
 class CoursProgrammerL1(models.Model):
-    jour = models.CharField(max_length=100)
+    Date= models.DateField(default='2023-05-10')
+    jour= models.CharField(max_length=128)
     promotion = models.CharField(max_length=128)
     heure_debut = models.CharField(max_length=150)
     heure_fin = models.CharField(max_length=150)

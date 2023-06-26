@@ -1,0 +1,229 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tableau de bord administrateur</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            background-color: #2196F3;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px;
+        }
+
+        .sidebar {
+            flex: 0 0 200px;
+            background-color: #f1f1f1;
+            padding: 20px;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            background-color: #fff;
+        }
+
+        .menu {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .menu-item {
+            margin-bottom: 10px;
+        }
+
+        .menu-item a {
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            color: #333;
+            background-color: #ddd;
+            border-radius: 4px;
+        }
+
+        .menu-item a:hover {
+            background-color: #ccc;
+        }
+
+        .add-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .schedule-form {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .schedule-form label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .schedule-form input[type="text"],
+        .schedule-form input[type="time"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+
+        .schedule-form button[type="submit"] {
+            background-color: #2196F3;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .schedule-table th,
+        .schedule-table td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        @media screen and (max-width: 600px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                flex: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Tableau de bord administrateur</h1>
+    </div>
+
+    <div class="container">
+        <div class="sidebar">
+            <h2>Menu</h2>
+            <ul class="menu">
+                <li class="menu-item"><a href="#">Accueil</a></li>
+                <li class="menu-item"><a href="#">Créer emploi du temps</a></li>
+                <li class="menu-item"><a href="#">Modifier emploi du temps</a></li>
+                <li class="menu-item"><a href="#">Enregistrer emploi du temps</a></li>
+            </ul>
+        </div>
+
+        <div class="main-content">
+            <button class="add-button">+ Ajouter un emploi du temps</button>
+
+
+            <table class="schedule-table">
+                <thead>
+                    <tr>
+                        <th>Jour</th>
+                        <th>Nom du cours</th>
+                        <th>Heure de début</th>
+                        <th>Heure de fin</th>
+                        <th>Salle</th>
+                        <th>Enseignant</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Les emplois du temps seront ajoutés dynamiquement ici -->
+                </tbody>
+            </table>
+            
+            <form class="schedule-form" action="../savetimeplan/" method="post">
+                {% csrf_token %}
+                <label for="coursday">Jour</label>
+                <input type="text" id="coursday" name="jour" required>
+
+                <label for="course-name">Nom du cours :</label>
+                <input type="text" id="course-name" name="matiere" required>
+
+                <label for="start-time">Heure de début :</label>
+                <input type="time" id="start-time" name="hdebut" required>
+
+                <label for="end-time">Heure de fin :</label>
+                <input type="time" id="end-time" name="hfin" required>
+
+                <label for="salle">Salle</label>
+                <input type="text" id="Salle" name="salle" required>
+
+                <label for="teacher">Enseignant :</label>
+                <input type="text" id="teacher"  name="teacher" required>
+
+                <button type="submit">Enregistrer</button>
+                <button id="Fermer">Fermer</button>
+            </form>
+
+        </div>
+    </div>
+
+    <script>
+        const closeButton=document.querySelector("#Fermer")
+        const addButton = document.querySelector(".add-button");
+        const scheduleForm = document.querySelector(".schedule-form");
+        const scheduleTable = document.querySelector(".schedule-table");
+
+        addButton.addEventListener("click", () => {
+            // Afficher le formulaire
+            scheduleForm.style.display = "block";
+        });
+
+        closeButton.addEventListener("click",() => {
+            //  Fermer le formulaire
+            scheduleForm.style.display = "none";
+        });
+
+        scheduleForm.addEventListener("submit", (event) => {
+         
+
+            // Récupérer les valeurs du formulaire
+            const courseName = document.getElementById("course-name").value;
+            const startTime = document.getElementById("start-time").value;
+            const endTime = document.getElementById("end-time").value;
+            const teacher = document.getElementById("teacher").value;
+
+            // Ajouter une nouvelle ligne au tableau
+            const newRow = document.createElement("tr");
+            newRow.innerHTML = `
+                <td>${courseName}</td>
+                <td>${startTime}</td>
+                <td>${endTime}</td>
+                <td>${teacher}</td>
+            `;
+            scheduleTable.querySelector("tbody").appendChild(newRow);
+
+            // Réinitialiser le formulaire
+            scheduleForm.reset();
+
+            // Cacher le formulaire
+            scheduleForm.style.display = "none";
+        });
+    </script>
+</body>
+</html>

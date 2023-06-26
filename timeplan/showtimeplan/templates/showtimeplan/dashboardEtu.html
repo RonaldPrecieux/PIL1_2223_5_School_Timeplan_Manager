@@ -1,0 +1,157 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="Utf-8">
+    <link rel="stylesheet" type="text/css" href="{% static 'showtimeplan/StyleEtu.css' %}">
+    <title>SchedEase|Emploie-du-temps</title>
+  </head>
+
+  <body>
+      <header>
+          <nav>
+            <div class="logo">
+              <a class="navbar-logo" href="../index.html">Skedease</a>
+            </div>
+            <div class="hamburger-menu">
+              <input type="checkbox" id="menu-toggle">
+              <label for="menu-toggle" class="menu-btn">&#9776;</label>
+              <ul class="menu-items" style="list-style: none;">
+                <li><a href="#">Déconnexion</a></li>
+                <li><a href="#">Profil</a></li>
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="#">
+                    <select name="license" id="license">
+                        <option value="license 1">license 1</option>
+                        <option value="license 1">license 2</option>
+                        <option value="license 1">license 3</option>
+                    </select>
+                </a></li>
+                
+              </ul>
+            </div>
+          </nav>
+      </header>
+      <main>
+        <section class="cal">
+            <div class="titre">
+                <h1>Emploie du temps de la semaine du ... </h1>
+            </div>
+            <hr>
+            <table>
+              <tr class="week-days">
+                <th>Lundi</th>
+                <th>Mardi</th>
+                <th>Mercredi</th>
+                <th>Jeudi</th>
+                <th>Vendredi</th>
+                <th>Samedi</th>
+              </tr>
+              <tr class="tab-cont">
+                <td>
+                  {% for cours in CoursProgrammer %}
+                  {% if cours.jour == "Lundi" %}
+                    <a href="#" class="show-form-link">
+                      <div class="cours">
+                        <!-- Afficher les informations du cours --> 
+                        <span> </span>
+                        <p class="groupe">{{ cours.groupe }} <span class="salle">{{ cours.salle }}</span></p>
+                        <p > <span class="heure_debut">{{ cours.heure_debut }}</span>/<span class="heure_fin">{{ cours.heure_fin }}</span> <span class="matiere">{{cours.matiere}}</span></p>
+                        <p class="teacher">{{ cours.teacher }}</p>
+                        <button class="edit-button" onclick="editRow(this)"><a href="#">Éditer</a></button>
+                        <button><a href="">Suprimer</a></button>
+                      </div>
+                    </a>
+                  {% endif %}
+                {% empty %}
+                  <p>Aucun cours programmé</p>
+                {% endfor %}
+                </td>
+                <td class="tdcolor">
+                  {% for cours in CoursProgrammer %}
+                    {% if cours.jour == "Mardi" %}
+                    <a href="#" class="show-form-link">
+                     <div class="cours">
+                      <!-- Afficher les informations du cours -->
+                      <p>{{ cours.groupe }} {{ cours.salle }}</p>
+                      <p>{{ cours.heure_debut }}/{{ cours.heure_fin }}</p>
+                      <p>{{ cours.teacher }}</p></div>
+                    </a>
+                    {% endif %}
+                  {% empty %}
+                    <p>Aucun cours programmé</p>
+                  {% endfor %}
+                </td>
+                <td>
+                  {% for cours in CoursProgrammer %}
+                    {% if cours.jour == "Mercredi" %}
+                    <a href="#" class="show-form-link">
+                      <div class="cours">
+                      <!-- Afficher les informations du cours -->
+                      <p>{{ cours.groupe }} {{ cours.salle }}</p>
+                      <p>{{ cours.heure_debut }}/{{ cours.heure_fin }}</p>
+                      <p>{{ cours.teacher }}</p>
+                      </div>
+                  </a>
+                    {% endif %}
+                  {% empty %}
+                    <p>Aucun cours programmé</p>
+                  {% endfor %}
+                </td>
+                <td class="tdcolor">
+                  {% for cours in CoursProgrammer %}
+                    {% if cours.jour == "Jeudi" %}
+                    <a href="#" class="show-form-link">
+                      <div class="cours">
+                      <!-- Afficher les informations du cours -->
+                      <p>{{ cours.groupe }} {{ cours.salle }}</p>
+                      <p>{{ cours.heure_debut }}/{{ cours.heure_fin }}</p>
+                      <p>{{ cours.teacher }}</p>
+                      </div>
+                    </a>
+                    {% endif %}
+                  {% empty %}
+                    <p>Aucun cours programmé</p>
+                  {% endfor %}
+                </td>
+                <td>
+                {% for cours in CoursProgrammer %}
+                {% if cours.jour == "Vendredi" %}
+                <a href="#" class="show-form-link">
+                  <div class="cours">
+                  <!-- Afficher les informations du cours -->
+                  <p>{{ cours.groupe }} {{ cours.salle }}</p>
+                  <p>{{ cours.heure_debut }}/{{ cours.heure_fin }}</p>
+                  <p>{{ cours.teacher }}</p>
+                  </div>
+                </a>
+                {% endif %}
+              {% empty %}
+                <p>Aucun cours programmé</p>
+              {% endfor %}
+            </td>
+            <td class="tdcolor">
+            {% for cours in CoursProgrammer %}
+            {% if cours.jour == "Samedi" %}
+            <a href="#" class="show-form-link">
+              <div class="cours">
+              <!-- Afficher les informations du cours -->
+              <p>{{ cours.groupe }} {{ cours.salle }}</p>
+              <p>{{ cours.heure_debut }}/{{ cours.heure_fin }}</p>
+              <p>{{ cours.teacher }}</p>
+              </div>
+            </a>
+                  {% endif %}
+                {% empty %}
+                  <p>Aucun cours programmé</p>
+                {% endfor %}
+              </td>
+                <!-- Répétez le même modèle pour les autres jours de la semaine -->
+              </tr>
+            </table>
+        </section>
+
+      </section> 
+      </main>
+  </body>
+</html>

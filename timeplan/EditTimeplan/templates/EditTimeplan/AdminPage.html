@@ -2,40 +2,21 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="Utf-8">
-    <link rel="stylesheet" type="text/css" href="{% static 'EditTimeplan/styleAdmin.css' %}">
-    <!-- <script src="script.js"></script> -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'EditTimeplan/styleAdmin0.css' %}">
   </head>
   <body>
       <header>
           <nav>
               <div class="logo">
-                <a class="navbar-logo" href="{% url 'accueil' %}">Skedease</a>
+                <a class="navbar-logo" href="../index.html">Skedease</a>
               </div>
-              <div class="search">
-                <input type="search" class="search-input" placeholder="Rechercher">
-                <button class="search-button">
-                    <svg class="search-icon" aria-hidden="true" viewBox="0 0 24 24">
-                        <g>
-                          <path d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z"></path>
-                        </g>
-                    </svg>
-                </button>
-            </div>
           </nav>
-          <div class="sidebar">
-              <div class="profile">
-                <div class="profile-pic"> <img src="prof-pic.jpg" alt="photo de profil"></div>&nbsp&nbsp&nbsp&nbsp
-                <div class="profile-name"> Mac Ross</div>
-              </div>
-              <!-- <a href="#">Accueil</a>
-              <a href="#">À propos</a>
-              <a href="#">Services</a>
-              <a href="#">Contact</a>
-          </div> -->
       </header>
       <main>
-        <section>
+        <section class="cal">
           <div class="add-but">
             <button> 
               <span>
@@ -44,7 +25,7 @@
             </button>
           </div>
           <form id="close" class="form_main" action="{% url 'save_cours' %}" method="post">
-            {% csrf_token %}
+            {% csrf_token %} 
             <div class="form-nav">
                 <label for="close-checkbox" class="close">
                   <div class="line one"></div>
@@ -54,24 +35,21 @@
             </div>
             <p class="heading">Nouveau cours</p>
             <div class="inputContainer">
-                <input type="time" id="start-time" name="start-time" class="inputField" value="07:00" required>
-                <input type="time" id="end-time" name="end-time" class="inputField" value="08:00" required>
-            </div>
-            <div class="date">
-              <input type ="date" placeholder="Date" name = date class = "inputField autocomplete" required>
+                <input type="time"  name="start-time" class="inputField"  required>
+                <input type="time"  name="end-time" class="inputField"  required>
             </div>
             <div class="day">
               <input type="text" placeholder="Jour" name="day" class="inputField" required>
-            </div>
+          </div>
             <div class="mat">
-                <input type="text" placeholder="Matière" name="matiere" class="inputField autocomplete" id="matiere" autofocus required>
+                <input type="text" placeholder="Matière" name="matiere" class="inputField autocomplete"  required autofocus>
 
             </div>
-          <div class="prof">    <!--Je veux afficher automatiquement le nom du professeur.Je le ferais plus tard -->
-                <input type="text" placeholder="Nom du professeur"  name="professeur" class="inputField">
+          <div class="prof">    <!--Je veux afficher automatiquement le nom du professeur.Je le ferais plustard -->
+                <input type="text" placeholder="Nom du professeur"  name="professeur" class="inputField" required>
             </div>
           <div class="groupe">
-              <input type="text" placeholder="Groupe" name="groupe" class="inputField autocomplete" list="groupe-list" autofocus required>
+              <input type="text" placeholder="Groupe" name="groupe" class="inputField autocomplete" list="groupe-list"  required autofocus>
               <datalist id="groupe-list">
                 <option value="Groupe1"></option>
                 <option value="Groupe2"></option>
@@ -83,13 +61,13 @@
               <input type="text" placeholder="Salle" name="salle" class="inputField" required>
           </div>
             <div class="form-sub">
-                <button id="button">Créer</button>
+                <button >Save</button>
                 <!-- Apparement ce botton joue le meme role que submit meme lorsqu'on precise pas le type submit -->
             </div>
           </form>
-<!-- Au cas ou j'oublie stp rajoute les required   et demande a friedrich de m'envoyer ca fonction js qui efface tous ce qui est 
-dans le formulaire apprès l'envoie et qui olace le curseur sur le premier innput du formulaire
--Donne aussi un peu de couleur au table qui sont sur les jours -->
+                  <!-- Au cas ou j'oublie stp rajoute les required   et demande a friedrich de m'envoyer ca fonction js qui efface tous ce qui est 
+                  dans le formulaire apprès l'envoie et qui olace le curseur sur le premier innput du formulaire
+                  -Donne aussi un peu de couleur au table qui sont sur les jours -->
           <script>
             const createButton = document.querySelector('.add-but button');
             const formMain = document.getElementById('close');
@@ -110,126 +88,83 @@ dans le formulaire apprès l'envoie et qui olace le curseur sur le premier innpu
                 formMain.style.display = 'flex';
               }
             });
+            // //fonction pour mettre le curseur à la fin du champs email
+            // function setCursorToEnd() {
+            //   var emailField = document.getElementById('email');
+            //   var emailValue = emailField.value;
+            //   emailField.value = '';
+            //   emailField.value = emailValue;
+            //   emailField.focus();
+            // }
+
+            // //Exécuter le fonction lorsqe le document est prêt
+            // document.addEventListener('DOMContentLoaded', function() {
+            //   {% if error_message %}
+            //       setCursorToEnd();
+            //   {% endif %}
+            // });
 
           </script>
-
-      </section>
       
-      <section class="cal">
-        <hr >
+      
+      
        
 
 
+            
 
-
-
-        <table>
-          <tr class="week-days">
-            <th>Lundi</th>
-           
-            <th>Mardi</th>
-            <th>Mercredi</th>
-            <th>Jeudi</th>
-            <th>Vendredi</th>
-            <th>Samedi</th>
-          </tr>
-          </table>
-          <!-- L'esemble des colones -->
-          <div class="DayPlan">
-            {% for cours in CoursProgrammer %}
-            <!-- La colone du jour -->
-            <!-- Condtion de verification du jour -->
-              {% if cours.jour == "Lundi" %}
-              <div class="vertical-table">
-                <div class="vertical-row">
-                   <!-- Cellule a repeter -->
-                    <div class="vertical-cell">
-                     <p>
-                      <li>{{cours.groupe}}  {{cours.salle}}</li>
-                      <li>{{cours.heure_debut}}/{{cours.heure_fin}}</li>
-                      <li>{{cours.teacher}}</li></p>
-                    </div>
-                </div>
-              </div>
-              {% endif %}
-
-              {% if cours.jour == "Mardi" %}
-              <div class="vertical-table">
-                <div class="vertical-row">
-                   <!-- Cellule a repeter -->
-                    <div class="vertical-cell">
-                     <p>
-                      <li>{{cours.groupe}}  {{cours.salle}}</li>
-                      <li>{{cours.heure_debut}}/{{cours.heure_fin}}</li>
-                      <li>{{cours.teacher}}</li></p>
-                    </div>
-                </div>
-              </div>
-              {% endif %}
-
-              {% if cours.jour == "Mercredi" %}
-              <div class="vertical-table">
-                <div class="vertical-row">
-                   <!-- Cellule a repeter -->
-                    <div class="vertical-cell">
-                     <p>
-                      <li>{{cours.groupe}}  {{cours.salle}}</li>
-                      <li>{{cours.heure_debut}}/{{cours.heure_fin}}</li>
-                      <li>{{cours.teacher}}</li></p>
-                    </div>
-                </div>
-              </div>
-              {% endif %}
-
-              {% if cours.jour == "Jeudi" %}
-              <div class="vertical-table">
-                <div class="vertical-row">
-                   <!-- Cellule a repeter -->
-                    <div class="vertical-cell">
-                     <p>
-                      <li>{{cours.groupe}}  {{cours.salle}}</li>
-                      <li>{{cours.heure_debut}}/{{cours.heure_fin}}</li>
-                      <li>{{cours.teacher}}</li></p>
-                    </div>
-                </div>
-              </div>
-              {% endif %}
-
-              {% if cours.jour == "Vendredi" %}
-              <div class="vertical-table">
-                <div class="vertical-row">
-                   <!-- Cellule a repeter -->
-                    <div class="vertical-cell">
-                     <p>
-                      <li>{{cours.groupe}}  {{cours.salle}}</li>
-                      <li>{{cours.heure_debut}}/{{cours.heure_fin}}</li>
-                      <li>{{cours.teacher}}</li></p>
-                    </div>
-                </div>
-              </div>
-              {% endif %}
-
-              {% if cours.jour == "Samedi" %}
-              <div class="vertical-table">
-                <div class="vertical-row">
-                   <!-- Cellule a repeter -->
-                    <div class="vertical-cell">
-                     <p>
-                      <li>{{cours.groupe}}  {{cours.salle}}</li>
-                      <li>{{cours.heure_debut}}/{{cours.heure_fin}}</li>
-                      <li>{{cours.teacher}}</li></p>
-                    </div>
-                </div>
-              </div>
-              {% endif %}
-
-          </div>
-          {% endfor %}
-                
-
-          <section class="cal">
+          <!-- Formulaire de modification -->
             <hr>
-          
+              <a href="#" class="show-form-link"></a>
+                <div id="conteneur-formulaire" style="display: none;">
+
+                  <form id="modify" class="form_modify" action="{% url 'modify_url' %}" method="post">
+                    {% csrf_token %}
+                    <div class="form-modify">
+                      <label for="close-checkbox-modify" class="close-modify">
+                        <div class="line one"></div>
+                        <div class="line two"></div>
+                      </label>
+                      <input type="checkbox" id="close-checkbox-modify" class="close-checkbox-modify">
+                    </div>
+                    <p class="heading">Modifier cours</p>
+                    <div class="inputContainer">
+                      <input type="time" id="Modif_start-time" name="start-time" class="inputField"  required>
+                      <input type="time" id="Modif_end-time" name="end-time" class="inputField"  required>
+                  </div>
+                  <div class="day">
+                    <input type="text" id="Modif_day" placeholder="Jour" name="day" class="inputField" required>
+                </div>
+                  <div class="mat">
+                      <input type="text" id="Modif_matiere" placeholder="Matière" name="matiere" class="inputField autocomplete" id="matiere"  required autofocus>
+      
+                  </div>
+                <div class="prof">  
+                      <input type="text" id="Modif_teacher" placeholder="Nom du professeur"  name="professeur" class="inputField" required>
+                  </div>
+                <div class="groupe">
+                    <input type="text" id="Modif_groupe" placeholder="Groupe" name="groupe" class="inputField autocomplete" list="groupe-list"  required autofocus>
+                    <datalist id="groupe-list">
+                      <option value="Groupe1"></option>
+                      <option value="Groupe2"></option>
+                      <option value="Groupe1 & Groupe 2"></option>
+                    </datalist>
+      
+                </div>
+                  <div class="salle">
+                    <input type="text" id="Modif_salle" placeholder="Salle" name="salle" class="inputField" required>
+                </div>
+                <div class="No_visible" >
+                  <input type="text" id="Modif_cours_id" placeholder="id" name="id_cours_modif" class="inputField" required>
+              </div>
+                  <div class="form-sub">
+                      <button id="button">Save</button>
+                  </div>
+                </form>
+                </div>
+              </section>
+              
+
             <table>
               <tr class="week-days">
                 <th>Lundi</th>
@@ -242,11 +177,39 @@ dans le formulaire apprès l'envoie et qui olace le curseur sur le premier innpu
               <tr class="tab-cont">
                 <td>
                   {% for cours in CoursProgrammer %}
-                    {% if cours.jour == "Lundi" %}
+                  {% if cours.jour == "Lundi" %}
+                    <a href="#" class="show-form-link">
+                      <div class="cours">
+                        <!-- Afficher les informations du cours --> 
+                        <p class="jour No_visible">{{ cours.jour }}</p>
+                        <p class="id_cours No_visible">{{ cours.id }}</p>
+                        <!-- Il ne doivent pas etre visible.Mais leurs precense me permet de recuperer
+                        certain precision tel que l'id pour modifier le cours dans la base de donné et afficher le jours dans le 
+                      formulaire de modification 'G.Ronald"-->
+                      
+                        <p > <span class="groupe">{{ cours.groupe }}</span> <span class="salle">{{ cours.salle }}</span></p>
+                        <p > <span class="heure_debut">{{ cours.heure_debut }}</span>/<span class="heure_fin">{{ cours.heure_fin }}</span> <span class="matiere">{{cours.matiere}}</span></p>
+                        <p class="teacher">{{ cours.teacher }}</p>
+                        <button class="edit-button" onclick="editRow(this)">Modifié</button>
+                        <button><a href="">Suprimer</a></button>
+                        
+                      </div>
+                    </a>
+                  {% endif %}
+                {% empty %}
+                  <p>Aucun cours programmé</p>
+                {% endfor %}
+                </td>
+                <td class="tdcolor">
+                  {% for cours in CoursProgrammer %}
+                    {% if cours.jour == "Mardi" %}
+                    <a href="#" class="show-form-link">
+                     <div class="cours">
                       <!-- Afficher les informations du cours -->
                       <p>{{ cours.groupe }} {{ cours.salle }}</p>
                       <p>{{ cours.heure_debut }}/{{ cours.heure_fin }}</p>
-                      <p>{{ cours.teacher }}</p>
+                      <p>{{ cours.teacher }}</p></div>
+                    </a>
                     {% endif %}
                   {% empty %}
                     <p>Aucun cours programmé</p>
@@ -254,25 +217,78 @@ dans le formulaire apprès l'envoie et qui olace le curseur sur le premier innpu
                 </td>
                 <td>
                   {% for cours in CoursProgrammer %}
-                    {% if cours.jour == "Mardi" %}
+                    {% if cours.jour == "Mercredi" %}
+                    <a href="#" class="show-form-link">
+                      <div class="cours">
                       <!-- Afficher les informations du cours -->
                       <p>{{ cours.groupe }} {{ cours.salle }}</p>
                       <p>{{ cours.heure_debut }}/{{ cours.heure_fin }}</p>
                       <p>{{ cours.teacher }}</p>
+                      </div>
+                  </a>
                     {% endif %}
                   {% empty %}
                     <p>Aucun cours programmé</p>
                   {% endfor %}
                 </td>
+                <td class="tdcolor">
+                  {% for cours in CoursProgrammer %}
+                    {% if cours.jour == "Jeudi" %}
+                    <a href="#" class="show-form-link">
+                      <div class="cours">
+                      <!-- Afficher les informations du cours -->
+                      <p>{{ cours.groupe }} {{ cours.salle }}</p>
+                      <p>{{ cours.heure_debut }}/{{ cours.heure_fin }}</p>
+                      <p>{{ cours.teacher }}</p>
+                      </div>
+                    </a>
+                    {% endif %}
+                  {% empty %}
+                    <p>Aucun cours programmé</p>
+                  {% endfor %}
+                </td>
+                <td>
+                {% for cours in CoursProgrammer %}
+                {% if cours.jour == "Vendredi" %}
+                <a href="#" class="show-form-link">
+                  <div class="cours">
+                  <!-- Afficher les informations du cours -->
+                  <p>{{ cours.groupe }} {{ cours.salle }}</p>
+                  <p>{{ cours.heure_debut }}/{{ cours.heure_fin }}</p>
+                  <p>{{ cours.teacher }}</p>
+                  </div>
+                </a>
+                {% endif %}
+              {% empty %}
+                <p>Aucun cours programmé</p>
+              {% endfor %}
+            </td>
+            <td class="tdcolor">
+            {% for cours in CoursProgrammer %}
+            {% if cours.jour == "Samedi" %}
+            <a href="#" class="show-form-link">
+              <div class="cours">
+              <!-- Afficher les informations du cours -->
+              <p>{{ cours.groupe }} {{ cours.salle }}</p>
+              <p>{{ cours.heure_debut }}/{{ cours.heure_fin }}</p>
+              <p>{{ cours.teacher }}</p>
+              </div>
+            </a>
+                  {% endif %}
+                {% empty %}
+                  <p>Aucun cours programmé</p>
+                {% endfor %}
+              </td>
                 <!-- Répétez le même modèle pour les autres jours de la semaine -->
               </tr>
             </table>
-          </section>
+        </section>
 
               <!-- Il faut passer les autres jour ici -->
              
 
-          <!-- <tr class="tab-cont">
+          <!-- <section class="cal">
+            <tr class="tab-cont">
             <td><td>Donnée</td>
             <td></td>
             <td></td>
@@ -326,6 +342,48 @@ dans le formulaire apprès l'envoie et qui olace le curseur sur le premier innpu
               <input type="text" name="Lundi" id="Lundi" maxlength="10" required>
           </form>
         </div> -->
+        <script>
+          function editRow(button) {
+            var row = button.parentNode;
+            var day= row.querySelector('.jour').textContent;
+            var cours_id= row.querySelector('.id_cours').textContent;
+            var groupe = row.querySelector('.groupe').textContent;
+            var salle = row.querySelector('.salle').textContent;
+            var heure_debut = row.querySelector('.heure_debut').textContent;
+            var heure_fin = row.querySelector('.heure_fin').textContent;
+            var matiere = row.querySelector('.matiere').textContent;
+            var teacher = row.querySelector('.teacher').textContent;
+           
+            
+            document.getElementById('Modif_start-time').value = heure_debut;
+            document.getElementById('Modif_end-time').value = heure_fin;
+            document.getElementById('Modif_matiere').value = matiere;
+            document.getElementById('Modif_teacher').value = teacher;
+            document.getElementById('Modif_groupe').value = groupe;
+            document.getElementById('Modif_salle').value = salle;
+            document.getElementById('Modif_day').value = day;
+            document.getElementById('Modif_cours_id').value=cours_id;
+        
+            var formContainer = document.getElementById('conteneur-formulaire');
+            formContainer.style.display = 'block';
+          }
+        
+          document.addEventListener('click', function(event) {
+            var showFormLink = event.target.closest('.show-form-link');
+            if (showFormLink) {
+              event.preventDefault();
+              editRow(showFormLink.querySelector('.edit-button'));
+            }
+          });
+        
+          document.addEventListener('change', function(event) {
+            var closeCheckbox = event.target.closest('.close-checkbox-modify');
+            if (closeCheckbox) {
+              var formContainer = document.getElementById('conteneur-formulaire');
+              formContainer.style.display = 'none';
+            }
+          });
+        </script>
       </section> 
       </main>
   </body>

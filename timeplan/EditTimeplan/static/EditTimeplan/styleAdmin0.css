@@ -279,6 +279,7 @@ td{
   overflow: auto;
   border-radius: 0px 0px 10px 10px;
   box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
+  vertical-align : top;
 }
 .tdcolor{ background-color: #f3cdab;}
 .tdcolor:active{
@@ -290,7 +291,7 @@ th:hover{
   border: 1px solid black;
   transform: scale(1.05);
 }
-th:active, td:active{
+/*th:active, td:active{
   transform: scale(1.05)
   rotateZ(1.7deg);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -298,8 +299,11 @@ th:active, td:active{
 td:active{
   background-color: #a5c6f7;
 }
-
+*/
 .cours{
   border-bottom:1px solid black;
-  padding:5px
+  padding:5px;
+}
+.No_visible{
+  display: none;
 }
