@@ -46,7 +46,7 @@ def save_cours(request):
         #'CoursProgrammer': cours_programmes,
          #         }
         return redirect('dashboardAdmin') 
-    return render(request, 'EditTimeplan/AdminPage.html') 
+    redirect('dashboardAdmin')
 
 #Pour les autre promotions
 def save_coursAll(request):
@@ -74,8 +74,10 @@ def save_coursAll(request):
         cours.save()
         
 
-    return render(request, 'EditTimeplan/AdminPage.html') 
+    redirect('dashboardAdmin')
+
 from django.shortcuts import get_object_or_404
+#Les fonction Modify et Delete sont specifique a la table CoursProgrammerL1 
 
 def Modify(request):
     if request.method == "POST":
@@ -91,10 +93,10 @@ def Modify(request):
             cours.teacher = request.POST.get('professeur')
             cours.save()  # N'oubliez pas de sauvegarder les modifications dans la base de données
 
-            cours_programmes = CoursProgrammerL1.objects.all()
-            context = {
-                'CoursProgrammer': cours_programmes,
-            }
+           # cours_programmes = CoursProgrammerL1.objects.all()
+           # context = {
+           #     'CoursProgrammer': cours_programmes,
+            #}
             return redirect('dashboardAdmin')
             
         except CoursProgrammerL1.DoesNotExist:
@@ -103,8 +105,15 @@ def Modify(request):
                 'erreur': erreur,
             }
     else:
-        context = {}  # Assurez-vous de définir un contexte vide si la méthode de requête est différente de "POST"
+       redirect('dashboardAdmin')
+
+def DeleteCours(request,id):
+    print(id)
+    cours = get_object_or_404(CoursProgrammerL1, id=id)
+    cours.delete()
+    return redirect('dashboardAdmin')
     
-    return render(request, 'EditTimeplan/AdminPage.html', context)
+
+    
 
 
