@@ -1,5 +1,5 @@
 *{
-  font-family: "Euclid Circular A";
+  font-family: "Euclid Circular A",Geneva, Tahoma, sans-serif;
 }
 a{
   color: #000;
@@ -281,9 +281,9 @@ td{
   box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
   vertical-align : top;
 }
-.tdcolor{ background-color: #f3cdab;}
+.tdcolor{ background-color: #f1e5da;}
 .tdcolor:active{
-  background-color: #f3b27a ;
+  background-color: #f0caa9 ;
 }
 th:hover{
   color: #fff;
@@ -291,18 +291,27 @@ th:hover{
   border: 1px solid black;
   transform: scale(1.05);
 }
-/*th:active, td:active{
-  transform: scale(1.05)
-  rotateZ(1.7deg);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
+
 td:active{
   background-color: #a5c6f7;
 }
-*/
 .cours{
   border-bottom:1px solid black;
   padding:5px;
+}
+.groupe-color{
+  background-color: #39383b;
+  color: whitesmoke;
+
+  padding:3px 0px 3px 3px;
+  border-radius: 7px;
+}
+.matiere{ font-weight: bold;
+  font-size: 19px;
+color:#1a6fc4}
+
+.modifier_btn ,.delete_btn {
+  font-size: 17px;
 }
 .No_visible{
   display: none;

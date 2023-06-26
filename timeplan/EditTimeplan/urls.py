@@ -5,7 +5,7 @@ urlpatterns= [
     path('dashboardAdmin/',app1.dashboardAdmin,name="dashboardAdmin"),
     path('modifydef/',app1.Modify,name="modify_url"),
     path('save_cours/', app1.save_cours, name='save_cours'),
-   # path('dashboardAdmin/<object:CoursProgrammer>',app1.dashboardAdmin,name="dashboardAdmin_redirect"),
+    path('DeleteCours/<int:id>/',app1.DeleteCours,name="DeleteCours"),
 ]
 
 
