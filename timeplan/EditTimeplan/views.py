@@ -66,6 +66,7 @@ def save_coursAll(request):
         teacher = request.POST.get('professeur')
         #Recuperons l'admin en ligne pour lui permettre de modifier uniquement l'emplois du temps de ca promotion
         adminUser= AdminUser.objects.get(id=id)
+        
         cours = CoursProgrammer(
             Date = date,
             jour=jour,

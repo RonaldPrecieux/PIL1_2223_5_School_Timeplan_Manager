@@ -66,12 +66,18 @@
               <input type="text" placeholder="Jour" name="day" class="inputField" list="day-list" required>
           </div>
             <div class="mat">
-                <input type="text" placeholder="Matière" name="matiere" class="inputField autocomplete"  required autofocus>
+                <input type="text" placeholder="Matière" name="matiere" class="inputField autocomplete"  list='Matiere-list' required autofocus>
+                  <datalist id="Matiere-list">
+                    {% for matiere in matieres %}
+                    <option>{{matiere.name}}</option>
+                    {% endfor %}
+                  </datalist>
 
-            </div>
-          <div class="prof">    <!--Je veux afficher automatiquement le nom du professeur.Je le ferais plustard -->
+            </div> 
+          <!--Je veux afficher automatiquement le nom du professeur.Je le ferais plustard -->
+          <!-- <div class="prof">   
                 <input type="text" placeholder="Nom du professeur"  name="professeur" class="inputField" required>
-            </div>
+            </div> -->
           <div class="groupe">
               <input type="text" placeholder="Groupe" name="groupe" class="inputField autocomplete" list="groupe-list"  required autofocus>
               <datalist id="groupe-list">
@@ -237,6 +243,7 @@
                   <p>Aucun cours programmé</p>
                 {% endfor %}
                 </td>
+                
                 <td class="tdcolor">
                   {% for cours in CoursProgrammer %}
                   {% if cours.jour == "Mardi" %}
@@ -251,7 +258,7 @@
                       formulaire de modification 'G.Ronald"-->
                       
                         <p class="groupe-color"> <span class="groupe">{{ cours.groupe }}</span> <span class="salle">{{ cours.salle }}</span></p>
-                        <p > <span class="heure_debut">{{ cours.heure_debut }}</span>/<span class="heure_fin">{{ cours.heure_fin }}</span> <span class="matiere">{{cours.matiere}}</span></p>
+                        <p > <span class="heure_debut">{{ cours.heure_debut }}</span>/<span class="heure_fin">{{ cours.heure_fin }}</span> <span class="matiere">{{cours.matiere.nom}}</span></p>
                         <p class="teacher">{{ cours.teacher }}</p>
                         <button class="edit-button modifier_btn" onclick="editRow(this)"> <a href="" class="show-form-link">Modifier </a></button>
                         <button class="delete_btn"><a href="{% url 'DeleteCours' cours.id %}">Suprimer</a></button>
