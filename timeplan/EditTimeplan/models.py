@@ -109,7 +109,4 @@ class CoursProgrammerL1(models.Model):
         db_table = "coursProgrammerL1"
 
 
-   
-    
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
+  

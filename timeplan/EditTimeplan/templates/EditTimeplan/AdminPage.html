@@ -10,7 +10,7 @@
       <header>
           <nav>
               <div class="logo">
-                <a class="navbar-logo" href="../index.html">Skedease</a>
+                <a class="navbar-logo" href="{% url 'accueil' %}">Skedease</a>
               </div>
           </nav>
       </header>
@@ -22,7 +22,20 @@
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"></path><path fill="currentColor" d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2z"></path></svg> Créer
               </span>
             </button>
+
+            <form method="POST" action="{% url 'copier_table' %}" style="display: inline-block; position: relative; left : 90%">
+              {% csrf_token %}
+              <button> 
+                <span>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"></path><path fill="currentColor" d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2z"></path></svg>Publier
+                </span>
+              </button>
+            </form>
           </div>
+
+          
+            
+          
           <form id="close" class="form_main" action="{% url 'save_cours' %}" method="post">
             {% csrf_token %} 
             <div class="form-nav">
@@ -33,6 +46,10 @@
                 <input type="checkbox" id="close-checkbox" class="close-checkbox">
             </div>
             <p class="heading">Nouveau cours</p>
+            <div class = "inputContainer">
+              <p>Date du cours</p>
+              <input type="date" name = "date" class = inputField required>
+            </div>
             <div class="inputContainer">
                 <input type="time"  name="start-time" class="inputField"  required>
                 <input type="time"  name="end-time" class="inputField"  required>
@@ -43,7 +60,7 @@
                 <option value="Mardi"></option>
                 <option value="Mercredi"></option>
                 <option value="Jeudi"></option>
-                <option value="Vendredidi"></option>
+                <option value="Vendredi"></option>
                 <option value="Samedi"></option>
               </datalist>
               <input type="text" placeholder="Jour" name="day" class="inputField" list="day-list" required>
@@ -58,9 +75,9 @@
           <div class="groupe">
               <input type="text" placeholder="Groupe" name="groupe" class="inputField autocomplete" list="groupe-list"  required autofocus>
               <datalist id="groupe-list">
-                <option value="Groupe1"></option>
-                <option value="Groupe2"></option>
-                <option value="Groupe1 & Groupe 2"></option>
+                <option value="Groupe 1"></option>
+                <option value="Groupe 2"></option>
+                <option value="Groupe 1 & Groupe 2"></option>
               </datalist>
 
           </div>
@@ -72,9 +89,7 @@
                 <!-- Apparement ce botton joue le meme role que submit meme lorsqu'on precise pas le type submit -->
             </div>
           </form>
-                  <!-- Au cas ou j'oublie stp rajoute les required   et demande a friedrich de m'envoyer ca fonction js qui efface tous ce qui est 
-                  dans le formulaire apprès l'envoie et qui olace le curseur sur le premier innput du formulaire
-                  -Donne aussi un peu de couleur au table qui sont sur les jours -->
+                  
           <script>
             const createButton = document.querySelector('.add-but button');
             const formMain = document.getElementById('close');
@@ -135,6 +150,10 @@
                       <input type="checkbox" id="close-checkbox-modify" class="close-checkbox-modify">
                     </div>
                     <p class="heading">Modifier cours</p>
+                    <div class = "inputContainer">
+                      <p>Date du cours</p>
+                      <input type="date" name = "date" class = inputField required>
+                    </div>
                     <div class="inputContainer">
                       <input type="time" id="Modif_start-time" name="start-time" class="inputField"  required>
                       <input type="time" id="Modif_end-time" name="end-time" class="inputField"  required>
@@ -196,17 +215,20 @@
                    
                       <div class="cours">
                         <!-- Afficher les informations du cours --> 
+                        <p class = "date_du_cours">{{cours.Date}}</p>
                         <p class="jour No_visible">{{ cours.jour }}</p>
                         <p class="id_cours No_visible">{{ cours.id }}</p>
-                        <!-- Il ne doivent pas etre visible.Mais leurs precense me permet de recuperer
-                        certain precision tel que l'id pour modifier le cours dans la base de donné et afficher le jours dans le 
+                        <!-- Il ne doivent pas etre visibles.Mais leurs presence me permet de récupérer
+                        certaines precisions telles que l'id pour modifier le cours dans la base de données et afficher le jour dans le 
                       formulaire de modification 'G.Ronald"-->
                       
                         <p class="groupe-color"> <span class="groupe">{{ cours.groupe }}</span> <span class="salle">{{ cours.salle }}</span></p>
                         <p > <span class="heure_debut">{{ cours.heure_debut }}</span>/<span class="heure_fin">{{ cours.heure_fin }}</span> <span class="matiere">{{cours.matiere}}</span></p>
                         <p class="teacher">{{ cours.teacher }}</p>
-                        <button class="edit-button modifier_btn" onclick="editRow(this)"> <a href="" class="show-form-link">Modifié </a></button>
+
+                        <button class="edit-button modifier_btn" onclick="editRow(this)"> <a href="" class="show-form-link">Modifier</a></button>
                         <button class="delete_btn"><a href="{% url 'DeleteCours' cours.id %}">Suprimer</a></button>
+
                         
                       </div>
                    
@@ -221,6 +243,7 @@
                    
                       <div class="cours">
                         <!-- Afficher les informations du cours --> 
+                        <p class = "date_du_cours">{{cours.Date}}</p>
                         <p class="jour No_visible">{{ cours.jour }}</p>
                         <p class="id_cours No_visible">{{ cours.id }}</p>
                         <!-- Il ne doivent pas etre visible.Mais leurs precense me permet de recuperer
@@ -230,7 +253,7 @@
                         <p class="groupe-color"> <span class="groupe">{{ cours.groupe }}</span> <span class="salle">{{ cours.salle }}</span></p>
                         <p > <span class="heure_debut">{{ cours.heure_debut }}</span>/<span class="heure_fin">{{ cours.heure_fin }}</span> <span class="matiere">{{cours.matiere}}</span></p>
                         <p class="teacher">{{ cours.teacher }}</p>
-                        <button class="edit-button modifier_btn" onclick="editRow(this)"> <a href="" class="show-form-link">Modifié </a></button>
+                        <button class="edit-button modifier_btn" onclick="editRow(this)"> <a href="" class="show-form-link">Modifier </a></button>
                         <button class="delete_btn"><a href="{% url 'DeleteCours' cours.id %}">Suprimer</a></button>
                         
                       </div>
@@ -245,7 +268,8 @@
                   {% if cours.jour == "Mercredi" %}
                    
                       <div class="cours">
-                        <!-- Afficher les informations du cours --> 
+                        <!-- Afficher les informations du cours -->
+                        <p class = "date_du_cours">{{cours.Date}}</p>
                         <p class="jour No_visible">{{ cours.jour }}</p>
                         <p class="id_cours No_visible">{{ cours.id }}</p>
                         <!-- Il ne doivent pas etre visible.Mais leurs precense me permet de recuperer
@@ -255,7 +279,7 @@
                         <p class="groupe-color"> <span class="groupe">{{ cours.groupe }}</span> <span class="salle">{{ cours.salle }}</span></p>
                         <p > <span class="heure_debut">{{ cours.heure_debut }}</span>/<span class="heure_fin">{{ cours.heure_fin }}</span> <span class="matiere">{{cours.matiere}}</span></p>
                         <p class="teacher">{{ cours.teacher }}</p>
-                        <button class="edit-button modifier_btn" onclick="editRow(this)"> <a href="" class="show-form-link">Modifié </a></button>
+                        <button class="edit-button modifier_btn" onclick="editRow(this)"> <a href="" class="show-form-link">Modifier </a></button>
                         <button class="delete_btn"><a href="{% url 'DeleteCours' cours.id %}">Suprimer</a></button>
                         
                       </div>
@@ -271,6 +295,7 @@
                    
                       <div class="cours">
                         <!-- Afficher les informations du cours --> 
+                        <p class = "date_du_cours">{{cours.Date}}</p>
                         <p class="jour No_visible">{{ cours.jour }}</p>
                         <p class="id_cours No_visible">{{ cours.id }}</p>
                         <!-- Il ne doivent pas etre visible.Mais leurs precense me permet de recuperer
@@ -280,7 +305,7 @@
                         <p class="groupe-color"> <span class="groupe">{{ cours.groupe }}</span> <span class="salle">{{ cours.salle }}</span></p>
                         <p > <span class="heure_debut">{{ cours.heure_debut }}</span>/<span class="heure_fin">{{ cours.heure_fin }}</span> <span class="matiere">{{cours.matiere}}</span></p>
                         <p class="teacher">{{ cours.teacher }}</p>
-                        <button class="edit-button modifier_btn" onclick="editRow(this)"> <a href="" class="show-form-link">Modifié </a></button>
+                        <button class="edit-button modifier_btn" onclick="editRow(this)"> <a href="" class="show-form-link">Modifier </a></button>
                         <button class="delete_btn"><a href="{% url 'DeleteCours' cours.id %}">Suprimer</a></button>
                         
                       </div>
@@ -296,7 +321,8 @@
                   {% if cours.jour == "Vendredi" %}
                    
                       <div class="cours">
-                        <!-- Afficher les informations du cours --> 
+                        <!-- Afficher les informations du cours -->
+                        <p class = "date_du_cours">{{cours.Date}}</p>
                         <p class="jour No_visible">{{ cours.jour }}</p>
                         <p class="id_cours No_visible">{{ cours.id }}</p>
                         <!-- Il ne doivent pas etre visible.Mais leurs precense me permet de recuperer
@@ -306,7 +332,7 @@
                         <p class="groupe-color"> <span class="groupe">{{ cours.groupe }}</span> <span class="salle">{{ cours.salle }}</span></p>
                         <p > <span class="heure_debut">{{ cours.heure_debut }}</span>/<span class="heure_fin">{{ cours.heure_fin }}</span> <span class="matiere">{{cours.matiere}}</span></p>
                         <p class="teacher">{{ cours.teacher }}</p>
-                        <button class="edit-button modifier_btn" onclick="editRow(this)"> <a href="" class="show-form-link">Modifié </a></button>
+                        <button class="edit-button modifier_btn" onclick="editRow(this)"> <a href="" class="show-form-link">Modifier </a></button>
                         <button class="delete_btn"><a href="{% url 'DeleteCours' cours.id %}">Suprimer</a></button>
                         
                       </div>
@@ -321,7 +347,8 @@
               {% if cours.jour == "Samedi" %}
                
                   <div class="cours">
-                    <!-- Afficher les informations du cours --> 
+                    <!-- Afficher les informations du cours -->
+                    <p class = "date_du_cours">{{cours.Date}}</p> 
                     <p class="jour No_visible">{{ cours.jour }}</p>
                     <p class="id_cours No_visible">{{ cours.id }}</p>
                     <!-- Il ne doivent pas etre visible.Mais leurs precense me permet de recuperer
@@ -331,7 +358,7 @@
                     <p class="groupe-color"> <span class="groupe">{{ cours.groupe }}</span> <span class="salle">{{ cours.salle }}</span></p>
                     <p > <span class="heure_debut">{{ cours.heure_debut }}</span>/<span class="heure_fin">{{ cours.heure_fin }}</span> <span class="matiere">{{cours.matiere}}</span></p>
                     <p class="teacher">{{ cours.teacher }}</p>
-                    <button class="edit-button modifier_btn" onclick="editRow(this)"> <a href="" class="show-form-link">Modifié </a></button>
+                    <button class="edit-button modifier_btn" onclick="editRow(this)"> <a href="" class="show-form-link">Modifier </a></button>
                     <button class="delete_btn"><a href="{% url 'DeleteCours' cours.id %}">Suprimer</a></button>
                     
                   </div>
@@ -344,6 +371,10 @@
                 <!-- Répétez le même modèle pour les autres jours de la semaine -->
               </tr>
             </table>
+
+            
+            
+
         </section>
 
               <!-- Il faut passer les autres jour ici -->
