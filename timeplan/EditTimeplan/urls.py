@@ -6,6 +6,7 @@ urlpatterns= [
     path('modifydef/',app1.Modify,name="modify_url"),
     path('save_cours/', app1.save_cours, name='save_cours'),
     path('DeleteCours/<int:id>/',app1.DeleteCours,name="DeleteCours"),
+     path('copier_table/', app1.copier_table, name='copier_table'),
 ]
 
 
