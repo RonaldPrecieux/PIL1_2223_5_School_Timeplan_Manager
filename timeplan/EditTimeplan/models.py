@@ -34,6 +34,8 @@ class Matiere(models.Model):
     enseignant = models.CharField(max_length=128)
     timing= models.IntegerField(default=0)
     Informations=models.CharField(max_length=500)
+    promotion=models.CharField(max_length=28,default='')
+    
 
     def __str__(self):
         return self.nom
@@ -100,7 +102,8 @@ class CoursProgrammerL1(models.Model):
     promotion = models.CharField(max_length=128)
     heure_debut = models.CharField(max_length=150)
     heure_fin = models.CharField(max_length=150)
-    matiere = models.CharField(max_length=150)
+    matiere = models.ForeignKey(Matiere, on_delete=models.CASCADE)  #A ce niveau fait attention Django a apellé la colone là matiere_id
+    #matiere = models.CharField(max_length=150)
     salle = models.CharField(max_length=150)
     teacher=models.CharField(max_length=128, default='')
     groupe=models.CharField(max_length=128)  #Je veux que lorsque l'admin tape sur G1 ou G1 Groupe 1 ou..
@@ -109,4 +112,10 @@ class CoursProgrammerL1(models.Model):
         db_table = "coursProgrammerL1"
 
 
-  
+   
+    
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+
+

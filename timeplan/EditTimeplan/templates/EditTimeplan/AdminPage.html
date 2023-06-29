@@ -10,7 +10,7 @@
       <header>
           <nav>
               <div class="logo">
-                <a class="navbar-logo" href="{% url 'accueil' %}">Skedease</a>
+                <a class="navbar-logo" href="{% url 'accueil' %}">SchedEase</a>
               </div>
           </nav>
       </header>
@@ -23,7 +23,7 @@
               </span>
             </button>
 
-            <form method="POST" action="{% url 'copier_table' %}" style="display: inline-block; position: relative; left : 90%">
+            <form method="POST" action="{% url 'copier_table' %}" style="display: inline-block; position: relative; left : 80%">
               {% csrf_token %}
               <button> 
                 <span>
@@ -46,10 +46,7 @@
                 <input type="checkbox" id="close-checkbox" class="close-checkbox">
             </div>
             <p class="heading">Nouveau cours</p>
-            <div class = "inputContainer">
-              <p>Date du cours</p>
-              <input type="date" name = "date" class = inputField required>
-            </div>
+           
             <div class="inputContainer">
                 <input type="time"  name="start-time" class="inputField"  required>
                 <input type="time"  name="end-time" class="inputField"  required>
@@ -69,7 +66,7 @@
                 <input type="text" placeholder="Matière" name="matiere" class="inputField autocomplete"  list='Matiere-list' required autofocus>
                   <datalist id="Matiere-list">
                     {% for matiere in matieres %}
-                    <option>{{matiere.name}}</option>
+                    <option>{{matiere.nom}}</option>
                     {% endfor %}
                   </datalist>
 
@@ -221,7 +218,7 @@
                    
                       <div class="cours">
                         <!-- Afficher les informations du cours --> 
-                        <p class = "date_du_cours">{{cours.Date}}</p>
+                       
                         <p class="jour No_visible">{{ cours.jour }}</p>
                         <p class="id_cours No_visible">{{ cours.id }}</p>
                         <!-- Il ne doivent pas etre visibles.Mais leurs presence me permet de récupérer
@@ -250,7 +247,7 @@
                    
                       <div class="cours">
                         <!-- Afficher les informations du cours --> 
-                        <p class = "date_du_cours">{{cours.Date}}</p>
+                        
                         <p class="jour No_visible">{{ cours.jour }}</p>
                         <p class="id_cours No_visible">{{ cours.id }}</p>
                         <!-- Il ne doivent pas etre visible.Mais leurs precense me permet de recuperer
@@ -276,7 +273,7 @@
                    
                       <div class="cours">
                         <!-- Afficher les informations du cours -->
-                        <p class = "date_du_cours">{{cours.Date}}</p>
+                       
                         <p class="jour No_visible">{{ cours.jour }}</p>
                         <p class="id_cours No_visible">{{ cours.id }}</p>
                         <!-- Il ne doivent pas etre visible.Mais leurs precense me permet de recuperer
@@ -302,7 +299,7 @@
                    
                       <div class="cours">
                         <!-- Afficher les informations du cours --> 
-                        <p class = "date_du_cours">{{cours.Date}}</p>
+                       
                         <p class="jour No_visible">{{ cours.jour }}</p>
                         <p class="id_cours No_visible">{{ cours.id }}</p>
                         <!-- Il ne doivent pas etre visible.Mais leurs precense me permet de recuperer
@@ -329,7 +326,7 @@
                    
                       <div class="cours">
                         <!-- Afficher les informations du cours -->
-                        <p class = "date_du_cours">{{cours.Date}}</p>
+                     
                         <p class="jour No_visible">{{ cours.jour }}</p>
                         <p class="id_cours No_visible">{{ cours.id }}</p>
                         <!-- Il ne doivent pas etre visible.Mais leurs precense me permet de recuperer
@@ -355,7 +352,7 @@
                
                   <div class="cours">
                     <!-- Afficher les informations du cours -->
-                    <p class = "date_du_cours">{{cours.Date}}</p> 
+                  
                     <p class="jour No_visible">{{ cours.jour }}</p>
                     <p class="id_cours No_visible">{{ cours.id }}</p>
                     <!-- Il ne doivent pas etre visible.Mais leurs precense me permet de recuperer

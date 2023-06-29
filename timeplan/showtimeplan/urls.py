@@ -16,4 +16,5 @@ urlpatterns = [
     path('reinit_mot_de_passe/<int:id>/', views.afficher_page_reinit_mot_de_passe, name='afficher_page_reinit_mot_de_passe'),
     path('traiter_reinit_mot_de_passe/<int:id>/', views.traiter_reinit_mot_de_passe, name='traiter_reinit_mot_de_passe'),
     path("bienvenue_recuperation/<str:prenom>/", views.bienvenue_recuperation, name="bienvenue_recuperation"),
+    path('PlusInfo/<int:id>/',views.PlusInfo,name='plusinfo')
 ]

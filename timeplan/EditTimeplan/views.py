@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from EditTimeplan import models
 from EditTimeplan.models import CoursProgrammer
 from EditTimeplan.models import CoursProgrammerL1
-from EditTimeplan.models import AdminUser
+from EditTimeplan.models import AdminUser,Matiere
 from showtimeplan.models import CoursProgrammerL1Etu
 from django.db import connection
 
@@ -10,9 +10,10 @@ def dashboardAdmin(request):
     id= request.session.get('id')
     request.session['id']=id
     cours_programmes = CoursProgrammerL1.objects.all()
-
+    matiere_obj=Matiere.objects.all()
     context = {
         'CoursProgrammer': cours_programmes,
+        'matieres':matiere_obj,
                   }
     return render(request,'EditTimeplan/AdminPage.html',context)
     
@@ -20,7 +21,6 @@ def dashboardAdmin(request):
 def save_cours(request):
     id= request.session.get('id')
     if request.method == 'POST':
-        date = request.POST.get('date')
         jour = request.POST.get('day')
         heure_debut = request.POST.get('start-time')
         heure_fin = request.POST.get('end-time')
@@ -30,16 +30,17 @@ def save_cours(request):
         teacher = request.POST.get('professeur')
         #Recuperons l'admin en ligne pour lui permettre de modifier uniquement l'emplois du temps de ca promotion
         adminUser= AdminUser.objects.get(id=id)
+        matiere_obj=Matiere.objects.get(nom=matiere)
         print(id)
         cours = CoursProgrammerL1(
-            Date = date,
+           
             jour=jour,
             promotion=adminUser.promotion,
             heure_debut=heure_debut,
             heure_fin=heure_fin,
-            matiere=matiere,
+            matiere=matiere_obj,
             salle=salle,
-            teacher=teacher,
+            teacher=matiere_obj.enseignant,
             groupe=groupe
             
         )
@@ -58,24 +59,24 @@ def save_coursAll(request):
     if request.method == 'POST':
         date = request.POST.get('date')
         jour = request.POST.get('day')
-        promotion = request.POST.get('promotion')
+        #promotion = request.POST.get('promotion')
         heure_debut = request.POST.get('start-time')
         heure_fin = request.POST.get('end-time')
         matiere = request.POST.get('matiere')
         salle = request.POST.get('salle')
-        teacher = request.POST.get('professeur')
+        #teacher = request.POST.get('professeur') 
         #Recuperons l'admin en ligne pour lui permettre de modifier uniquement l'emplois du temps de ca promotion
         adminUser= AdminUser.objects.get(id=id)
-        
+        matiere_obj=Matiere.objects.get(nom=matiere)
         cours = CoursProgrammer(
             Date = date,
             jour=jour,
             promotion=adminUser.promotion,
             heure_debut=heure_debut,
             heure_fin=heure_fin,
-            matiere=matiere,
+            matiere=matiere_obj,
             salle=salle,
-            teacher=teacher,
+            teacher=matiere_obj.enseignant,
             
         )
         cours.save()
@@ -99,12 +100,8 @@ def Modify(request):
             cours.salle = request.POST.get('salle')
             cours.groupe = request.POST.get('groupe')
             cours.teacher = request.POST.get('professeur')
-            cours.save()  # N'oubliez pas de sauvegarder les modifications dans la base de données
+            cours.save()  
 
-           # cours_programmes = CoursProgrammerL1.objects.all()
-           # context = {
-           #     'CoursProgrammer': cours_programmes,
-            #}
             return redirect('dashboardAdmin')
             
         except CoursProgrammerL1.DoesNotExist:
@@ -120,6 +117,7 @@ def DeleteCours(request,id):
     cours = get_object_or_404(CoursProgrammerL1, id=id)
     cours.delete()
     return redirect('dashboardAdmin')
+##########################################################################
 
 def copier_table(request):
     if request.method == 'POST':
@@ -128,7 +126,7 @@ def copier_table(request):
             cursor.execute('DELETE FROM coursProgrammerL1Etu')
 
             # Copier les données de la table source vers la table de destination
-            cursor.execute('INSERT INTO coursProgrammerL1Etu (Date, jour, promotion, heure_debut, heure_fin, matiere, salle, teacher, groupe) SELECT Date, jour, promotion, heure_debut, heure_fin, matiere, salle, teacher, groupe FROM coursProgrammerL1')
+            cursor.execute('INSERT INTO coursProgrammerL1Etu (Date, jour, promotion, heure_debut, heure_fin, matiere_id, salle, teacher, groupe) SELECT Date, jour, promotion, heure_debut, heure_fin, matiere_id, salle, teacher, groupe FROM coursProgrammerL1')
 
     return redirect('dashboardAdmin')
 

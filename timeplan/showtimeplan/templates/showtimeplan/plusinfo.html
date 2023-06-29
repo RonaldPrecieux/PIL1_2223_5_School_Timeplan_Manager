@@ -1,0 +1,23 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SchedEase - {{ matiere.nom }}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'showtimeplan/plusinfo.css' %}">
+
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+          <h1>SchedEase - Informations sur la matière</h1>
+        </div>
+        <div class="content">
+          <h2>{{ matiere.nom }}</h2>
+          <p><strong>Enseignant:</strong> {{ matiere.enseignant }}</p>
+          <p><strong>Temps:</strong> {{ matiere.timing }}h</p>
+          <p><strong>Informations:</strong> {{ matiere.Informations }}</p>
+          <p><strong>Promotion:</strong> {{ matiere.promotion }}</p>
+        </div>
+      </div>
+</body>
+</html>

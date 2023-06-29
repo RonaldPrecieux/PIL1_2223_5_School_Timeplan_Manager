@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from showtimeplan.forms import UserForm
-from showtimeplan.models import User
+from showtimeplan.models import User,CoursProgrammerL1Etu
 from django.urls import reverse
 from django.core.mail import send_mail
 from django.conf import settings
@@ -9,12 +9,10 @@ from django.contrib.auth import views as auth_views
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.decorators import login_required
-from EditTimeplan.models import AdminUser
+from EditTimeplan.models import AdminUser,Matiere
 import random
 
-def dashboardStudent(request):
-    
-    return render(request, 'showtimeplan/dashboardEtu.html')
+
     
 def access_denied(request):
     error_message = "Vous n'êtes pas autorisé à accéder à cette page sans vous connecter."
@@ -206,3 +204,18 @@ def bienvenue_recuperation(request, prenom):
 
 def login_required(request):
     return render(request, "showtimeplan/login_required.html")
+###########################################Code Niveau Affichage Dashboard ####################################################
+def dashboardStudent(request):
+    CoursProgrammerL1= CoursProgrammerL1Etu.objects.all()
+    context={
+        'CoursProgrammer':CoursProgrammerL1,
+    }
+    return render(request,'showtimeplan/dashboardEtu.html',context)
+
+def PlusInfo(request,id):
+    matiere_Ins=Matiere.objects.get(id=id) #Instance de la matiere
+    context={
+        'matiere':matiere_Ins,
+    }
+    print(id)
+    return render(request,'showtimeplan/plusinfo.html',context)

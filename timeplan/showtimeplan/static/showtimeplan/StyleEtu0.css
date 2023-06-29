@@ -137,12 +137,28 @@
     transform: scale(1.05)
     rotateZ(1.7deg);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
+ }  /*
   td:active{
     background-color: #a5c6f7;
     transform: scale(1)
     rotateZ(1.4deg);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
+  } */
+
+  
+.cours{
+  border-bottom:1px solid black;
+  padding:5px;
+}
+.groupe-color{
+  background-color: #39383b;
+  color: whitesmoke;
+
+  padding:3px 0px 3px 3px;
+  border-radius: 7px;
+}
+.matiere{ font-weight: bold;
+  font-size: 19px;
+color:#1a6fc4}
 
   

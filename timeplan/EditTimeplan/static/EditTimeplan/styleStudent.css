@@ -110,3 +110,19 @@ body{
     vertical-align: top;
     border-top: 1px solid #dee2e6;
 }
+
+
+.cours{
+  border-bottom:1px solid black;
+  padding:5px;
+}
+.groupe-color{
+  background-color: #39383b;
+  color: whitesmoke;
+
+  padding:3px 0px 3px 3px;
+  border-radius: 7px;
+}
+.matiere{ font-weight: bold;
+  font-size: 19px;
+color:#1a6fc4}
