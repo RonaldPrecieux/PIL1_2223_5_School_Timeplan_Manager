@@ -215,10 +215,11 @@ def dashboardStudent(request,label=0, filtre=False):
        label_str = request.POST.get('week')
        label = int(label_str) if label_str is not None else 0
        filtre=request.POST.get('filtre')
+       custom_date=request.POST.get('custom_date')
        if filtre=='3':
            filtre=False
-    print(label)
-    if filtre==True:
+    print(filtre)
+    if filtre:
         if label==0:
             date_aujourdhui = datetime.today().date() # Date de référence 
             les_dates_semaine = dates_semaine(date_aujourdhui)
@@ -228,14 +229,19 @@ def dashboardStudent(request,label=0, filtre=False):
             request.session['id']=id
             cours_programmes = CoursProgrammerL1Etu.objects.filter(Date__in= les_dates_semaine)
             if filtre=='Groupe1' or filtre=='Groupe2':
-                cours_programmes = CoursProgrammerL1Etu.objects.filter(Date__in= les_dates_semaine,groupe=filtre)
+                cours_programmes = CoursProgrammerL1Etu.objects.filter(Date__in= les_dates_semaine,groupe__in=[filtre,'Groupe 1 & Groupe 2'])
+         
             if filtre=='enseignant':
-                cours_programmes = CoursProgrammerL1Etu.objects.filter(Date__in= les_dates_semaine,teacher=filtre)
+                cours_programmes = CoursProgrammerL1Etu.objects.filter(Date__in= les_dates_semaine,teacher=custom_date)
             # Le double souligné __in indique que nous voulons filtrer les cours avec une date présente dans la liste.
             matiere_obj=Matiere.objects.all()
             InfoSchedule='cette semaine'
+           
+            NomFiltre='Filtre='+filtre
+
 
             context = {
+                'filtre':NomFiltre,
                 'InfoSchedule': InfoSchedule,
                 'CoursProgrammer': cours_programmes,
                 'matieres':matiere_obj,
@@ -251,15 +257,22 @@ def dashboardStudent(request,label=0, filtre=False):
 
             id= request.session.get('id')#Il transporte l'id de l'admin de la page de coneexion vers la fonction de sauvegarde
             request.session['id']=id
-            
+            cours_programmes = CoursProgrammerL1Etu.objects.filter(Date__in= les_dates_semaine)
+
             if filtre=='Groupe1' or filtre=='Groupe2':
-                cours_programmes = CoursProgrammerL1Etu.objects.filter(Date__in= les_dates_semaine,groupe=filtre)
+                cours_programmes = CoursProgrammerL1Etu.objects.filter(Date__in= les_dates_semaine,groupe__in=[filtre,'Groupe 1 & Groupe 2'])
+         
             if filtre=='enseignant':
-                cours_programmes = CoursProgrammerL1Etu.objects.filter(Date__in= les_dates_semaine,teacher=filtre)
+                cours_programmes = CoursProgrammerL1Etu.objects.filter(Date__in= les_dates_semaine,teacher=custom_date)
             # Le double souligné __in indique que nous voulons filtrer les cours avec une date présente dans la liste.
             matiere_obj=Matiere.objects.all()
             InfoSchedule='la semaine prochaine'
+           
+            NomFiltre='Filtre='+filtre
+
+
             context = {
+                'filtre':NomFiltre,
                 'InfoSchedule': InfoSchedule,
                 'CoursProgrammer': cours_programmes,
                 'matieres':matiere_obj,
@@ -271,15 +284,26 @@ def dashboardStudent(request,label=0, filtre=False):
             custom_date=datetime.strptime(custom_date,'%Y-%B-%d')#######Il y a un gros probleme de format ici######
             print(custom_date)
             les_dates_semaine=dates_semaine(custom_date)
-            request.session['date_reference']=(custom_date).strftime('%Y-%B-%d')
+            request.session['date_reference']=(custom_date).strftime('%Y-%m-%d')
             request.session['label']=label
             id= request.session.get('id')#Il transporte l'id de l'admin de la page de coneexion vers la fonction de sauvegarde
             request.session['id']=id
             cours_programmes = CoursProgrammerL1Etu.objects.filter(Date__in= les_dates_semaine)
+             
+            if filtre=='Groupe1' or filtre=='Groupe2':
+                cours_programmes = CoursProgrammerL1Etu.objects.filter(Date__in= les_dates_semaine,groupe__in=[filtre,'Groupe 1 & Groupe 2'])
+         
+            if filtre=='enseignant':
+                cours_programmes = CoursProgrammerL1Etu.objects.filter(Date__in= les_dates_semaine,teacher=custom_date)
             # Le double souligné __in indique que nous voulons filtrer les cours avec une date présente dans la liste.
             matiere_obj=Matiere.objects.all()
             InfoSchedule='Vous modifié l\'emploie du temps de la semaine du'+custom_date
+           
+            NomFiltre='Filtre='+filtre
+
+
             context = {
+                'filtre':NomFiltre,
                 'InfoSchedule': InfoSchedule,
                 'CoursProgrammer': cours_programmes,
                 'matieres':matiere_obj,
@@ -287,7 +311,7 @@ def dashboardStudent(request,label=0, filtre=False):
             return render(request,'showtimeplan/dashboardEtu.html',context)
         # Si aucun des cas précédents n'est satisfait, renvoyer une réponse HTTP par défaut
         return HttpResponse("Invalid label value.")
-    else:
+    else: 
         if label==0:
             date_aujourdhui = datetime.today().date() # Date de référence 
             les_dates_semaine = dates_semaine(date_aujourdhui)

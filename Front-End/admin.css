@@ -1,0 +1,49 @@
+body{
+    margin: 0%;
+}
+/* div de la bar lateral gauche */
+.barlat{
+    border-bottom-right-radius:20px ;
+    position: fixed;
+    background-color: rgb(63, 63, 153);
+    height: 658px;
+    width: 200px;
+}
+/* titre de la bar lateral */
+.divname{
+    color:white;
+    font-weight: 700;
+    padding-top: 15px;
+    text-align: center;
+    font-size: 25px;
+}
+/* ligne de separation */
+.hr1{
+    border: solid;
+    color:white;
+}
+/* image de profile au niveau de la barlateral gauche */
+.imgprofil{
+    border-style: double;
+    border-color: rgba(255, 255, 255, 0.637);
+    margin-left: 20px;
+    border-radius: 100px;
+    height: 45px;
+}
+.imgprofil:hover{
+    height: 50px;
+}
+/* nom de l'utillisateur plus sa fontion en face de l'image de profile */
+.username{
+    cursor:pointer;
+    font-size: 16px;
+    color: aliceblue;
+    position:static;
+    font-weight:450;
+    padding-left: 90px;
+    margin-top: -3em;
+}
+.username:hover{
+    transition: 0.1s;
+    font-weight: 500;
+}

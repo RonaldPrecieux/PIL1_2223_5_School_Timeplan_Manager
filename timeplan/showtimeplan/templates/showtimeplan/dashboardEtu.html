@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="Utf-8">
-    <link rel="stylesheet" type="text/css" href="{% static 'showtimeplan/StyleEtu1.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'showtimeplan/StyleEtu0.css' %}">
     <title>SchedEase|Emploi-du-temps</title>
   </head>
 
@@ -62,7 +62,7 @@
       <main>
         <section class="cal">
             <div class="titre">
-                <h1>Emploi du temps de {{ InfoSchedule }} </h1>
+                <h1>Emploi du temps de {{ InfoSchedule }} |<span style="font-size: 14px;">{{filtre}}</span></h1>
                 <form class='Semaine' action="{% url 'dashboardStudent' %}" method="post">
                   {% csrf_token %}
                   <div class="form-group">
