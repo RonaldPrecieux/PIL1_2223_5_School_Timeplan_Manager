@@ -4,7 +4,7 @@
   <head>
     <meta charset="Utf-8">
 
-    <link rel="stylesheet" type="text/css" href="{% static 'EditTimeplan/styleAdmin1.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'EditTimeplan/styleAdmin0.css' %}">
   </head>
   <body>
       <header>
@@ -12,27 +12,64 @@
               <div class="logo">
                 <a class="navbar-logo" href="{% url 'accueil' %}">SchedEase</a>
               </div>
+            
+              <!--  -->
+        
+              <form method="POST" action="{% url 'copier_table' %}" style="display: inline-block; position: relative; left : 80%">
+                {% csrf_token %}
+                <button style="padding:6px 14px 6px 14px;border-radius: 6px; border:none;background-color: rgb(127, 146, 205);font-size: 17px;"> 
+                  <span>
+                    Publier
+                  </span>
+                </button>
+              </form>
+             
+              <!--  -->
           </nav>
       </header>
       <main>
         <section class="cal">
+          <div class="Ahead_Boutton">
           <div class="add-but">
             <button> 
               <span>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"></path><path fill="currentColor" d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2z"></path></svg> Créer
               </span>
             </button>
-
-            <form method="POST" action="{% url 'copier_table' %}" style="display: inline-block; position: relative; left : 80%">
-              {% csrf_token %}
-              <button> 
-                <span>
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"></path><path fill="currentColor" d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2z"></path></svg>Publier
-                </span>
-              </button>
-            </form>
           </div>
+            <!--  -->
+             <form class='Semaine' action="" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+      
+              <select id="week-selection" name="week" onchange="toggleCustomDate(this.value)">
+                <option value="label">Sélectionner une semaine</option>
+                <option value="last">Semaine passée</option>
+                <option value="current">Cette semaine</option>
+                <option value="next">Semaine prochaine</option>
+                <option value="custom">Entrer une date</option>
+              </select>
+              <input type="date" id="custom-date" name="custom_date" class="hidden">
+              <button type="submit" class="btn">OK</button>
+            </div>
+          </form>
+          
+           </div>
+           
+  <script>
+    function toggleCustomDate(value) {
+      const customDateInput = document.getElementById('custom-date');
+      if (value === 'custom') {
+        customDateInput.classList.remove('hidden');
+      } else {
+        customDateInput.classList.add('hidden');
+      }
+    }
+  </script>
+          
 
+         
+          <!--  -->
           
             
           
@@ -153,10 +190,7 @@
                       <input type="checkbox" id="close-checkbox-modify" class="close-checkbox-modify">
                     </div>
                     <p class="heading">Modifier cours</p>
-                    <div class = "inputContainer">
-                      <p>Date du cours</p>
-                      <input type="date" name = "date" class = inputField required>
-                    </div>
+                  
                     <div class="inputContainer">
                       <input type="time" id="Modif_start-time" name="start-time" class="inputField"  required>
                       <input type="time" id="Modif_end-time" name="end-time" class="inputField"  required>
@@ -176,9 +210,7 @@
                       <input type="text" id="Modif_matiere" placeholder="Matière" name="matiere" class="inputField autocomplete" id="matiere"  required autofocus>
       
                   </div>
-                <div class="prof">  
-                      <input type="text" id="Modif_teacher" placeholder="Nom du professeur"  name="professeur" class="inputField" required>
-                  </div>
+               
                 <div class="groupe">
                     <input type="text" id="Modif_groupe" placeholder="Groupe" name="groupe" class="inputField autocomplete" list="groupe-list"  required autofocus>
                     <datalist id="groupe-list">
@@ -449,13 +481,13 @@
             var heure_debut = row.querySelector('.heure_debut').textContent;
             var heure_fin = row.querySelector('.heure_fin').textContent;
             var matiere = row.querySelector('.matiere').textContent;
-            var teacher = row.querySelector('.teacher').textContent;
+            
            
             
             document.getElementById('Modif_start-time').value = heure_debut;
             document.getElementById('Modif_end-time').value = heure_fin;
             document.getElementById('Modif_matiere').value = matiere;
-            document.getElementById('Modif_teacher').value = teacher;
+
             document.getElementById('Modif_groupe').value = groupe;
             document.getElementById('Modif_salle').value = salle;
             document.getElementById('Modif_day').value = day;

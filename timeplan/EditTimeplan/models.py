@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.db import models
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
+from django.core.validators import RegexValidator
 
 class Promotion(models.Model):
     nom = models.CharField(max_length=100)
@@ -97,7 +98,12 @@ class CoursProgrammer(models.Model):
 
 #Inserons la les groupe de la L1
 class CoursProgrammerL1(models.Model):
-    Date= models.DateField(default='2023-05-10')
+    Date= models.CharField(default='10/05/2023', max_length=128 ,validators=[
+            RegexValidator(
+                regex=r'^\d{2}/\d{2}/\d{4}$',
+                message='Le format de date doit être jj/mm/aaaa.',
+            ),
+        ],)
     jour= models.CharField(max_length=128)
     promotion = models.CharField(max_length=128)
     heure_debut = models.CharField(max_length=150)

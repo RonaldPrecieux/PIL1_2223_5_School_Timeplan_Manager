@@ -41,7 +41,22 @@ hr{
   border-color: #444242;
   border: 0.1px solid;
 }
+.Ahead_Boutton{
+  display: flex;
+  justify-content: space-between;
+ align-items: center;
+}
+.Semaine select{
+height: 25px;
+width:280px
+  
+}
+.hidden{
+  display: none;
+}
+.Semaine input{
 
+}
 .add-but button {
   border: none;
   background-color: #4fb0e0;
@@ -49,7 +64,7 @@ hr{
   padding: 0.6em;
   transition: all ease-in-out 0.2s;
   font-size: 16px;
-  margin-bottom: 15px;
+  margin-bottom: 4px;
  }
 .add-but button span {
   display: flex;
