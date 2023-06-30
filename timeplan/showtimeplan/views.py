@@ -41,7 +41,7 @@ def insertuser(request):
                 user.mot_de_passe = hashed_password
                 user.save()
                 prenom_user = form.cleaned_data['prenom']
-                return redirect("dashboardStudent",label=0)
+                return redirect("dashboardStudent")
     else:
         form = UserForm()
 
@@ -63,7 +63,7 @@ def login(request):
             admin_user = AdminUser.objects.get(email=email)
             if check_password(mot_de_passe, admin_user.mot_de_passe):
                 request.session['id'] = admin_user.id
-                return redirect('dashboardAdmin',label=1)
+                return redirect('dashboardAdmin',label=0)
             else:
                 context = {
                     'error_message': 'Email ou mot de passe incorrect. Réessayez !',
@@ -78,7 +78,7 @@ def login(request):
         try:
             user = User.objects.get(email=email)
             if check_password(mot_de_passe, user.mot_de_passe):
-                return redirect('dashboardStudent',label=0)
+                return redirect('dashboardStudent')
             else:
                 context = {
                     'error_message': 'Email ou mot de passe incorrect. Réessayez !',
@@ -209,14 +209,16 @@ def bienvenue_recuperation(request, prenom):
 def login_required(request):
     return render(request, "showtimeplan/login_required.html")
 ###########################################Code Niveau Affichage Dashboard ####################################################
-def dashboardStudent(request,label=0):
-
+def dashboardStudent(request,label=0, filtre=False):
+    
     if request.method == "POST":
-        label=int(request.POST.get('week'))
-        filtre=str(request.POST.get('filtre'))
-        if filtre==3:
-            filtre=False
-    if filtre:
+       label_str = request.POST.get('week')
+       label = int(label_str) if label_str is not None else 0
+       filtre=request.POST.get('filtre')
+       if filtre=='3':
+           filtre=False
+    print(label)
+    if filtre==True:
         if label==0:
             date_aujourdhui = datetime.today().date() # Date de référence 
             les_dates_semaine = dates_semaine(date_aujourdhui)
@@ -249,7 +251,11 @@ def dashboardStudent(request,label=0):
 
             id= request.session.get('id')#Il transporte l'id de l'admin de la page de coneexion vers la fonction de sauvegarde
             request.session['id']=id
-            cours_programmes = CoursProgrammerL1Etu.objects.filter(Date__in= les_dates_semaine)
+            
+            if filtre=='Groupe1' or filtre=='Groupe2':
+                cours_programmes = CoursProgrammerL1Etu.objects.filter(Date__in= les_dates_semaine,groupe=filtre)
+            if filtre=='enseignant':
+                cours_programmes = CoursProgrammerL1Etu.objects.filter(Date__in= les_dates_semaine,teacher=filtre)
             # Le double souligné __in indique que nous voulons filtrer les cours avec une date présente dans la liste.
             matiere_obj=Matiere.objects.all()
             InfoSchedule='la semaine prochaine'

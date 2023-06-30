@@ -14,7 +14,7 @@
               <a class="navbar-logo" href="{% url 'accueil' %}">SchedEase</a>
               
             </div>
-            <form action="" method="post">
+            <form action="{% url 'dashboardStudent' %}" method="post">
               {% csrf_token %}
             <select id="group-filter" name="filtre" onchange="toggleCustomFiltre(this.value)">
               <option value="">Filtrer</option>
@@ -23,7 +23,7 @@
               <option value="Groupe2">Groupe 2</option>
               <option value="enseignant">Un enseignant</option>
               <option value="3">Pas de filtre</option>
-              <!-- Ajoutez d'autres options de groupe si nécessaire -->
+           
             </select>
             <input type="text" id="teacherName" placeholder="Le nom du prof" name="custom_date" class="hidden">
             <button type="submit" class="btn">OK</button>
@@ -63,7 +63,7 @@
         <section class="cal">
             <div class="titre">
                 <h1>Emploi du temps de {{ InfoSchedule }} </h1>
-                <form class='Semaine' method="post">
+                <form class='Semaine' action="{% url 'dashboardStudent' %}" method="post">
                   {% csrf_token %}
                   <div class="form-group">
             

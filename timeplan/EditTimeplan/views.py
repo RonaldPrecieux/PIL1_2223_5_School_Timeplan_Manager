@@ -112,7 +112,7 @@ def dashboardAdmin(request,label=0):#0=Cette semaine,1=Semaine prochaine
         custom_date=datetime.strptime(custom_date,'%Y-%B-%d')#######Il y a un gros probleme de format ici######
         print(custom_date)
         les_dates_semaine=dates_semaine(custom_date)
-        request.session['date_reference']=(custom_date).strftime('%Y-%B-%d')
+        request.session['date_reference']=(custom_date).strftime('%Y-%m-%d')
         request.session['label']=label
         id= request.session.get('id')#Il transporte l'id de l'admin de la page de coneexion vers la fonction de sauvegarde
         request.session['id']=id
@@ -239,6 +239,8 @@ def DeleteCours(request,id):
 
 def copier_table(request):
     if request.method == 'POST':
+        label_str = request.POST.get('week')
+        label = int(label_str) if label_str is not None else 0
         with connection.cursor() as cursor:
             # Supprimer les données de la table de destination
             cursor.execute('DELETE FROM coursProgrammerL1Etu')
@@ -246,7 +248,7 @@ def copier_table(request):
             # Copier les données de la table source vers la table de destination
             cursor.execute('INSERT INTO coursProgrammerL1Etu (Date, jour, promotion, heure_debut, heure_fin, matiere_id, salle, teacher, groupe) SELECT Date, jour, promotion, heure_debut, heure_fin, matiere_id, salle, teacher, groupe FROM coursProgrammerL1')
 
-    return redirect('dashboardAdmin')
+    return redirect('dashboardAdmin',label=label)
 
 
 
