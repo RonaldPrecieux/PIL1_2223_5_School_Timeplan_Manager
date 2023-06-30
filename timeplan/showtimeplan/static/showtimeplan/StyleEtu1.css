@@ -92,7 +92,13 @@
     font-size: 1.5em;
     margin: 10px;
     text-align: center;
+   
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
+  
+
 .titre h1{
     margin: 2px;
 }
@@ -161,4 +167,11 @@
   font-size: 19px;
 color:#1a6fc4}
 
-  
+.hidden{
+  display: none;
+}
+.Semaine select{
+  height: 25px;
+  width:250px;
+  font-size: 17px;
+  }

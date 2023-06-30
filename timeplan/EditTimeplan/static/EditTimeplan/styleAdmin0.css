@@ -13,6 +13,10 @@ body {
   overflow-x: hidden; /*Empêche le défilement horizontal */
   /*overflow-y: ; Empêche le défilement vertical*/
 }
+.nav{
+  display: flex;
+  justify-content: space-between;
+}
 nav{
   height: 10px;
   background-color: #fff;
@@ -48,15 +52,13 @@ hr{
 }
 .Semaine select{
 height: 25px;
-width:280px
+width:280px;
   
 }
 .hidden{
   display: none;
 }
-.Semaine input{
 
-}
 .add-but button {
   border: none;
   background-color: #4fb0e0;

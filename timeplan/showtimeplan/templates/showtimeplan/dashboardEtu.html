@@ -3,30 +3,57 @@
 <html>
   <head>
     <meta charset="Utf-8">
-    <link rel="stylesheet" type="text/css" href="{% static 'showtimeplan/StyleEtu0.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'showtimeplan/StyleEtu1.css' %}">
     <title>SchedEase|Emploi-du-temps</title>
   </head>
 
   <body>
       <header>
-          <nav>
+          <nav style="display:flex; justify-content:space-between;">
             <div class="logo">
               <a class="navbar-logo" href="{% url 'accueil' %}">SchedEase</a>
+              
             </div>
+            <form action="" method="post">
+              {% csrf_token %}
+            <select id="group-filter" name="filtre" onchange="toggleCustomFiltre(this.value)">
+              <option value="">Filtrer</option>
+              
+              <option value="Groupe1"><a>Groupe 1</option>
+              <option value="Groupe2">Groupe 2</option>
+              <option value="enseignant">Un enseignant</option>
+              <option value="3">Pas de filtre</option>
+              <!-- Ajoutez d'autres options de groupe si nécessaire -->
+            </select>
+            <input type="text" id="teacherName" placeholder="Le nom du prof" name="custom_date" class="hidden">
+            <button type="submit" class="btn">OK</button>
+            </form>
+
+            <script>
+              function toggleCustomFiltre(value) {
+                const customDateInput = document.getElementById('teacherName');
+                if (value === 'enseignant') {
+                  customDateInput.classList.remove('hidden');
+                } else {
+                  customDateInput.classList.add('hidden');
+                }
+              }
+            </script>
+
             <div class="hamburger-menu">
               <input type="checkbox" id="menu-toggle">
               <label for="menu-toggle" class="menu-btn">&#9776;</label>
               <ul class="menu-items" style="list-style: none;">
                 <li><a href="#">Déconnexion</a></li>
-                <li><a href="#">Profil</a></li>
-                <li><a href="index.html">Accueil</a></li>
-                <li><a href="#">
+                <!-- <li><a href="#">Profil</a></li> -->
+                <li><a href="{% url 'accueil' %}">Accueil</a></li>
+                <!-- <li><a href="#">
                     <select name="license" id="license">
                         <option value="license 1">license 1</option>
                         <option value="license 1">license 2</option>
                         <option value="license 1">license 3</option>
                     </select>
-                </a></li>
+                </a></li> -->
                 
               </ul>
             </div>
@@ -35,8 +62,38 @@
       <main>
         <section class="cal">
             <div class="titre">
-                <h1>Emploi du temps de la semaine du ... </h1>
+                <h1>Emploi du temps de {{ InfoSchedule }} </h1>
+                <form class='Semaine' method="post">
+                  {% csrf_token %}
+                  <div class="form-group">
+            
+                    <select id="week-selection" name="week" onchange="toggleCustomDate(this.value)">
+              
+                      
+                      <option value="0">Cette semaine</option>
+                      <option value="1">Semaine prochaine</option>
+                      <option value="2">Entrer une date</option>
+                      
+                    </select>
+                    <input type="date" id="custom-date" name="custom_date" class="hidden">
+                    <button type="submit" class="btn">OK</button>
+                  </div>
+                </form>
+                
+                 </div>
+                 
+       
             </div>
+            <script>
+              function toggleCustomDate(value) {
+                const customDateInput = document.getElementById('custom-date');
+                if (value === '2') {
+                  customDateInput.classList.remove('hidden');
+                } else {
+                  customDateInput.classList.add('hidden');
+                }
+              }
+            </script>
             <hr>
             <table>
               <tr class="week-days">

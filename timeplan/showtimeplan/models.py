@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.hashers import make_password
 from django.core.validators import MinLengthValidator
 from EditTimeplan.models import Matiere
+from django.core.validators import RegexValidator
 
 class User(models.Model):
     nom = models.CharField(max_length=120, validators=[MinLengthValidator(3)])
@@ -22,16 +23,22 @@ def save(self, *args, **kwargs):
     
 
 class CoursProgrammerL1Etu(models.Model):
-    Date= models.DateField(default='2023-05-10')
+    Date= models.CharField(default='10/05/2023', max_length=128 ,validators=[
+            RegexValidator(
+                regex=r'^\d{2}/\d{2}/\d{4}$',
+                message='Le format de date doit être jj/mm/aaaa.',
+            )
+    ],)
     jour= models.CharField(max_length=128)
     promotion = models.CharField(max_length=128)
     heure_debut = models.CharField(max_length=150)
     heure_fin = models.CharField(max_length=150)
-    matiere= models.ForeignKey(Matiere, on_delete=models.CASCADE)
+    matiere = models.ForeignKey(Matiere, on_delete=models.CASCADE)  #A ce niveau fait attention Django a apellé la colone là matiere_id
+    #matiere = models.CharField(max_length=150)
     salle = models.CharField(max_length=150)
     teacher=models.CharField(max_length=128, default='')
-    groupe=models.CharField(max_length=128) #Ce modèle est exactement la copie de l'autre coursprogrammer dans EditTimeplan. Lorsque l'utilisateur clique sur le bouton publier les lignes de l'autre table sont copiés vers cette table.
-    #Aparaisse dans la base de données
+    groupe=models.CharField(max_length=128)  #Je veux que lorsque l'admin tape sur G1 ou G1 Groupe 1 ou..
+    #Aparaisse dans la base de donné
     class Meta:
         db_table = "coursProgrammerL1Etu"
 

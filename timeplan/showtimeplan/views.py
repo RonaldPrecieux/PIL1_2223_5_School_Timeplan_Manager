@@ -11,6 +11,10 @@ from django.contrib.auth.hashers import check_password
 from django.contrib.auth.decorators import login_required
 from EditTimeplan.models import AdminUser,Matiere
 import random
+from datetime import datetime, timedelta
+from django.http import HttpResponse
+
+from EditTimeplan.views import dates_semaine,obtenir_jour,obtenir_date,obtenir_la_date_du_Lundi
 
 
     
@@ -37,7 +41,7 @@ def insertuser(request):
                 user.mot_de_passe = hashed_password
                 user.save()
                 prenom_user = form.cleaned_data['prenom']
-                return redirect("dashboardStudent")
+                return redirect("dashboardStudent",label=0)
     else:
         form = UserForm()
 
@@ -59,7 +63,7 @@ def login(request):
             admin_user = AdminUser.objects.get(email=email)
             if check_password(mot_de_passe, admin_user.mot_de_passe):
                 request.session['id'] = admin_user.id
-                return redirect('dashboardAdmin')
+                return redirect('dashboardAdmin',label=1)
             else:
                 context = {
                     'error_message': 'Email ou mot de passe incorrect. Réessayez !',
@@ -74,7 +78,7 @@ def login(request):
         try:
             user = User.objects.get(email=email)
             if check_password(mot_de_passe, user.mot_de_passe):
-                return redirect('dashboardStudent')
+                return redirect('dashboardStudent',label=0)
             else:
                 context = {
                     'error_message': 'Email ou mot de passe incorrect. Réessayez !',
@@ -205,12 +209,140 @@ def bienvenue_recuperation(request, prenom):
 def login_required(request):
     return render(request, "showtimeplan/login_required.html")
 ###########################################Code Niveau Affichage Dashboard ####################################################
-def dashboardStudent(request):
-    CoursProgrammerL1= CoursProgrammerL1Etu.objects.all()
-    context={
-        'CoursProgrammer':CoursProgrammerL1,
-    }
-    return render(request,'showtimeplan/dashboardEtu.html',context)
+def dashboardStudent(request,label=0):
+
+    if request.method == "POST":
+        label=int(request.POST.get('week'))
+        filtre=str(request.POST.get('filtre'))
+        if filtre==3:
+            filtre=False
+    if filtre:
+        if label==0:
+            date_aujourdhui = datetime.today().date() # Date de référence 
+            les_dates_semaine = dates_semaine(date_aujourdhui)
+            request.session['date_reference']=date_aujourdhui.strftime('%d %B %Y')
+            request.session['label']=label
+            id= request.session.get('id')#Il transporte l'id de l'admin de la page de coneexion vers la fonction de sauvegarde
+            request.session['id']=id
+            cours_programmes = CoursProgrammerL1Etu.objects.filter(Date__in= les_dates_semaine)
+            if filtre=='Groupe1' or filtre=='Groupe2':
+                cours_programmes = CoursProgrammerL1Etu.objects.filter(Date__in= les_dates_semaine,groupe=filtre)
+            if filtre=='enseignant':
+                cours_programmes = CoursProgrammerL1Etu.objects.filter(Date__in= les_dates_semaine,teacher=filtre)
+            # Le double souligné __in indique que nous voulons filtrer les cours avec une date présente dans la liste.
+            matiere_obj=Matiere.objects.all()
+            InfoSchedule='cette semaine'
+
+            context = {
+                'InfoSchedule': InfoSchedule,
+                'CoursProgrammer': cours_programmes,
+                'matieres':matiere_obj,
+                            }
+            return render(request,'showtimeplan/dashboardEtu.html',context)
+        if label==1:
+            Une_date_de_la_semaine=datetime.strptime(obtenir_la_date_du_Lundi(1),'%d %B %Y')
+            print(Une_date_de_la_semaine)
+            request.session['date_reference']=Une_date_de_la_semaine.strftime('%d %B %Y')
+            request.session['label']=label
+            print(Une_date_de_la_semaine)
+            les_dates_semaine = dates_semaine(Une_date_de_la_semaine)
+
+            id= request.session.get('id')#Il transporte l'id de l'admin de la page de coneexion vers la fonction de sauvegarde
+            request.session['id']=id
+            cours_programmes = CoursProgrammerL1Etu.objects.filter(Date__in= les_dates_semaine)
+            # Le double souligné __in indique que nous voulons filtrer les cours avec une date présente dans la liste.
+            matiere_obj=Matiere.objects.all()
+            InfoSchedule='la semaine prochaine'
+            context = {
+                'InfoSchedule': InfoSchedule,
+                'CoursProgrammer': cours_programmes,
+                'matieres':matiere_obj,
+                            }
+            return render(request,'showtimeplan/dashboardEtu.html',context)
+        
+        if label==2:
+            custom_date=request.POST.get('custom_date')
+            custom_date=datetime.strptime(custom_date,'%Y-%B-%d')#######Il y a un gros probleme de format ici######
+            print(custom_date)
+            les_dates_semaine=dates_semaine(custom_date)
+            request.session['date_reference']=(custom_date).strftime('%Y-%B-%d')
+            request.session['label']=label
+            id= request.session.get('id')#Il transporte l'id de l'admin de la page de coneexion vers la fonction de sauvegarde
+            request.session['id']=id
+            cours_programmes = CoursProgrammerL1Etu.objects.filter(Date__in= les_dates_semaine)
+            # Le double souligné __in indique que nous voulons filtrer les cours avec une date présente dans la liste.
+            matiere_obj=Matiere.objects.all()
+            InfoSchedule='Vous modifié l\'emploie du temps de la semaine du'+custom_date
+            context = {
+                'InfoSchedule': InfoSchedule,
+                'CoursProgrammer': cours_programmes,
+                'matieres':matiere_obj,
+                            }
+            return render(request,'showtimeplan/dashboardEtu.html',context)
+        # Si aucun des cas précédents n'est satisfait, renvoyer une réponse HTTP par défaut
+        return HttpResponse("Invalid label value.")
+    else:
+        if label==0:
+            date_aujourdhui = datetime.today().date() # Date de référence 
+            les_dates_semaine = dates_semaine(date_aujourdhui)
+            request.session['date_reference']=date_aujourdhui.strftime('%d %B %Y')
+            request.session['label']=label
+            id= request.session.get('id')#Il transporte l'id de l'admin de la page de coneexion vers la fonction de sauvegarde
+            request.session['id']=id
+            cours_programmes = CoursProgrammerL1Etu.objects.filter(Date__in= les_dates_semaine)
+            # Le double souligné __in indique que nous voulons filtrer les cours avec une date présente dans la liste.
+            matiere_obj=Matiere.objects.all()
+            InfoSchedule='cette semaine'
+
+            context = {
+                'InfoSchedule': InfoSchedule,
+                'CoursProgrammer': cours_programmes,
+                'matieres':matiere_obj,
+                            }
+            return render(request,'showtimeplan/dashboardEtu.html',context)
+        if label==1:
+            Une_date_de_la_semaine=datetime.strptime(obtenir_la_date_du_Lundi(1),'%d %B %Y')
+            print(Une_date_de_la_semaine)
+            request.session['date_reference']=Une_date_de_la_semaine.strftime('%d %B %Y')
+            request.session['label']=label
+            print(Une_date_de_la_semaine)
+            les_dates_semaine = dates_semaine(Une_date_de_la_semaine)
+
+            id= request.session.get('id')#Il transporte l'id de l'admin de la page de coneexion vers la fonction de sauvegarde
+            request.session['id']=id
+            cours_programmes = CoursProgrammerL1Etu.objects.filter(Date__in= les_dates_semaine)
+            # Le double souligné __in indique que nous voulons filtrer les cours avec une date présente dans la liste.
+            matiere_obj=Matiere.objects.all()
+            InfoSchedule='la semaine prochaine'
+            context = {
+                'InfoSchedule': InfoSchedule,
+                'CoursProgrammer': cours_programmes,
+                'matieres':matiere_obj,
+                            }
+            return render(request,'showtimeplan/dashboardEtu.html',context)
+        
+        if label==2:
+            custom_date=request.POST.get('custom_date')
+            custom_date=datetime.strptime(custom_date,'%Y-%B-%d')#######Il y a un gros probleme de format ici######
+            print(custom_date)
+            les_dates_semaine=dates_semaine(custom_date)
+            request.session['date_reference']=(custom_date).strftime('%Y-%B-%d')
+            request.session['label']=label
+            id= request.session.get('id')#Il transporte l'id de l'admin de la page de coneexion vers la fonction de sauvegarde
+            request.session['id']=id
+            cours_programmes = CoursProgrammerL1Etu.objects.filter(Date__in= les_dates_semaine)
+            # Le double souligné __in indique que nous voulons filtrer les cours avec une date présente dans la liste.
+            matiere_obj=Matiere.objects.all()
+            InfoSchedule='Vous modifié l\'emploie du temps de la semaine du'+custom_date
+            context = {
+                'InfoSchedule': InfoSchedule,
+                'CoursProgrammer': cours_programmes,
+                'matieres':matiere_obj,
+                            }
+            return render(request,'showtimeplan/dashboardEtu.html',context)
+        # Si aucun des cas précédents n'est satisfait, renvoyer une réponse HTTP par défaut
+        return HttpResponse("Invalid label value.")
+
 
 def PlusInfo(request,id):
     matiere_Ins=Matiere.objects.get(id=id) #Instance de la matiere

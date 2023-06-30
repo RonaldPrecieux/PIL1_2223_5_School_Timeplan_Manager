@@ -6,7 +6,8 @@ from EditTimeplan.models import AdminUser,Matiere
 from showtimeplan.models import CoursProgrammerL1Etu
 from django.db import connection
 from datetime import datetime, timedelta
-
+from django.http import HttpResponse
+#######################################################Fonctions des dates####################################
 def dates_semaine(date):
     jour_semaine = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche']
     #date_obj = datetime.strptime(date, '%d %B %Y')  # Convertir la date en objet datetime
@@ -35,55 +36,109 @@ def obtenir_jour(date):
     #date_reference = datetime.strptime(une_date_de_la_semaine, '%d %B %Y')  # Convertir la date en objet datetime
 
 
-def obtenir_date(jour, une_date_de_la_semaine):
+
+def obtenir_date(jour_recherche, date_reference):
     jours_semaine = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche']
-    date_reference =une_date_de_la_semaine
 
-    # Trouver l'indice du jour de la semaine dans la liste jours_semaine
-    indice_jour = jours_semaine.index(jour.capitalize())
+    # Trouver l'indice du jour recherché dans la liste jours_semaine
+    indice_jour_recherche = jours_semaine.index(jour_recherche.capitalize())
 
-    # Calculer la date correspondante en ajoutant ou en soustrayant des jours à la date de référence
-    if indice_jour < date_reference.weekday():
-        # Si l'indice du jour est inférieur au jour de la semaine de la date de référence,
-        # nous devons revenir à la semaine précédente
-        delta = timedelta(days=7 - (date_reference.weekday() - indice_jour))
+    # Calculer la différence de jours entre le jour recherché et le jour de la date de référence
+    difference_jours = indice_jour_recherche - date_reference.weekday()
+
+    # Ajouter ou soustraire les jours nécessaires pour obtenir la date correspondante
+    if difference_jours >= 0:
+        date_obtenue = date_reference + timedelta(days=difference_jours)
     else:
-        # Sinon, nous pouvons simplement soustraire les jours
-        delta = timedelta(days=indice_jour - date_reference.weekday())
-
-    date_obtenue = date_reference + delta
+        date_obtenue = date_reference - timedelta(days=abs(difference_jours))
 
     return date_obtenue.strftime('%d %B %Y')
 
 
+
 def obtenir_la_date_du_Lundi(indexSem):#Prend le nombre de semaine a ajouter a la semaine actuelle et retourne une date dans la semaine demander
     date_aujourdhui=datetime.today().date()
-    fin_semaine=obtenir_date('Dimanche',date_aujourdhui)
+    fin_semaine=datetime.strptime(obtenir_date('Dimanche',date_aujourdhui),'%d %B %Y')
     date_Lundi= fin_semaine + timedelta(days=indexSem*7)
-    return date_Lundi
+    return date_Lundi.strftime('%d %B %Y')
 
-def dashboardAdmin(request):
-    date_aujourdhui = datetime.today().date() # Date de référence 
-    les_dates_semaine = dates_semaine(date_aujourdhui)
 
-    id= request.session.get('id')#Il transporte l'id de l'admin de la page de coneexion vers la fonction de sauvegarde
-    request.session['id']=id
-    cours_programmes = CoursProgrammerL1.objects.filter(Date__in= les_dates_semaine)
-    # Le double souligné __in indique que nous voulons filtrer les cours avec une date présente dans la liste.
-    matiere_obj=Matiere.objects.all()
-    context = {
-        'CoursProgrammer': cours_programmes,
-        'matieres':matiere_obj,
-                  }
-    return render(request,'EditTimeplan/AdminPage.html',context)
+###########################Afficharge du dashboard en fonction de la seamine la semaine par defaut est la semaine actuelle########################
+
+def dashboardAdmin(request,label=0):#0=Cette semaine,1=Semaine prochaine
+    if request.method == "POST":
+        label=int(request.POST.get('week'))
+      
+    if label==0:
+        date_aujourdhui = datetime.today().date() # Date de référence 
+        les_dates_semaine = dates_semaine(date_aujourdhui)
+        request.session['date_reference']=date_aujourdhui.strftime('%d %B %Y')
+        request.session['label']=label
+        id= request.session.get('id')#Il transporte l'id de l'admin de la page de coneexion vers la fonction de sauvegarde
+        request.session['id']=id
+        cours_programmes = CoursProgrammerL1.objects.filter(Date__in= les_dates_semaine)
+        # Le double souligné __in indique que nous voulons filtrer les cours avec une date présente dans la liste.
+        matiere_obj=Matiere.objects.all()
+        InfoSchedule='Vous modifié lemploie du temps de cette semaine'
+        context = {
+            'InfoSchedule': InfoSchedule,
+            'CoursProgrammer': cours_programmes,
+            'matieres':matiere_obj,
+                        }
+        return render(request,'EditTimeplan/AdminPage.html',context)
+    if label==1:
+        Une_date_de_la_semaine=datetime.strptime(obtenir_la_date_du_Lundi(1),'%d %B %Y')
+        print(Une_date_de_la_semaine)
+        request.session['date_reference']=Une_date_de_la_semaine.strftime('%d %B %Y')
+        request.session['label']=label
+        print(Une_date_de_la_semaine)
+        les_dates_semaine = dates_semaine(Une_date_de_la_semaine)
+
+        id= request.session.get('id')#Il transporte l'id de l'admin de la page de coneexion vers la fonction de sauvegarde
+        request.session['id']=id
+        cours_programmes = CoursProgrammerL1.objects.filter(Date__in= les_dates_semaine)
+        # Le double souligné __in indique que nous voulons filtrer les cours avec une date présente dans la liste.
+        matiere_obj=Matiere.objects.all()
+        InfoSchedule='Vous modifié l\'emploie du temps de la semaine prochaine'
+        context = {
+            'InfoSchedule': InfoSchedule,
+            'CoursProgrammer': cours_programmes,
+            'matieres':matiere_obj,
+                        }
+        return render(request,'EditTimeplan/AdminPage.html',context)
     
+    if label==2:
+        custom_date=request.POST.get('custom_date')
+        custom_date=datetime.strptime(custom_date,'%Y-%B-%d')#######Il y a un gros probleme de format ici######
+        print(custom_date)
+        les_dates_semaine=dates_semaine(custom_date)
+        request.session['date_reference']=(custom_date).strftime('%Y-%B-%d')
+        request.session['label']=label
+        id= request.session.get('id')#Il transporte l'id de l'admin de la page de coneexion vers la fonction de sauvegarde
+        request.session['id']=id
+        cours_programmes = CoursProgrammerL1.objects.filter(Date__in= les_dates_semaine)
+        # Le double souligné __in indique que nous voulons filtrer les cours avec une date présente dans la liste.
+        matiere_obj=Matiere.objects.all()
+        InfoSchedule='Vous modifié l\'emploie du temps de la semaine du'+custom_date
+        context = {
+            'InfoSchedule': InfoSchedule,
+            'CoursProgrammer': cours_programmes,
+            'matieres':matiere_obj,
+                        }
+        return render(request,'EditTimeplan/AdminPage.html',context)
+     # Si aucun des cas précédents n'est satisfait, renvoyer une réponse HTTP par défaut
+    return HttpResponse("Invalid label value.")
 #Pour la promotion L1 tronc commun avec deux groupe
 #PAR DEFAUT(Les cours de cette semaine)
+
+##############Ici la date de sauvegarde depend de la semaine selectionner#######################################################
 def save_cours(request):
     id = request.session.get('id')
+    date_reference=request.session.get('date_reference')
+    label=request.session.get('label')
     if request.method == 'POST':
         jour = request.POST.get('day')
-        date_reference = datetime.today().date()  # Date de référence (date actuelle)
+        date_reference = datetime.strptime(date_reference,'%d %B %Y') # Date de référence (date actuelle)
         Date = obtenir_date(jour, date_reference)
         heure_debut = request.POST.get('start-time')
         heure_fin = request.POST.get('end-time')
@@ -108,9 +163,9 @@ def save_cours(request):
         )
         cours.save()
 
-        return redirect('dashboardAdmin')
+        return redirect('dashboardAdmin',label=label)
     
-    return redirect('dashboardAdmin')
+    return redirect('dashboardAdmin',id=1)
 
 #Pour les autre promotions
 def save_coursAll(request):
@@ -149,6 +204,7 @@ from django.shortcuts import get_object_or_404
 def Modify(request):
     if request.method == "POST":
         id=request.POST.get('id_cours_modif')
+        label=request.session.get('label')
         try:
             cours = get_object_or_404(CoursProgrammerL1, id=id)
           
@@ -163,7 +219,7 @@ def Modify(request):
             cours.teacher = cours.matiere.enseignant
             cours.save()  
 
-            return redirect('dashboardAdmin')
+            return redirect('dashboardAdmin',label=label)
             
         except CoursProgrammerL1.DoesNotExist:
             erreur = 'Ce cours n\'existe pas'
@@ -171,13 +227,14 @@ def Modify(request):
                 'erreur': erreur,
             }
     else:
-       redirect('dashboardAdmin')
+      return redirect('dashboardAdmin',label=label)
 
 def DeleteCours(request,id):
+    label=request.session.get('label')
     print(id)
     cours = get_object_or_404(CoursProgrammerL1, id=id)
     cours.delete()
-    return redirect('dashboardAdmin')
+    return redirect('dashboardAdmin',label=label)
 ##########################################################################
 
 def copier_table(request):
