@@ -4,6 +4,9 @@ from EditTimeplan.models import CoursProgrammer
 from EditTimeplan.models import CoursProgrammerL1
 from EditTimeplan.models import AdminUser,Matiere
 from showtimeplan.models import CoursProgrammerL1Etu
+from showtimeplan.models import  User
+from django.conf import settings
+from django.core.mail import send_mail
 from django.db import connection
 from datetime import datetime, timedelta
 from django.http import HttpResponse
@@ -107,38 +110,38 @@ def dashboardAdmin(request,label=0):#0=Cette semaine,1=Semaine prochaine
                         }
         return render(request,'EditTimeplan/AdminPage.html',context)
     
-    if label==2:
-        custom_date=request.POST.get('custom_date')
-        custom_date=datetime.strptime(custom_date,'%Y-%B-%d')#######Il y a un gros probleme de format ici######
-        print(custom_date)
-        les_dates_semaine=dates_semaine(custom_date)
-        request.session['date_reference']=(custom_date).strftime('%Y-%m-%d')
-        request.session['label']=label
-        id= request.session.get('id')#Il transporte l'id de l'admin de la page de coneexion vers la fonction de sauvegarde
-        request.session['id']=id
-        cours_programmes = CoursProgrammerL1.objects.filter(Date__in= les_dates_semaine)
-        # Le double souligné __in indique que nous voulons filtrer les cours avec une date présente dans la liste.
-        matiere_obj=Matiere.objects.all()
-        InfoSchedule='Vous modifié l\'emploie du temps de la semaine du'+custom_date
+    if label == 2:
+        custom_date = request.POST.get('custom_date')
+        if custom_date:
+            custom_date = datetime.strptime(custom_date, '%Y-%m-%d')
+        else:
+            # Si custom_date est None, utilisez une valeur par défaut ou renvoyez une réponse d'erreur appropriée
+            return HttpResponse("Invalid custom_date value.")
+        
+        les_dates_semaine = dates_semaine(custom_date)
+        request.session['date_reference'] = custom_date.strftime('%Y-%m-%d')
+        request.session['label'] = label
+        id = request.session.get('id')
+        request.session['id'] = id
+        cours_programmes = CoursProgrammerL1.objects.filter(Date__in=les_dates_semaine)
+        matiere_obj = Matiere.objects.all()
+        InfoSchedule = 'Vous modifiez l\'emploi du temps de la semaine du ' + custom_date.strftime('%Y-%m-%d')
         context = {
             'InfoSchedule': InfoSchedule,
             'CoursProgrammer': cours_programmes,
-            'matieres':matiere_obj,
-                        }
-        return render(request,'EditTimeplan/AdminPage.html',context)
-     # Si aucun des cas précédents n'est satisfait, renvoyer une réponse HTTP par défaut
-    return HttpResponse("Invalid label value.")
-#Pour la promotion L1 tronc commun avec deux groupe
-#PAR DEFAUT(Les cours de cette semaine)
+            'matieres': matiere_obj,
+        }
+        return render(request, 'EditTimeplan/AdminPage.html', context)
 
-##############Ici la date de sauvegarde depend de la semaine selectionner#######################################################
+    return HttpResponse("Invalid label value.")
+
 def save_cours(request):
     id = request.session.get('id')
-    date_reference=request.session.get('date_reference')
-    label=request.session.get('label')
+    date_reference = request.session.get('date_reference')
+    label = request.session.get('label')
     if request.method == 'POST':
         jour = request.POST.get('day')
-        date_reference = datetime.strptime(date_reference,'%d %B %Y') # Date de référence (date actuelle)
+        date_reference = datetime.strptime(date_reference, '%Y-%m-%d')
         Date = obtenir_date(jour, date_reference)
         heure_debut = request.POST.get('start-time')
         heure_fin = request.POST.get('end-time')
@@ -163,10 +166,9 @@ def save_cours(request):
         )
         cours.save()
 
-        return redirect('dashboardAdmin',label=label)
+        return redirect('dashboardAdmin', label=label)
     
-    return redirect('dashboardAdmin',id=1)
-
+    return redirect('dashboardAdmin', id=1)
 #Pour les autre promotions
 def save_coursAll(request):
     id= request.session.get('id')
@@ -247,6 +249,13 @@ def copier_table(request):
 
             # Copier les données de la table source vers la table de destination
             cursor.execute('INSERT INTO coursProgrammerL1Etu (Date, jour, promotion, heure_debut, heure_fin, matiere_id, salle, teacher, groupe) SELECT Date, jour, promotion, heure_debut, heure_fin, matiere_id, salle, teacher, groupe FROM coursProgrammerL1')
+           #Envoyer un mail pour informer les étudiants que l'emploi du temps a été modifié
+        etudiants = User.objects.values_list('email', flat=True)
+        subject = 'Modification de l\'emploi du temps'
+        message = 'Nous vous informons, chers étudiants, que l\'emploi du temps a été modifié.\nConnectez vous à la pateforme de SchedEase pour en savoir davantage.\n\nCordialement.'
+        email_from = settings.EMAIL_HOST_USER
+        recipient_list = list(etudiants)
+        send_mail(subject, message, email_from, recipient_list, fail_silently=False)
 
     return redirect('dashboardAdmin',label=label)
 
