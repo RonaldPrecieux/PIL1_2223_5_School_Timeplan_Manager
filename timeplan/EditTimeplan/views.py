@@ -113,11 +113,11 @@ def dashboardAdmin(request,label=0):#0=Cette semaine,1=Semaine prochaine
     if label == 2:
         custom_date = request.POST.get('custom_date')
         if custom_date:
-            custom_date = datetime.strptime(custom_date, '%Y-%m-%d')
+            custom_date = datetime.strptime(custom_date, '%Y-%m-%d').date()
         else:
-            # Si custom_date est None, utilisez une valeur par défaut ou renvoyez une réponse d'erreur appropriée
+        # Si custom_date est None, utilisez une valeur par défaut ou renvoyez une réponse d'erreur appropriée
             return HttpResponse("Invalid custom_date value.")
-        
+    
         les_dates_semaine = dates_semaine(custom_date)
         request.session['date_reference'] = custom_date.strftime('%Y-%m-%d')
         request.session['label'] = label
@@ -141,7 +141,7 @@ def save_cours(request):
     label = request.session.get('label')
     if request.method == 'POST':
         jour = request.POST.get('day')
-        date_reference = datetime.strptime(date_reference, '%Y-%m-%d')
+        date_reference = datetime.strptime(date_reference, '%d %B %Y')
         Date = obtenir_date(jour, date_reference)
         heure_debut = request.POST.get('start-time')
         heure_fin = request.POST.get('end-time')
