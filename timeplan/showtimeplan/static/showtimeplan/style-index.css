@@ -95,10 +95,10 @@ a{
 
 h1{
     font-weight: 700;
-    font-size: 80px;
+    font-size: 90px;
     text-align: left;
     margin-bottom: 1px;
-    margin-top: 40px;
+    margin-top: 0px;
     
 }
 
@@ -165,3 +165,82 @@ button:active {
 }
 
 
+
+
+@media (max-width: 768px) {
+
+    .header-content {
+        padding-top: 0;
+        max-width: 1440px;
+        margin: 0 auto;
+    }
+    .navbar .desktop-navbar {
+        flex-direction: row;
+        align-items: flex-start; 
+        padding: 0;
+        font-size: 25px;
+    }
+    
+.header-text {
+    display: flex;
+    justify-content: left;
+    max-width: 505px;
+    padding: 2px;
+    margin:  auto ;
+    font-weight: 560;
+    text-align: start;
+}
+
+    .navbar .desktop-navbar .navbar-list {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    /* .navbar .desktop-navbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 1440px;
+        margin: 0 auto;
+       
+    } */
+
+    .header-title {
+        justify-content: left;
+        text-align: center;
+        margin: 10px auto;
+        font-size: 15px;
+    }
+    h1 {
+
+        font-weight: 700;
+        font-size: 50px;
+        text-align: left;
+        margin-bottom: 1px;
+        margin-top: 0px;
+    }
+
+   
+    .header-block {
+        display: flex;
+        justify-content: left;
+        margin: 20px auto;
+        justify-content: space-between;
+        margin-left: 23px;
+        margin-right: 23px;
+    }
+    .header-title span::before {
+        content: "m'organise mieux";
+        animation: words 120s infinite;
+    }
+    .header-block{
+        display: flex;
+        
+        font-size: 15px;
+        justify-content: space-between;
+    }
+    .header-block button{
+        height:20px;
+        width: 125px;
+        padding:0 ;
+    }
+}

@@ -103,9 +103,10 @@
             <p class="heading">Nouveau cours</p>
            
             <div class="inputContainer">
-                <input type="time"  name="start-time" class="inputField"  required>
-                <input type="time"  name="end-time" class="inputField"  required>
-            </div>
+              <input type="time" id="start-time" name="start-time" class="inputField" required onchange="checkEndTime('start-time', 'end-time', 'warning-message')">
+              <input type="time" id="end-time" name="end-time" class="inputField" required onchange="checkEndTime('start-time', 'end-time', 'warning-message')">
+              <span id="warning-message" class="warningHour warningHidden">Attention: Heure de fin inférieure à l'heure de début</span>
+          </div>
             <div class="day">
               <datalist id="day-list">
                 <option value="Lundi"></option>
@@ -211,8 +212,9 @@
                     <p class="heading">Modifier cours</p>
                   
                     <div class="inputContainer">
-                      <input type="time" id="Modif_start-time" name="start-time" class="inputField"  required>
-                      <input type="time" id="Modif_end-time" name="end-time" class="inputField"  required>
+                      <input type="time" id="Modif_start-time" name="start-time" class="inputField"  required onchange="checkEndTime('Modif_start-time','Modif_end-time','Modif-warning-message')">
+                      <input type="time" id="Modif_end-time" name="end-time" class="inputField"  required onchange="checkEndTime('Modif_start-time','Modif_end-time','Modif-warning-message')">
+                      <span id="Modif-warning-message" class="warningHour warningHidden">Attention: Heure de fin inférieure à l'heure de début</span>
                   </div>
                   <div class="day">
                     <datalist id="day-list">
@@ -531,6 +533,24 @@
               formContainer.style.display = 'none';
             }
           });
+
+          
+          function checkEndTime(startTimeId, endTimeId, warningId) {
+                var startTime = document.getElementById(startTimeId).value;
+                var endTime = document.getElementById(endTimeId).value;
+                var warningMessage = document.getElementById(warningId);
+
+                // Conversion des heures en objets Date pour faciliter la comparaison
+                var start = new Date("2000-01-01T" + startTime);
+                var end = new Date("2000-01-01T" + endTime);
+
+                // Comparaison des heures
+                if (start >= end) {
+                    warningMessage.classList.remove('warningHidden');
+                } else {
+                    warningMessage.classList.add('warningHidden');
+                }
+              }
         </script>
       </section> 
       </main>

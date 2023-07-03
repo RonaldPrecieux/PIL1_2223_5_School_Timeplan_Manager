@@ -70,45 +70,44 @@ def obtenir_la_date_du_Lundi(indexSem):#Prend le nombre de semaine a ajouter a l
 
 def dashboardAdmin(request,label=0):#0=Cette semaine,1=Semaine prochaine
     if request.method == "POST":
-        label=int(request.POST.get('week'))
+        label = int(request.POST.get('week'))
       
-    if label==0:
-        date_aujourdhui = datetime.today().date() # Date de référence 
+    if label == 0:
+        date_aujourdhui = datetime.today().date()  # Date de référence 
         les_dates_semaine = dates_semaine(date_aujourdhui)
-        request.session['date_reference']=date_aujourdhui.strftime('%d %B %Y')
-        request.session['label']=label
-        id= request.session.get('id')#Il transporte l'id de l'admin de la page de coneexion vers la fonction de sauvegarde
-        request.session['id']=id
-        cours_programmes = CoursProgrammerL1.objects.filter(Date__in= les_dates_semaine)
-        # Le double souligné __in indique que nous voulons filtrer les cours avec une date présente dans la liste.
-        matiere_obj=Matiere.objects.all()
-        InfoSchedule='Vous modifié lemploie du temps de cette semaine'
+        request.session['date_reference'] = date_aujourdhui.strftime('%d %B %Y')
+        request.session['label'] = label
+        id = request.session.get('id')  # Il transporte l'id de l'admin de la page de connexion vers la fonction de sauvegarde
+        request.session['id'] = id
+        cours_programmes = CoursProgrammerL1.objects.filter(Date__in=les_dates_semaine).order_by('heure_debut')
+        matiere_obj = Matiere.objects.all()
+        InfoSchedule = 'Vous modifiez l\'emploi du temps de cette semaine'
         context = {
             'InfoSchedule': InfoSchedule,
             'CoursProgrammer': cours_programmes,
-            'matieres':matiere_obj,
-                        }
-        return render(request,'EditTimeplan/AdminPage.html',context)
-    if label==1:
-        Une_date_de_la_semaine=datetime.strptime(obtenir_la_date_du_Lundi(1),'%d %B %Y')
+            'matieres': matiere_obj,
+        }
+        return render(request, 'EditTimeplan/AdminPage.html', context)
+    
+    if label == 1:
+        Une_date_de_la_semaine = datetime.strptime(obtenir_la_date_du_Lundi(1), '%d %B %Y')
         print(Une_date_de_la_semaine)
-        request.session['date_reference']=Une_date_de_la_semaine.strftime('%d %B %Y')
-        request.session['label']=label
+        request.session['date_reference'] = Une_date_de_la_semaine.strftime('%d %B %Y')
+        request.session['label'] = label
         print(Une_date_de_la_semaine)
         les_dates_semaine = dates_semaine(Une_date_de_la_semaine)
 
-        id= request.session.get('id')#Il transporte l'id de l'admin de la page de coneexion vers la fonction de sauvegarde
-        request.session['id']=id
-        cours_programmes = CoursProgrammerL1.objects.filter(Date__in= les_dates_semaine)
-        # Le double souligné __in indique que nous voulons filtrer les cours avec une date présente dans la liste.
-        matiere_obj=Matiere.objects.all()
-        InfoSchedule='Vous modifié l\'emploie du temps de la semaine prochaine'
+        id = request.session.get('id')  # Il transporte l'id de l'admin de la page de connexion vers la fonction de sauvegarde
+        request.session['id'] = id
+        cours_programmes = CoursProgrammerL1.objects.filter(Date__in=les_dates_semaine).order_by('heure_debut')
+        matiere_obj = Matiere.objects.all()
+        InfoSchedule = 'Vous modifiez l\'emploi du temps de la semaine prochaine'
         context = {
             'InfoSchedule': InfoSchedule,
             'CoursProgrammer': cours_programmes,
-            'matieres':matiere_obj,
-                        }
-        return render(request,'EditTimeplan/AdminPage.html',context)
+            'matieres': matiere_obj,
+        }
+        return render(request, 'EditTimeplan/AdminPage.html', context)
     
     if label == 2:
         custom_date = request.POST.get('custom_date')
@@ -123,7 +122,7 @@ def dashboardAdmin(request,label=0):#0=Cette semaine,1=Semaine prochaine
         request.session['label'] = label
         id = request.session.get('id')
         request.session['id'] = id
-        cours_programmes = CoursProgrammerL1.objects.filter(Date__in=les_dates_semaine)
+        cours_programmes = CoursProgrammerL1.objects.filter(Date__in=les_dates_semaine).order_by('heure_debut')
         matiere_obj = Matiere.objects.all()
         InfoSchedule = 'Vous modifiez l\'emploi du temps de la semaine du ' + custom_date.strftime('%Y-%m-%d')
         context = {
@@ -134,14 +133,13 @@ def dashboardAdmin(request,label=0):#0=Cette semaine,1=Semaine prochaine
         return render(request, 'EditTimeplan/AdminPage.html', context)
 
     return HttpResponse("Invalid label value.")
-
 def save_cours(request):
     id = request.session.get('id')
     date_reference = request.session.get('date_reference')
     label = request.session.get('label')
     if request.method == 'POST':
         jour = request.POST.get('day')
-        date_reference = datetime.strptime(date_reference, '%Y-%m-%d')
+        date_reference = datetime.strptime(date_reference, '%d %B %Y')
         Date = obtenir_date(jour, date_reference)
         heure_debut = request.POST.get('start-time')
         heure_fin = request.POST.get('end-time')

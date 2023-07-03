@@ -337,3 +337,6 @@ color:#1a6fc4}
 .publier{
   background-color: rgb(0, 132, 255);
 }
+.warningHidden{
+  display: none;
+}
