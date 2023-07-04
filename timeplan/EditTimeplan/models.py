@@ -30,10 +30,19 @@ class Promotion(models.Model):
         return self.nom
     
 
+class Filiere(models.Model):
+    nom=models.CharField(max_length=15, default='')
+    
+    def __str__(self):
+        return self.nom
+    class Meta :
+        db_table = "Filiere"
+
 class Matiere(models.Model):
     nom = models.CharField(max_length=100)
     enseignant = models.CharField(max_length=128)
-    timing= models.IntegerField(default=0)
+    timing = models.DurationField()
+    heur_restant=models.IntegerField(default=0)
     Informations=models.CharField(max_length=500)
     promotion=models.CharField(max_length=28,default='')
     
@@ -74,12 +83,18 @@ class AdminUser(models.Model):
 
 
 class CoursProgrammer(models.Model):
-    #date = models.DateField()
+    Date= models.CharField(default='10/05/2023', max_length=128 ,validators=[
+            RegexValidator(
+                regex=r'^\d{2}/\d{2}/\d{4}$',
+                message='Le format de date doit être jj/mm/aaaa.',
+            ),
+        ],)
     jour = models.CharField(max_length=100)
     promotion = models.CharField(max_length=128)
-    heure_debut = models.TimeField()  #Je reviendrais regler l'erreur de format qui se pose lorsqu'on met TimeField
-    heure_fin = models.TimeField()
-    matiere = models.CharField(max_length=150)
+    heure_debut = models.CharField(max_length=150)
+    heure_fin = models.CharField(max_length=150)
+    filiere=models.ForeignKey(Filiere, on_delete=models.CASCADE,default="")
+    matiere = models.ForeignKey(Matiere, on_delete=models.CASCADE,default="") 
     salle = models.CharField(max_length=150)
     teacher=models.CharField(max_length=128, default='')
     class Meta:

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from showtimeplan.forms import UserForm
-from showtimeplan.models import User,CoursProgrammerL1Etu
+from showtimeplan.models import User,CoursProgrammerL1Etu,CoursProgrammerEtu
 from django.urls import reverse
 from django.core.mail import send_mail
 from django.conf import settings
@@ -209,17 +209,21 @@ def bienvenue_recuperation(request, prenom):
 def login_required(request):
     return render(request, "showtimeplan/login_required.html")
 ###########################################Code Niveau Affichage Dashboard ####################################################
-def dashboardStudent(request,label=0, filtre=False):
+def dashboardStudent(request,label=0, filtre=False,filiere='L1'):
     
     if request.method == "POST":
+       filiere_str=request.POST.get('filtre-filiere')
        label_str = request.POST.get('week')
        label = int(label_str) if label_str is not None else 0
+       filiere=str(filiere_str) if filiere_str is not None else "L1"
+       
        filtre=request.POST.get('filtre')
        custom_date=request.POST.get('custom_date')
+       nomprof=request.POST.get('nomprof')
        if filtre=='3':
            filtre=False
-    print(filtre)
-    if filtre:
+    print(filiere)
+    if filtre :
         if label==0:
             date_aujourdhui = datetime.today().date() # Date de référence 
             les_dates_semaine = dates_semaine(date_aujourdhui)
@@ -227,15 +231,24 @@ def dashboardStudent(request,label=0, filtre=False):
             request.session['label']=label
             id= request.session.get('id')#Il transporte l'id de l'admin de la page de coneexion vers la fonction de sauvegarde
             request.session['id']=id
-            cours_programmes = CoursProgrammerL1Etu.objects.filter(Date__in= les_dates_semaine).order_by('heure_debut')  # Ajout de order_by()
-            if filtre=='Groupe1' or filtre=='Groupe2':
-                cours_programmes = CoursProgrammerL1Etu.objects.filter(Date__in= les_dates_semaine,groupe__in=[filtre,'Groupe 1 & Groupe 2']).order_by('heure_debut')  # Ajout de order_by()
-         
-            if filtre=='enseignant':
-                cours_programmes = CoursProgrammerL1Etu.objects.filter(Date__in= les_dates_semaine,teacher=custom_date).order_by('heure_debut') 
-            # Le double souligné __in indique que nous voulons filtrer les cours avec une date présente dans la liste.
+            if filiere == 'L1':
+                cours_programmes = CoursProgrammerL1Etu.objects.filter(Date__in= les_dates_semaine).order_by('heure_debut')  # Ajout de order_by()
+                if filtre=='Groupe1' or filtre=='Groupe2':
+                    cours_programmes = CoursProgrammerL1Etu.objects.filter(Date__in= les_dates_semaine,groupe__in=[filtre,'Groupe 1 & Groupe 2']).order_by('heure_debut')  # Ajout de order_by()
+            
+                if filtre=='enseignant':
+                    cours_programmes = CoursProgrammerL1Etu.objects.filter(Date__in= les_dates_semaine,teacher=nomprof).order_by('heure_debut') 
+                # Le double souligné __in indique que nous voulons filtrer les cours avec une date présente dans la liste.
+            else:
+                cours_programmes = CoursProgrammerEtu.objects.filter(Date__in= les_dates_semaine).order_by('heure_debut')  # Ajout de order_by()
+                if filtre=='Groupe1' or filtre=='Groupe2':
+                    cours_programmes = CoursProgrammerEtu.objects.filter(Date__in= les_dates_semaine,groupe__in=[filtre,'Groupe 1 & Groupe 2']).order_by('heure_debut')  # Ajout de order_by()
+            
+                if filtre=='enseignant':
+                    cours_programmes = CoursProgrammerEtu.objects.filter(Date__in= les_dates_semaine,teacher=nomprof).order_by('heure_debut') 
+                
             matiere_obj=Matiere.objects.all()
-            InfoSchedule='cette semaine'
+            InfoSchedule='de la '+filiere+'cette semaine'
            
             NomFiltre='Filtre='+filtre
 
@@ -263,10 +276,10 @@ def dashboardStudent(request,label=0, filtre=False):
                 cours_programmes = CoursProgrammerL1Etu.objects.filter(Date__in= les_dates_semaine,groupe__in=[filtre,'Groupe 1 & Groupe 2']).order_by('heure_debut') 
          
             if filtre=='enseignant':
-                cours_programmes = CoursProgrammerL1Etu.objects.filter(Date__in= les_dates_semaine,teacher=custom_date).order_by('heure_debut') 
+                cours_programmes = CoursProgrammerL1Etu.objects.filter(Date__in= les_dates_semaine,teacher=nomprof).order_by('heure_debut') 
             # Le double souligné __in indique que nous voulons filtrer les cours avec une date présente dans la liste.
             matiere_obj=Matiere.objects.all()
-            InfoSchedule='la semaine prochaine'
+            InfoSchedule='de la'+filiere+'la semaine prochaine'
            
             NomFiltre='Filtre='+filtre
 
@@ -278,6 +291,40 @@ def dashboardStudent(request,label=0, filtre=False):
                 'matieres':matiere_obj,
                             }
             return render(request,'showtimeplan/dashboardEtu.html',context)
+        
+        #Semaine passé 
+        if label==3:
+            Une_date_de_la_semaine=datetime.strptime(obtenir_la_date_du_Lundi(-1),'%d %B %Y')
+            print(Une_date_de_la_semaine)
+            request.session['date_reference']=Une_date_de_la_semaine.strftime('%d %B %Y')
+            request.session['label']=label
+            print(Une_date_de_la_semaine)
+            les_dates_semaine = dates_semaine(Une_date_de_la_semaine)
+
+            id= request.session.get('id')#Il transporte l'id de l'admin de la page de coneexion vers la fonction de sauvegarde
+            request.session['id']=id
+            cours_programmes = CoursProgrammerL1Etu.objects.filter(Date__in= les_dates_semaine).order_by('heure_debut') 
+
+            if filtre=='Groupe1' or filtre=='Groupe2':
+                cours_programmes = CoursProgrammerL1Etu.objects.filter(Date__in= les_dates_semaine,groupe__in=[filtre,'Groupe 1 & Groupe 2']).order_by('heure_debut') 
+         
+            if filtre=='enseignant':
+                cours_programmes = CoursProgrammerL1Etu.objects.filter(Date__in= les_dates_semaine,teacher=nomprof).order_by('heure_debut') 
+            # Le double souligné __in indique que nous voulons filtrer les cours avec une date présente dans la liste.
+            matiere_obj=Matiere.objects.all()
+            InfoSchedule='de la '+filiere+'la semaine passé'
+           
+            NomFiltre='Filtre='+filtre
+
+
+            context = {
+                'filtre':NomFiltre,
+                'InfoSchedule': InfoSchedule,
+                'CoursProgrammer': cours_programmes,
+                'matieres':matiere_obj,
+                            }
+            return render(request,'showtimeplan/dashboardEtu.html',context)
+        
         
         if label==2:
             custom_date=request.POST.get('custom_date')
@@ -294,10 +341,10 @@ def dashboardStudent(request,label=0, filtre=False):
                 cours_programmes = CoursProgrammerL1Etu.objects.filter(Date__in= les_dates_semaine,groupe__in=[filtre,'Groupe 1 & Groupe 2']).order_by('heure_debut') 
          
             if filtre=='enseignant':
-                cours_programmes = CoursProgrammerL1Etu.objects.filter(Date__in= les_dates_semaine,teacher=custom_date).order_by('heure_debut') 
+                cours_programmes = CoursProgrammerL1Etu.objects.filter(Date__in= les_dates_semaine,teacher=nomprof).order_by('heure_debut') 
             # Le double souligné __in indique que nous voulons filtrer les cours avec une date présente dans la liste.
             matiere_obj=Matiere.objects.all()
-            InfoSchedule='Vous modifié l\'emploie du temps de la semaine du'+custom_date
+            InfoSchedule='de la '+filiere+' de la semaine du'+custom_date
            
             NomFiltre='Filtre='+filtre
 
@@ -311,6 +358,7 @@ def dashboardStudent(request,label=0, filtre=False):
             return render(request,'showtimeplan/dashboardEtu.html',context)
         # Si aucun des cas précédents n'est satisfait, renvoyer une réponse HTTP par défaut
         return HttpResponse("Invalid label value.")
+    #Else du filtre
     else: 
         if label==0:
             date_aujourdhui = datetime.today().date() # Date de référence 
@@ -319,10 +367,13 @@ def dashboardStudent(request,label=0, filtre=False):
             request.session['label']=label
             id= request.session.get('id')#Il transporte l'id de l'admin de la page de coneexion vers la fonction de sauvegarde
             request.session['id']=id
-            cours_programmes = CoursProgrammerL1Etu.objects.filter(Date__in= les_dates_semaine).order_by('heure_debut') 
+            if filiere == 'L1':
+                cours_programmes = CoursProgrammerL1Etu.objects.filter(Date__in= les_dates_semaine).order_by('heure_debut') 
             # Le double souligné __in indique que nous voulons filtrer les cours avec une date présente dans la liste.
+            else:
+                  cours_programmes = CoursProgrammerEtu.objects.filter(Date__in= les_dates_semaine).order_by('heure_debut') 
             matiere_obj=Matiere.objects.all()
-            InfoSchedule='cette semaine'
+            InfoSchedule=' la '+filiere+' cette semaine'
 
             context = {
                 'InfoSchedule': InfoSchedule,
@@ -340,10 +391,37 @@ def dashboardStudent(request,label=0, filtre=False):
 
             id= request.session.get('id')#Il transporte l'id de l'admin de la page de coneexion vers la fonction de sauvegarde
             request.session['id']=id
-            cours_programmes = CoursProgrammerL1Etu.objects.filter(Date__in= les_dates_semaine).order_by('heure_debut') 
+            if filiere == 'L1':
+                cours_programmes = CoursProgrammerL1Etu.objects.filter(Date__in= les_dates_semaine).order_by('heure_debut') 
+            # Le double souligné __in indique que nous voulons filtrer les cours avec une date présente dans la liste.
+            else:
+                 cours_programmes = CoursProgrammerEtu.objects.filter(Date__in= les_dates_semaine).order_by('heure_debut')
+            matiere_obj=Matiere.objects.all()
+            InfoSchedule=' la '+filiere+'la semaine prochaine'
+            context = {
+                'InfoSchedule': InfoSchedule,
+                'CoursProgrammer': cours_programmes,
+                'matieres':matiere_obj,
+                            }
+            return render(request,'showtimeplan/dashboardEtu.html',context)
+        #Semaine precedente
+        if label==3:
+            Une_date_de_la_semaine=datetime.strptime(obtenir_la_date_du_Lundi(-1),'%d %B %Y')
+            print(Une_date_de_la_semaine)
+            request.session['date_reference']=Une_date_de_la_semaine.strftime('%d %B %Y')
+            request.session['label']=label
+            print(Une_date_de_la_semaine)
+            les_dates_semaine = dates_semaine(Une_date_de_la_semaine)
+
+            id= request.session.get('id')#Il transporte l'id de l'admin de la page de coneexion vers la fonction de sauvegarde
+            request.session['id']=id
+            if filiere == 'L1':
+                cours_programmes = CoursProgrammerL1Etu.objects.filter(Date__in= les_dates_semaine).order_by('heure_debut')
+            else :
+                cours_programmes = CoursProgrammerEtu.objects.filter(Date__in= les_dates_semaine).order_by('heure_debut')
             # Le double souligné __in indique que nous voulons filtrer les cours avec une date présente dans la liste.
             matiere_obj=Matiere.objects.all()
-            InfoSchedule='la semaine prochaine'
+            InfoSchedule=' la '+filiere+'la semaine passé'
             context = {
                 'InfoSchedule': InfoSchedule,
                 'CoursProgrammer': cours_programmes,
@@ -353,17 +431,21 @@ def dashboardStudent(request,label=0, filtre=False):
         
         if label==2:
             custom_date=request.POST.get('custom_date')
-            custom_date=datetime.strptime(custom_date,'%Y-%B-%d')#######Il y a un gros probleme de format ici######
+            custom_date=datetime.strptime(custom_date,'%Y-%m-%d')#######Il y a un gros probleme de format ici######
             print(custom_date)
             les_dates_semaine=dates_semaine(custom_date)
             request.session['date_reference']=(custom_date).strftime('%Y-%B-%d')
             request.session['label']=label
             id= request.session.get('id')#Il transporte l'id de l'admin de la page de coneexion vers la fonction de sauvegarde
             request.session['id']=id
-            cours_programmes = CoursProgrammerL1Etu.objects.filter(Date__in= les_dates_semaine).order_by('heure_debut') 
+            if filiere == 'L1':
+                cours_programmes = CoursProgrammerL1Etu.objects.filter(Date__in= les_dates_semaine).order_by('heure_debut') 
+            else:
+                cours_programmes = CoursProgrammerEtu.objects.filter(Date__in= les_dates_semaine).order_by('heure_debut')
             # Le double souligné __in indique que nous voulons filtrer les cours avec une date présente dans la liste.
             matiere_obj=Matiere.objects.all()
-            InfoSchedule='Vous modifié l\'emploie du temps de la semaine du'+custom_date
+            InfoSchedule='de la semaine du '+custom_date.strftime('%d-%B-%Y')
+            #InfoSchedule=' la '+filiere+'de la semaine du '+custom_date
             context = {
                 'InfoSchedule': InfoSchedule,
                 'CoursProgrammer': cours_programmes,

@@ -19,14 +19,15 @@ body{
     padding: 60px;
 
 }
+main{
+    display: flex;
+    margin: 10px;
+    align-items: center;
+}
 
 .text{
-    display: block;
-    position: absolute;
-    width: 606px;
-    height: 224px;
-    left: 650px;
-    top: 250px;
+    padding: 20px;
+    margin: 20px;
 }
 
 .text .a{
@@ -36,7 +37,10 @@ body{
     line-height: 63px;
     text-align: center;
     padding-bottom: 10px;
-   color: #000;
+    background-image: linear-gradient(108deg,#000 40.21%,#000 50.46%,#ae6088 58.71%,#f6a45a 68.43%,#368ea3 78.77%,#eb963c 90.76%);
+   -webkit-background-clip: text;
+    background-clip: text;
+   -webkit-text-fill-color: transparent;
 }
 
 .text .b{
@@ -139,4 +143,45 @@ section a{
 .b a{
     color: #000;
     font-weight: 600;
+}
+/* .arrow{
+    height: 150px ;
+    margin: -150px 0px -100px 230px;
+    transform: rotate(-50deg);
+} */
+
+@media (max-width: 768px) { 
+    body{
+        background-color: #dfdfdf;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .text{
+        width: 75%;
+    }
+    .text .a{
+        font-size: 30px;
+        line-height: normal;
+    }
+    .text .b{
+        font-size: 17px;
+        font-weight: 500;
+    }
+
+    main{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .login-box{
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        width: 440px;
+        height: 440px;
+        min-height: 0px;
+        margin-left: auto;
+        padding: 30px;
+    }
 }

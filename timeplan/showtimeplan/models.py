@@ -2,7 +2,7 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from django.contrib.auth.hashers import make_password
 from django.core.validators import MinLengthValidator
-from EditTimeplan.models import Matiere
+from EditTimeplan.models import Matiere,Filiere
 from django.core.validators import RegexValidator
 
 class User(models.Model):
@@ -41,6 +41,32 @@ class CoursProgrammerL1Etu(models.Model):
     #Aparaisse dans la base de donné
     class Meta:
         db_table = "coursProgrammerL1Etu"
+
+
+
+class CoursProgrammerEtu(models.Model):
+    Date= models.CharField(default='10/05/2023', max_length=128 ,validators=[
+            RegexValidator(
+                regex=r'^\d{2}/\d{2}/\d{4}$',
+                message='Le format de date doit être jj/mm/aaaa.',
+            ),
+        ],)
+    jour = models.CharField(max_length=100)
+    promotion = models.CharField(max_length=128)
+    heure_debut = models.CharField(max_length=150)
+    heure_fin = models.CharField(max_length=150)
+    filiere=models.ForeignKey(Filiere, on_delete=models.CASCADE,default="")
+    matiere = models.ForeignKey(Matiere, on_delete=models.CASCADE,default="") 
+    salle = models.CharField(max_length=150)
+    teacher=models.CharField(max_length=128, default='')
+    class Meta:
+        db_table = "coursProgrammerEtu"
+
+
+   
+    
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
 
 
    

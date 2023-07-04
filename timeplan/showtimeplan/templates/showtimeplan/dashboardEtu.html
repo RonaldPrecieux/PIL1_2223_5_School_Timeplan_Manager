@@ -19,13 +19,29 @@
             <select id="group-filter" name="filtre" onchange="toggleCustomFiltre(this.value)">
               <option value="">Filtrer</option>
               
-              <option value="Groupe1"><a>Groupe 1</option>
+              <option value="Groupe1">Groupe 1</option>
               <option value="Groupe2">Groupe 2</option>
               <option value="enseignant">Un enseignant</option>
               <option value="3">Pas de filtre</option>
            
             </select>
-            <input type="text" id="teacherName" placeholder="Le nom du prof" name="custom_date" class="hidden">
+            <input type="text" id="teacherName" placeholder="Le nom du prof" name="nomprof" class="hidden">
+            <button type="submit" class="btn">OK</button>
+            </form>
+
+            <!-- Filtrage par filiere -->
+            <form action="{% url 'dashboardStudent' %}" method="post">
+              {% csrf_token %}
+            <select id="" name="filtre-filiere" >
+              
+              
+              <option value="L1">Licence 1</option>
+              <option value="L2">Licence 2</option>
+              <option value="L3">Licence 3</option>
+              
+           
+            </select>
+            
             <button type="submit" class="btn">OK</button>
             </form>
 
@@ -72,6 +88,7 @@
                       
                       <option value="0">Cette semaine</option>
                       <option value="1">Semaine prochaine</option>
+                      <option value="3">Semaine précédente</option>
                       <option value="2">Entrer une date</option>
                       
                     </select>

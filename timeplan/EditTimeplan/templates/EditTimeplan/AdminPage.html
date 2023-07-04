@@ -26,7 +26,7 @@
                 
               </ul>
             </div>
-              <div class="logo">
+             <div class="logo">
                 <a class="navbar-logo" href="{% url 'accueil' %}">SchedEase</a>
               </div>
             
@@ -90,15 +90,15 @@
           <!--  -->
           
             
-          
-          <form id="close" class="form_main" action="{% url 'save_cours' %}" method="post">
+          {% if AdminUser.promotion == 'L1' %}
+          <form id="close-l1" class="form_main" action="{% url 'save_cours' %}" method="post">
             {% csrf_token %} 
             <div class="form-nav">
                 <label for="close-checkbox" class="close">
                   <div class="line one"></div>
                   <div class="line two"></div>
                 </label>
-                <input type="checkbox" id="close-checkbox" class="close-checkbox">
+                <input type="checkbox" id="close-checkbox-l1" class="close-checkbox">
             </div>
             <p class="heading">Nouveau cours</p>
            
@@ -122,7 +122,9 @@
                 <input type="text" placeholder="Matière" name="matiere" class="inputField autocomplete"  list='Matiere-list' required autofocus>
                   <datalist id="Matiere-list">
                     {% for matiere in matieres %}
+                    {% if matiere.promotion == 'L1' %}
                     <option>{{matiere.nom}}</option>
+                    {% endif %}
                     {% endfor %}
                   </datalist>
 
@@ -148,11 +150,119 @@
                 <!-- Apparement ce botton joue le meme role que submit meme lorsqu'on precise pas le type submit -->
             </div>
           </form>
+
+          <script>
+            const createButtonL1 = document.querySelector('#close-l1 .form-nav label');
+            const formMainL1 = document.getElementById('close-l1');
+            const closeCheckboxL1 = document.getElementById('close-checkbox-l1');
+        
+            createButtonL1.addEventListener('click', function() {
+              if (formMainL1.style.display === 'flex') {
+                formMainL1.style.display = 'none';
+              } else {
+                formMainL1.style.display = 'flex';
+              }
+            });
+        
+            closeCheckboxL1.addEventListener('change', function() {
+              if (this.checked) {
+                formMainL1.style.display = 'none';
+              } else {
+                formMainL1.style.display = 'flex';
+              }
+            });
+          </script>
+          {% else %}
+          
+          <form id="close-l2" class="form_main" action="{% url 'save_coursAll' %}" method="post">
+            {% csrf_token %} 
+            <div class="form-nav">
+                <label for="close-checkbox" class="close">
+                  <div class="line one"></div>
+                  <div class="line two"></div>
+                </label>
+                <input type="checkbox" id="close-checkbox-l2" class="close-checkbox">
+            </div>
+            <p class="heading">Nouveau cours</p>
+           
+            <div class="inputContainer">
+              <input type="time" id="start-time" name="start-time" class="inputField" required onchange="checkEndTime('start-time', 'end-time', 'warning-message')">
+              <input type="time" id="end-time" name="end-time" class="inputField" required onchange="checkEndTime('start-time', 'end-time', 'warning-message')">
+              <span id="warning-message" class="warningHour warningHidden">Attention: Heure de fin inférieure à l'heure de début</span>
+          </div>
+            <div class="day">
+              <datalist id="day-list">
+                <option value="Lundi"></option>
+                <option value="Mardi"></option>
+                <option value="Mercredi"></option>
+                <option value="Jeudi"></option>
+                <option value="Vendredi"></option>
+                <option value="Samedi"></option>
+              </datalist>
+              <input type="text" placeholder="Jour" name="day" class="inputField" list="day-list" required>
+          </div>
+            <div class="mat">
+                <input type="text" placeholder="Matière" name="matiere" class="inputField autocomplete"  list='Matiere-list' required autofocus>
+                  <datalist id="Matiere-list">
+                    {% for matiere in matieres %}
+                    {% if matiere.promotion == AdminPromotion %}
+                    <option>{{matiere.nom}}</option>
+                    {% endif %}
+                    {% endfor %}
+                  </datalist>
+
+            </div> 
+          <!--Je veux afficher automatiquement le nom du professeur.Je le ferais plustard -->
+          <!-- <div class="prof">   
+                <input type="text" placeholder="Nom du professeur"  name="professeur" class="inputField" required>
+            </div> -->
+          <div class="filiere">
+              <input type="text" placeholder="Filiere" name="filiere" class="inputField autocomplete" list="filiere-list"  required autofocus>
+              <datalist id="filiere-list"> 
+                {% for filiere in filiere %}
+               
+                <option>{{filiere}}</option>
+                {% endfor %}
+              </datalist> 
+
+          </div>
+            <div class="salle">
+              <input type="text" placeholder="Salle" name="salle" class="inputField" required>
+          </div>
+            <div class="form-sub">
+                <button >Save</button>
+                <!-- Apparement ce botton joue le meme role que submit meme lorsqu'on precise pas le type submit -->
+            </div>
+          </form>
+          <script>
+            const createButtonL2 = document.querySelector('#close-l2 .form-nav label');
+            const formMainL2 = document.getElementById('close-l2');
+            const closeCheckboxL2 = document.getElementById('close-checkbox-l2');
+        
+            createButtonL2.addEventListener('click', function() {
+              if (formMainL2.style.display === 'flex') {
+                formMainL2.style.display = 'none';
+              } else {
+                formMainL2.style.display = 'flex';
+              }
+            });
+        
+            closeCheckboxL2.addEventListener('change', function() {
+              if (this.checked) {
+                formMainL2.style.display = 'none';
+              } else {
+                formMainL2.style.display = 'flex';
+              }
+            });
+          </script>
+         
+          
+          {% endif %}
                   
           <script>
             const createButton = document.querySelector('.add-but button');
-            const formMain = document.getElementById('close');
-            const closeCheckbox = document.getElementById('close-checkbox');
+            const formMain = document.getElementById('close-l1');
+            const closeCheckbox = document.getElementById('close-checkbox-l1');
 
             createButton.addEventListener('click', function() {
               if (formMain.style.display === 'flex') {
@@ -162,13 +272,20 @@
               }
             });
 
-            closeCheckbox.addEventListener('change', function() {
-              if (this.checked) {
-                formMain.style.display = 'none';
+            
+            
+            const formMain2 = document.getElementById('close-l2');
+            const closeCheckbox2 = document.getElementById('close-checkbox-l2');
+
+            createButton.addEventListener('click', function() {
+              if (formMain2.style.display === 'flex') {
+                formMain2.style.display = 'none';
               } else {
-                formMain.style.display = 'flex';
+                formMain2.style.display = 'flex';
               }
             });
+
+           
             // //fonction pour mettre le curseur à la fin du champs email
             // function setCursorToEnd() {
             //   var emailField = document.getElementById('email');
@@ -199,8 +316,11 @@
             
               <a href="#" class="show-form-link"></a>
                 <div id="conteneur-formulaire" style="display: none;">
-
+                {% if AdminPromotion == 'L1' %}
                   <form id="modify" class="form_modify" action="{% url 'modify_url' %}" method="post">
+                {% else %}
+                <form id="modify" class="form_modify" action="{% url 'ModifyAll' %}" method="post">
+                {% endif %}
                     {% csrf_token %}
                     <div class="form-modify">
                       <label for="close-checkbox-modify" class="close-modify">
@@ -228,10 +348,21 @@
                     <input type="text" id="Modif_day" placeholder="Jour" name="day" class="inputField" list="day-list" required>
                 </div>
                   <div class="mat">
-                      <input type="text" id="Modif_matiere" placeholder="Matière" name="matiere" class="inputField autocomplete" id="matiere"  required autofocus>
+                      <input type="text" id="Modif_matiere" placeholder="Matière" name="matiere" list='ModifMatiere-list' class="inputField autocomplete" id="matiere"  required autofocus>
       
+                      <datalist id="ModifMatiere-list">
+                        {% for matiere in matieres %}
+                        {% if matiere.promotion == AdminPromotion %}
+                        <option>{{matiere.nom}}</option>
+                        {% endif %}
+                        {% endfor %}
+                      </datalist>
                   </div>
-               
+
+                  
+    
+              
+               {% if AdminPromotion == 'L1' %}
                 <div class="groupe">
                     <input type="text" id="Modif_groupe" placeholder="Groupe" name="groupe" class="inputField autocomplete" list="groupe-list"  required autofocus>
                     <datalist id="groupe-list">
@@ -241,12 +372,24 @@
                     </datalist>
       
                 </div>
+                {% else %}
+                <div class="filiere">
+                  <input type="text" id="Modif_filiere" placeholder="Filiere" name="filiere" class="inputField autocomplete" list="filiere-list"  required autofocus>
+                  <datalist id="filiere-list"> 
+                    {% for filiere in filiere %}
+                   
+                    <option>{{filiere}}</option>
+                    {% endfor %}
+                  </datalist> 
+                  {% endif %}
+
                   <div class="salle">
                     <input type="text" id="Modif_salle" placeholder="Salle" name="salle" class="inputField" required>
                 </div>
                 <div class="No_visible" >
                   <input type="text" id="Modif_cours_id" placeholder="id" name="id_cours_modif" class="inputField" required>
-              </div>
+              </div> 
+              
                   <div class="form-sub">
                       <button id="button">Save</button>
                   </div>
@@ -269,22 +412,36 @@
                   {% for cours in CoursProgrammer %}
                   {% if cours.jour == "Lundi" %}
                    
-                      <div class="cours">
-                        <!-- Afficher les informations du cours --> 
+                  {% if AdminPromotion == 'L1' %}
                        
-                        <p class="jour No_visible">{{ cours.jour }}</p>
-                        <p class="id_cours No_visible">{{ cours.id }}</p>
-                        <!-- Il ne doivent pas etre visibles.Mais leurs presence me permet de récupérer
-                        certaines precisions telles que l'id pour modifier le cours dans la base de données et afficher le jour dans le 
-                      formulaire de modification 'G.Ronald"-->
-                      
-                        <p class="groupe-color"> <span class="groupe">{{ cours.groupe }}</span> <span class="salle">{{ cours.salle }}</span></p>
-                        <p > <span class="heure_debut">{{ cours.heure_debut }}</span>/<span class="heure_fin">{{ cours.heure_fin }}</span> <span class="matiere">{{cours.matiere}}</span></p>
-                        <p class="teacher">{{ cours.teacher }}</p>
-
+                        <div class="cours">
+                          <!-- Afficher les informations du cours --> 
+                         
+                          <p class="jour No_visible">{{ cours.jour }}</p>
+                          <p class="id_cours No_visible">{{ cours.id }}</p>
+                          <!-- Il ne doivent pas etre visibles.Mais leurs presence me permet de récupérer
+                          certaines precisions telles que l'id pour modifier le cours dans la base de données et afficher le jour dans le 
+                        formulaire de modification 'G.Ronald"-->
+                        
+                          <p class="groupe-color"> <span class="groupe">{{ cours.groupe }}</span> <span class="salle">{{ cours.salle }}</span></p>
+                          <p > <span class="heure_debut">{{ cours.heure_debut }}</span>/<span class="heure_fin">{{ cours.heure_fin }}</span> <span class="matiere">{{cours.matiere}}</span></p>
+                          <p class="teacher">{{ cours.teacher }}</p>
                         <button class="edit-button modifier_btn" onclick="editRow(this)"> <a href="" class="show-form-link">Modifier</a></button>
                         <button class="delete_btn"><a href="{% url 'DeleteCours' cours.id %}">Suprimer</a></button>
-
+                        {% else %}<div class="cours">
+                          <!-- Afficher les informations du cours --> 
+                         
+                          <p class="jour No_visible">{{ cours.jour }}</p>
+                          <p class="id_cours No_visible">{{ cours.id }}</p>
+                        
+                        
+                          <p class="groupe-color"> <span class="filiere">{{cours.filiere}}</span>| <span class="salle">{{ cours.salle }}</span></p>
+                          <p > <span class="heure_debut">{{ cours.heure_debut }}</span>/<span class="heure_fin">{{ cours.heure_fin }}</span> <span class="matiere">{{cours.matiere}}</span></p>
+                          
+                          <p class="teacher">{{ cours.teacher }}</p>
+                        <button class="edit-button modifier_btn" onclick="editRow2(this)"> <a href="" class="show-form-link">Modifier</a></button>
+                        <button class="delete_btn"><a href="{% url 'DeleteCoursAll' cours.id %}">Suprimer</a></button>
+                        {% endif %}
                         
                       </div>
                    
@@ -293,25 +450,41 @@
                   <p>Aucun cours programmé</p>
                 {% endfor %}
                 </td>
-                
+                <!-- Mardi -->
                 <td class="tdcolor">
                   {% for cours in CoursProgrammer %}
                   {% if cours.jour == "Mardi" %}
                    
-                      <div class="cours">
-                        <!-- Afficher les informations du cours --> 
+                  {% if AdminPromotion == 'L1' %}
+                       
+                        <div class="cours">
+                          <!-- Afficher les informations du cours --> 
+                         
+                          <p class="jour No_visible">{{ cours.jour }}</p>
+                          <p class="id_cours No_visible">{{ cours.id }}</p>
+                          <!-- Il ne doivent pas etre visibles.Mais leurs presence me permet de récupérer
+                          certaines precisions telles que l'id pour modifier le cours dans la base de données et afficher le jour dans le 
+                        formulaire de modification 'G.Ronald"-->
                         
-                        <p class="jour No_visible">{{ cours.jour }}</p>
-                        <p class="id_cours No_visible">{{ cours.id }}</p>
-                        <!-- Il ne doivent pas etre visible.Mais leurs precense me permet de recuperer
-                        certain precision tel que l'id pour modifier le cours dans la base de donné et afficher le jours dans le 
-                      formulaire de modification 'G.Ronald"-->
-                      
-                        <p class="groupe-color"> <span class="groupe">{{ cours.groupe }}</span> <span class="salle">{{ cours.salle }}</span></p>
-                        <p > <span class="heure_debut">{{ cours.heure_debut }}</span>/<span class="heure_fin">{{ cours.heure_fin }}</span> <span class="matiere">{{cours.matiere.nom}}</span></p>
-                        <p class="teacher">{{ cours.teacher }}</p>
-                        <button class="edit-button modifier_btn" onclick="editRow(this)"> <a href="" class="show-form-link">Modifier </a></button>
+                          <p class="groupe-color"> <span class="groupe">{{ cours.groupe }}</span> <span class="salle">{{ cours.salle }}</span></p>
+                          <p > <span class="heure_debut">{{ cours.heure_debut }}</span>/<span class="heure_fin">{{ cours.heure_fin }}</span> <span class="matiere">{{cours.matiere}}</span></p>
+                          <p class="teacher">{{ cours.teacher }}</p>
+                        <button class="edit-button modifier_btn" onclick="editRow(this)"> <a href="" class="show-form-link">Modifier</a></button>
                         <button class="delete_btn"><a href="{% url 'DeleteCours' cours.id %}">Suprimer</a></button>
+                        {% else %}<div class="cours">
+                          <!-- Afficher les informations du cours --> 
+                         
+                          <p class="jour No_visible">{{ cours.jour }}</p>
+                          <p class="id_cours No_visible">{{ cours.id }}</p>
+                        
+                        
+                          <p class="groupe-color"> <span class="filiere">{{cours.filiere}}</span>| <span class="salle">{{ cours.salle }}</span></p>
+                          <p > <span class="heure_debut">{{ cours.heure_debut }}</span>/<span class="heure_fin">{{ cours.heure_fin }}</span> <span class="matiere">{{cours.matiere}}</span></p>
+                          
+                          <p class="teacher">{{ cours.teacher }}</p>
+                        <button class="edit-button modifier_btn" onclick="editRow2(this)"> <a href="" class="show-form-link">Modifier</a></button>
+                        <button class="delete_btn"><a href="{% url 'DeleteCoursAll' cours.id %}">Suprimer</a></button>
+                        {% endif %}
                         
                       </div>
                    
@@ -320,24 +493,41 @@
                   <p>Aucun cours programmé</p>
                 {% endfor %}
                 </td>
+                <!-- Mercredi -->
                 <td>
                   {% for cours in CoursProgrammer %}
                   {% if cours.jour == "Mercredi" %}
                    
-                      <div class="cours">
-                        <!-- Afficher les informations du cours -->
+                  {% if AdminPromotion == 'L1' %}
                        
-                        <p class="jour No_visible">{{ cours.jour }}</p>
-                        <p class="id_cours No_visible">{{ cours.id }}</p>
-                        <!-- Il ne doivent pas etre visible.Mais leurs precense me permet de recuperer
-                        certain precision tel que l'id pour modifier le cours dans la base de donné et afficher le jours dans le 
-                      formulaire de modification 'G.Ronald"-->
-                      
-                        <p class="groupe-color"> <span class="groupe">{{ cours.groupe }}</span> <span class="salle">{{ cours.salle }}</span></p>
-                        <p > <span class="heure_debut">{{ cours.heure_debut }}</span>/<span class="heure_fin">{{ cours.heure_fin }}</span> <span class="matiere">{{cours.matiere}}</span></p>
-                        <p class="teacher">{{ cours.teacher }}</p>
-                        <button class="edit-button modifier_btn" onclick="editRow(this)"> <a href="" class="show-form-link">Modifier </a></button>
+                        <div class="cours">
+                          <!-- Afficher les informations du cours --> 
+                         
+                          <p class="jour No_visible">{{ cours.jour }}</p>
+                          <p class="id_cours No_visible">{{ cours.id }}</p>
+                          <!-- Il ne doivent pas etre visibles.Mais leurs presence me permet de récupérer
+                          certaines precisions telles que l'id pour modifier le cours dans la base de données et afficher le jour dans le 
+                        formulaire de modification 'G.Ronald"-->
+                        
+                          <p class="groupe-color"> <span class="groupe">{{ cours.groupe }}</span> <span class="salle">{{ cours.salle }}</span></p>
+                          <p > <span class="heure_debut">{{ cours.heure_debut }}</span>/<span class="heure_fin">{{ cours.heure_fin }}</span> <span class="matiere">{{cours.matiere}}</span></p>
+                          <p class="teacher">{{ cours.teacher }}</p>
+                        <button class="edit-button modifier_btn" onclick="editRow(this)"> <a href="" class="show-form-link">Modifier</a></button>
                         <button class="delete_btn"><a href="{% url 'DeleteCours' cours.id %}">Suprimer</a></button>
+                        {% else %}<div class="cours">
+                          <!-- Afficher les informations du cours --> 
+                         
+                          <p class="jour No_visible">{{ cours.jour }}</p>
+                          <p class="id_cours No_visible">{{ cours.id }}</p>
+                        
+                        
+                          <p class="groupe-color"> <span class="filiere">{{cours.filiere}}</span>| <span class="salle">{{ cours.salle }}</span></p>
+                          <p > <span class="heure_debut">{{ cours.heure_debut }}</span>/<span class="heure_fin">{{ cours.heure_fin }}</span> <span class="matiere">{{cours.matiere}}</span></p>
+                          
+                          <p class="teacher">{{ cours.teacher }}</p>
+                        <button class="edit-button modifier_btn" onclick="editRow2(this)"> <a href="" class="show-form-link">Modifier</a></button>
+                        <button class="delete_btn"><a href="{% url 'DeleteCoursAll' cours.id %}">Suprimer</a></button>
+                        {% endif %}
                         
                       </div>
                    
@@ -346,24 +536,41 @@
                   <p>Aucun cours programmé</p>
                 {% endfor %}
                 </td>
+                <!-- Jeudi -->
                 <td class="tdcolor">
                   {% for cours in CoursProgrammer %}
                   {% if cours.jour == "Jeudi" %}
                    
-                      <div class="cours">
-                        <!-- Afficher les informations du cours --> 
+                  {% if AdminPromotion == 'L1' %}
                        
-                        <p class="jour No_visible">{{ cours.jour }}</p>
-                        <p class="id_cours No_visible">{{ cours.id }}</p>
-                        <!-- Il ne doivent pas etre visible.Mais leurs precense me permet de recuperer
-                        certain precision tel que l'id pour modifier le cours dans la base de donné et afficher le jours dans le 
-                      formulaire de modification 'G.Ronald"-->
-                      
-                        <p class="groupe-color"> <span class="groupe">{{ cours.groupe }}</span> <span class="salle">{{ cours.salle }}</span></p>
-                        <p > <span class="heure_debut">{{ cours.heure_debut }}</span>/<span class="heure_fin">{{ cours.heure_fin }}</span> <span class="matiere">{{cours.matiere}}</span></p>
-                        <p class="teacher">{{ cours.teacher }}</p>
-                        <button class="edit-button modifier_btn" onclick="editRow(this)"> <a href="" class="show-form-link">Modifier </a></button>
+                        <div class="cours">
+                          <!-- Afficher les informations du cours --> 
+                         
+                          <p class="jour No_visible">{{ cours.jour }}</p>
+                          <p class="id_cours No_visible">{{ cours.id }}</p>
+                          <!-- Il ne doivent pas etre visibles.Mais leurs presence me permet de récupérer
+                          certaines precisions telles que l'id pour modifier le cours dans la base de données et afficher le jour dans le 
+                        formulaire de modification 'G.Ronald"-->
+                        
+                          <p class="groupe-color"> <span class="groupe">{{ cours.groupe }}</span> <span class="salle">{{ cours.salle }}</span></p>
+                          <p > <span class="heure_debut">{{ cours.heure_debut }}</span>/<span class="heure_fin">{{ cours.heure_fin }}</span> <span class="matiere">{{cours.matiere}}</span></p>
+                          <p class="teacher">{{ cours.teacher }}</p>
+                        <button class="edit-button modifier_btn" onclick="editRow(this)"> <a href="" class="show-form-link">Modifier</a></button>
                         <button class="delete_btn"><a href="{% url 'DeleteCours' cours.id %}">Suprimer</a></button>
+                        {% else %}<div class="cours">
+                          <!-- Afficher les informations du cours --> 
+                         
+                          <p class="jour No_visible">{{ cours.jour }}</p>
+                          <p class="id_cours No_visible">{{ cours.id }}</p>
+                        
+                        
+                          <p class="groupe-color"> <span class="filiere">{{cours.filiere}}</span>| <span class="salle">{{ cours.salle }}</span></p>
+                          <p > <span class="heure_debut">{{ cours.heure_debut }}</span>/<span class="heure_fin">{{ cours.heure_fin }}</span> <span class="matiere">{{cours.matiere}}</span></p>
+                          
+                          <p class="teacher">{{ cours.teacher }}</p>
+                        <button class="edit-button modifier_btn" onclick="editRow2(this)"> <a href="" class="show-form-link">Modifier</a></button>
+                        <button class="delete_btn"><a href="{% url 'DeleteCoursAll' cours.id %}">Suprimer</a></button>
+                        {% endif %}
                         
                       </div>
                    
@@ -372,25 +579,41 @@
                   <p>Aucun cours programmé</p>
                 {% endfor %}
                 </td>
-
+                <!-- Vendredi -->
                 <td>
                   {% for cours in CoursProgrammer %}
                   {% if cours.jour == "Vendredi" %}
                    
-                      <div class="cours">
-                        <!-- Afficher les informations du cours -->
-                     
-                        <p class="jour No_visible">{{ cours.jour }}</p>
-                        <p class="id_cours No_visible">{{ cours.id }}</p>
-                        <!-- Il ne doivent pas etre visible.Mais leurs precense me permet de recuperer
-                        certain precision tel que l'id pour modifier le cours dans la base de donné et afficher le jours dans le 
-                      formulaire de modification 'G.Ronald"-->
-                      
-                        <p class="groupe-color"> <span class="groupe">{{ cours.groupe }}</span> <span class="salle">{{ cours.salle }}</span></p>
-                        <p > <span class="heure_debut">{{ cours.heure_debut }}</span>/<span class="heure_fin">{{ cours.heure_fin }}</span> <span class="matiere">{{cours.matiere}}</span></p>
-                        <p class="teacher">{{ cours.teacher }}</p>
-                        <button class="edit-button modifier_btn" onclick="editRow(this)"> <a href="" class="show-form-link">Modifier </a></button>
+                  {% if AdminPromotion == 'L1' %}
+                       
+                        <div class="cours">
+                          <!-- Afficher les informations du cours --> 
+                         
+                          <p class="jour No_visible">{{ cours.jour }}</p>
+                          <p class="id_cours No_visible">{{ cours.id }}</p>
+                          <!-- Il ne doivent pas etre visibles.Mais leurs presence me permet de récupérer
+                          certaines precisions telles que l'id pour modifier le cours dans la base de données et afficher le jour dans le 
+                        formulaire de modification 'G.Ronald"-->
+                        
+                          <p class="groupe-color"> <span class="groupe">{{ cours.groupe }}</span> <span class="salle">{{ cours.salle }}</span></p>
+                          <p > <span class="heure_debut">{{ cours.heure_debut }}</span>/<span class="heure_fin">{{ cours.heure_fin }}</span> <span class="matiere">{{cours.matiere}}</span></p>
+                          <p class="teacher">{{ cours.teacher }}</p>
+                        <button class="edit-button modifier_btn" onclick="editRow(this)"> <a href="" class="show-form-link">Modifier</a></button>
                         <button class="delete_btn"><a href="{% url 'DeleteCours' cours.id %}">Suprimer</a></button>
+                        {% else %}<div class="cours">
+                          <!-- Afficher les informations du cours --> 
+                         
+                          <p class="jour No_visible">{{ cours.jour }}</p>
+                          <p class="id_cours No_visible">{{ cours.id }}</p>
+                        
+                        
+                          <p class="groupe-color"> <span class="filiere">{{cours.filiere}}</span>| <span class="salle">{{ cours.salle }}</span></p>
+                          <p > <span class="heure_debut">{{ cours.heure_debut }}</span>/<span class="heure_fin">{{ cours.heure_fin }}</span> <span class="matiere">{{cours.matiere}}</span></p>
+                          
+                          <p class="teacher">{{ cours.teacher }}</p>
+                        <button class="edit-button modifier_btn" onclick="editRow2(this)"> <a href="" class="show-form-link">Modifier</a></button>
+                        <button class="delete_btn"><a href="{% url 'DeleteCoursAll' cours.id %}">Suprimer</a></button>
+                        {% endif %}
                         
                       </div>
                    
@@ -399,24 +622,41 @@
                   <p>Aucun cours programmé</p>
                 {% endfor %}
             </td>
+            <!-- Samedi -->
             <td class="tdcolor">
               {% for cours in CoursProgrammer %}
               {% if cours.jour == "Samedi" %}
                
-                  <div class="cours">
-                    <!-- Afficher les informations du cours -->
-                  
-                    <p class="jour No_visible">{{ cours.jour }}</p>
-                    <p class="id_cours No_visible">{{ cours.id }}</p>
-                    <!-- Il ne doivent pas etre visible.Mais leurs precense me permet de recuperer
-                    certain precision tel que l'id pour modifier le cours dans la base de donné et afficher le jours dans le 
-                  formulaire de modification 'G.Ronald"-->
-                  
-                    <p class="groupe-color"> <span class="groupe">{{ cours.groupe }}</span> <span class="salle">{{ cours.salle }}</span></p>
-                    <p > <span class="heure_debut">{{ cours.heure_debut }}</span>/<span class="heure_fin">{{ cours.heure_fin }}</span> <span class="matiere">{{cours.matiere}}</span></p>
-                    <p class="teacher">{{ cours.teacher }}</p>
-                    <button class="edit-button modifier_btn" onclick="editRow(this)"> <a href="" class="show-form-link">Modifier </a></button>
+              {% if AdminPromotion == 'L1' %}
+                   
+                    <div class="cours">
+                      <!-- Afficher les informations du cours --> 
+                     
+                      <p class="jour No_visible">{{ cours.jour }}</p>
+                      <p class="id_cours No_visible">{{ cours.id }}</p>
+                      <!-- Il ne doivent pas etre visibles.Mais leurs presence me permet de récupérer
+                      certaines precisions telles que l'id pour modifier le cours dans la base de données et afficher le jour dans le 
+                    formulaire de modification 'G.Ronald"-->
+                    
+                      <p class="groupe-color"> <span class="groupe">{{ cours.groupe }}</span> <span class="salle">{{ cours.salle }}</span></p>
+                      <p > <span class="heure_debut">{{ cours.heure_debut }}</span>/<span class="heure_fin">{{ cours.heure_fin }}</span> <span class="matiere">{{cours.matiere}}</span></p>
+                      <p class="teacher">{{ cours.teacher }}</p>
+                    <button class="edit-button modifier_btn" onclick="editRow(this)"> <a href="" class="show-form-link">Modifier</a></button>
                     <button class="delete_btn"><a href="{% url 'DeleteCours' cours.id %}">Suprimer</a></button>
+                    {% else %}<div class="cours">
+                      <!-- Afficher les informations du cours --> 
+                     
+                      <p class="jour No_visible">{{ cours.jour }}</p>
+                      <p class="id_cours No_visible">{{ cours.id }}</p>
+                    
+                    
+                      <p class="groupe-color"> <span class="filiere">{{cours.filiere}}</span> |<span class="salle">{{ cours.salle }}</span></p>
+                      <p > <span class="heure_debut">{{ cours.heure_debut }}</span>/<span class="heure_fin">{{ cours.heure_fin }}</span> <span class="matiere">{{cours.matiere}}</span></p>
+                      
+                      <p class="teacher">{{ cours.teacher }}</p>
+                    <button class="edit-button modifier_btn" onclick="editRow2(this)"> <a href="" class="show-form-link">Modifier</a></button>
+                    <button class="delete_btn"><a href="{% url 'DeleteCoursAll' cours.id %}">Suprimer</a></button>
+                    {% endif %}
                     
                   </div>
                
@@ -510,6 +750,30 @@
             document.getElementById('Modif_matiere').value = matiere;
 
             document.getElementById('Modif_groupe').value = groupe;
+            document.getElementById('Modif_salle').value = salle;
+            document.getElementById('Modif_day').value = day;
+            document.getElementById('Modif_cours_id').value=cours_id;
+        
+            var formContainer = document.getElementById('conteneur-formulaire');
+            formContainer.style.display = 'block';
+          }
+          function editRow2(button) {
+            var row = button.parentNode;
+            var day= row.querySelector('.jour').textContent;
+            var cours_id= row.querySelector('.id_cours').textContent;
+            var filiere = row.querySelector('.filiere').textContent;
+            var salle = row.querySelector('.salle').textContent;
+            var heure_debut = row.querySelector('.heure_debut').textContent;
+            var heure_fin = row.querySelector('.heure_fin').textContent;
+            var matiere = row.querySelector('.matiere').textContent;
+            
+           
+            
+            document.getElementById('Modif_start-time').value = heure_debut;
+            document.getElementById('Modif_end-time').value = heure_fin;
+            document.getElementById('Modif_matiere').value = matiere;
+
+            document.getElementById('Modif_filiere').value = filiere;
             document.getElementById('Modif_salle').value = salle;
             document.getElementById('Modif_day').value = day;
             document.getElementById('Modif_cours_id').value=cours_id;

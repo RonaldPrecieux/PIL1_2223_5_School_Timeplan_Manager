@@ -1,5 +1,5 @@
 from django.contrib import admin
-from EditTimeplan.models import AdminUser,Matiere
+from EditTimeplan.models import AdminUser,Matiere,Filiere
 from django.contrib.auth.hashers import make_password
 
 class AdminUserAdmin(admin.ModelAdmin):
@@ -16,6 +16,8 @@ class Matiere(admin.ModelAdmin):
     list_display = ('nom','enseignant','timing','informations') # liste les champs que nous voulons sur l'affichage de la liste
     admin.site.register(Matiere)#Comment ca marche?
 
-
+class Filiere(admin.ModelAdmin):
+    list_display = ('nom')
+    admin.site.register(Filiere)
 # Register your models here.
     
