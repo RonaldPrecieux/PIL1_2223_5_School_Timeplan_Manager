@@ -326,8 +326,11 @@ def ModifyAll(request):
             cours.heure_debut = request.POST.get('start-time')
             cours.heure_fin = request.POST.get('end-time')
             nomMat=request.POST.get('matiere')
+            filiere=request.POST.get('filiere')
             matiere_obj=Matiere.objects.get(nom=nomMat)
+            filiere_obj=Filiere.objects.get(nom=filiere)
             cours.matiere =matiere_obj
+            cours.filiere=filiere_obj
             cours.salle = request.POST.get('salle')
             cours.groupe = request.POST.get('groupe')
             cours.teacher = cours.matiere.enseignant

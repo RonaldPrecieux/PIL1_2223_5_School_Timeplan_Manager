@@ -8,7 +8,7 @@
   </head>
   <body>
     <header>
-        <nav class="nav" style="display:flex;justify-content: space-between;border:1px solid black">
+        <nav class="nav" style="display:flex;justify-content: space-between;">
           <div class="logo">
               <a class="navbar-logo" href="{% url 'accueil' %}">SchedEase</a>
           </div>
@@ -16,8 +16,8 @@
 
           
             
-            <!--  --><span>{{InfoSchedule}}</span>
-      <div class="hamburger-menu"></div>
+            <!--  --><span style="margin-left: 15px;">{{InfoSchedule}}</span>
+      <div class="hamburger-menu">
             <form method="POST" action="{% url 'copier_table' %}" style="margin-right: 15px;">
               {% csrf_token %}
               <button style="padding:6px 14px 6px 14px;border-radius: 6px; border:none;background-color: rgb(127, 146, 205);font-size: 17px;"> 
