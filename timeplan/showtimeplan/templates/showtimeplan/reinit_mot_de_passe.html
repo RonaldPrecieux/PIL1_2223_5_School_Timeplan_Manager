@@ -7,15 +7,13 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
+            background-color: #9ab7ca;
         }
         
         .container {
-            max-width: 400px;
             margin: 50px auto;
             padding: 20px;
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+           
         }
         
         h1 {
@@ -27,26 +25,22 @@
             margin-top: 10px;
         }
         
-        input[type="number"],
-        input[type="password"] {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+        input{
+            height: 40px;
+            width: 350px;
+            border-radius: 25px;
+            border:none;
+            text-indent: 50%;
+        }
+    
+        button{
+            border-radius: 25px;
+            width: 250px;
+            height: 40px;
+            background-color: black;
+            color: white;
         }
         
-        button {
-            display: block;
-            width: 100%;
-            padding: 10px;
-            margin-top: 20px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
         .error{
             color: red;
         }
@@ -61,12 +55,12 @@
         <form id="confirmationForm" method="post" action="{% url 'traiter_reinit_mot_de_passe' id=id %}">
             {% csrf_token %}
             <label for="confirmationCode">Code de confirmation:</label>
-            <input type="number" id="confirmationCode" required name="code" pattern="[0-9]{6}" title="(Chiffres uniquement et une longueur totale de 8 chiffres)" {% if code %}value="{{ code }}"{% endif %}>
+            <input type="number" id="confirmationCode" required name="code" pattern="[0-9]{6}" title="(Chiffres uniquement et une longueur totale de 8 chiffres)" {% if code %}value="{{ code }}"{% endif %}><br><br>
             <label for="newPassword">Nouveau mot de passe:</label>
-            <input type="password" id="newPassword" required name="mot_de_passe" minlength="8" title="(Au moins 8 caractères)" autocomplete="off" {% if mot_de_passe %}value="{{ mot_de_passe }}"{% endif %} >
+            <input type="password" id="newPassword" required name="mot_de_passe" minlength="8" title="(Au moins 8 caractères)" autocomplete="off" {% if mot_de_passe %}value="{{ mot_de_passe }}"{% endif %}><br><br>
             {% if error_message %}
                 <p class="error">{{ error_message }}</p>
-            {% endif %}
+            {% endif %}<br>
             <button type="submit">Confirmer</button>
         </form>
     </div>

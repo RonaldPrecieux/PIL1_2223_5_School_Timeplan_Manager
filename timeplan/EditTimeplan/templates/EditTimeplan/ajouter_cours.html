@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SchedEase|Ajouter une nouvelle matiere</title>
+  <style>
+    body{
+        background-color: #9ab7ca;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    
+    th, td {
+      text-align: left;
+      padding: 8px;
+    }
+    
+    th {
+      background-color: #f2f2f2;
+    }
+    
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+    
+    .create-form {
+      display: none;
+    }
+    
+    .btn-create {
+      margin-bottom: 10px;
+    }
+    input{
+        height:27px;
+        width: 200px;
+        background-color: whitesmoke;
+        border-radius: 20px;
+        border: none;
+    }
+    textarea{
+        height:27px;
+        width: 200px;
+        background-color: whitesmoke;
+        border-radius: 20px;
+        border: none;
+    }
+    button{
+        border-radius: 25px;
+        height: 40px;
+        width: 200px;
+        background-color: black;
+        color: white;
+    }
+    td{
+        border: 3px solid black;
+    }
+    th{
+        border: 3px solid black;
+        font-size: 30px;
+    }
+    .modifier{
+        color:white;
+    }
+    .supprimer{
+        color: white;
+    }
+    button:hover{
+        color:red;
+        text-decoration: underline;
+    }
+    tr:nth-child(even) input, tr:nth-child(even) textarea{
+        background-color: #9ab7ca;
+    }
+    .welcome{
+        font-size: 24px;
+        
+    }
+  </style>
+</head>
+<body>
+  <h1>SchedEase</h1>
+  <p class="welcome">Bienvenue dans le menu de création, de modification et de suppression de matières</p>
+  <button class="btn-create" onclick="toggleCreateForm()">Créer une nouvelle matière</button>
+  
+  <form class="create-form" id="create-form" method="post" action ="{% url 'definir_matiere' %}">
+    {% csrf_token %}
+    <label for="nom">Nom :</label>
+    <input type="text" id="nom" name="nom" required><br><br>
+    
+    <label for="enseignant">Enseignant :</label>
+    <input type="text" id="enseignant" name="enseignant" required><br><br>
+    
+    <label for="timing">Timing :</label>
+    <input type="number" id="timing" name="timing" required><br><br>
+    
+    <label for="informations">Informations :</label>
+    <textarea id="informations" name="informations" required></textarea><br><br>
+    
+    <label for="promotion">Promotion :</label>
+    <input type="text" id="promotion" name="promotion" required><br><br>
+    
+    <button type="submit">Enregistrer</button>
+  </form>
+  
+  <table id="courses-table">
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Enseignant</th>
+        <th>Timing</th>
+        <th>Informations</th>
+        <th>Promotion</th>
+        <th>Opérations sur les cours</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for matiere in matieres %}
+      <tr>
+        <td>{{ matiere.nom }}</td>
+        <td>{{ matiere.enseignant }}</td>
+        <td>{{ matiere.timing }}</td>
+        <td>{{ matiere.Informations }}</td>
+        <td>{{ matiere.promotion }}</td>
+        <td>
+            <button class="modifier" onclick="toggleEditMode({{ matiere.id }})">Modifier</button>
+            <form id="form-{{ matiere.id }}" method="post" action="{% url 'modifier_matiere' %}?id={{ matiere.id }}" style="display: none;">
+              {% csrf_token %}
+              <!-- Champs de modification du cours -->
+              <br><br>
+              <label for="nom">Nom :</label><br>
+              <input type="text" name="nom" value="{{ matiere.nom }}" required><br><br>
+
+              <label for="enseignant">Enseignant :</label><br>
+              <input type="text" name="enseignant" value="{{ matiere.enseignant }}" required><br><br>
+
+              <label for="timing">Timing :</label><br>
+              <input type="number" id="timing" name="timing" value="{{ matiere.timing }}" required><br><br>
+
+              <label for="informations">Informations :</label><br>
+              <textarea id="informations" name="informations" value="{{ matiere.Informations }}" required></textarea><br><br>
+
+              <label for="promotion">Promotion :</label><br>
+              <input type="text" id="promotion" name="promotion" value="{{ matiere.promotion }}" required><br><br>
+
+              <button type="submit">Valider</button><br><br>
+              <button type="button" onclick="toggleEditMode({{ matiere.id }})">Annuler</button><br><br>
+            </form>
+            <form class="supprimer-form" method="post" action="{% url 'supprimer_matiere' %}">
+                  {% csrf_token %}
+                  <input type="hidden" name="matiere_id" value="{{ matiere.id }}">
+                  <button class="supprimer">Supprimer</button>
+            </form>
+            
+            
+        </td>
+          
+      </tr>
+      {% endfor %}
+    </tbody>
+    <div id="dialog-form" title="Modifier le cours">
+        <!-- Formulaire de modification -->
+      </div>
+  </table>
+
+  <script>
+    // Fonction pour afficher ou masquer le formulaire de création de cours
+    function toggleCreateForm() {
+      var createForm = document.getElementById('create-form');
+      createForm.style.display = createForm.style.display === 'none' ? 'block' : 'none';
+    }
+    function toggleEditMode(id) {
+  var form = document.getElementById('form-' + id);
+  form.style.display = form.style.display === 'none' ? 'block' : 'none';
+}
+  </script>
+  <script>
+    $(document).ready(function() {
+      // Gestionnaire de clic pour le bouton "Supprimer"
+      $('.supprimer').click(function() {
+        var form = $(this).closest('.supprimer-form');
+        form.submit(); // Soumettre le formulaire de suppression
+      });
+    });
+  </script>
+</body>
+</html>

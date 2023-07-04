@@ -5,17 +5,48 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link type="text/css" rel="stylesheet" href="{% static 'showtimeplan\all_css_recuperation.css' %}">
+    <style>
+        body{
+            background-color: #9ab7ca;
+            text-align: center;
+            
+        }
+        input{
+            height : 40px;
+            width: 350px;
+            border-radius: 25px;
+            border:none;
+            text-indent: 50px;
+        }
+        button{
+            height : 40px;
+            width: 250px;
+            border-radius: 25px;
+            background-color: black;
+            color: white;
+            margin: 10px;
+            padding: 10px;
+        }
+        button:hover{
+            color:red;
+            text-decoration: underline;
+        }
+        div{
+            position: relative;
+            top: 200px;
+        }
+    </style>
     <title>Mot de passe oublié</title>
 </head>
 <body>
-    <p>Vous avez signalé un mot de passe oublié. Entrez votre adresse email:</p>
-    <form class="form_search_account" method="POST" action="{% url 'mot_de_passe_oublie' %}"> 
-        {% csrf_token %}
-        <input type="email" name="email" placeholder="Entrez l'adresse email lié a votre compte" required> 
-        <button type="submit" id="search_account">Rechercher</button>
-
-    </form>
-    
+    <div>
+        <h1>Récupération de mot de passe</h1>
+        <p>Vous avez signalé un mot de passe oublié. Entrez votre adresse email:</p>
+        <form class="form_search_account" method="POST" action="{% url 'mot_de_passe_oublie' %}"> 
+            {% csrf_token %}
+            <input type="email" name="email" placeholder="Entrez l'adresse email liée a votre compte" required><br><br>
+            <button type="submit" id="search_account">Rechercher</button>
+        </form>
+    </div>
 </body>
 </html>

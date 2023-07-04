@@ -7,6 +7,10 @@ urlpatterns= [
     path('save_cours/', app1.save_cours, name='save_cours'),
     path('DeleteCours/<int:id>/',app1.DeleteCours,name="DeleteCours"),
      path('copier_table/', app1.copier_table, name='copier_table'),
+    path('ajouter_cours/', app1.ajouter_cours, name='ajouter_cours'),
+    path('definir_matiere/', app1.definir_matiere, name='definir_matiere'),
+    path('modifier_matiere/', app1.modifier_matiere, name='modifier_matiere'),
+    path('supprimer_matiere/', app1.supprimer_matiere, name='supprimer_matiere'),
 ]
 
 

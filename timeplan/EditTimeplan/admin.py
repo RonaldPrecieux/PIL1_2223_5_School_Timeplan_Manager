@@ -12,10 +12,6 @@ class AdminUserAdmin(admin.ModelAdmin):
 admin.site.register(AdminUser, AdminUserAdmin)
     
 
-class Matiere(admin.ModelAdmin):
-    list_display = ('nom','enseignant','timing','informations') # liste les champs que nous voulons sur l'affichage de la liste
-    admin.site.register(Matiere)#Comment ca marche?
-
 
 # Register your models here.
     

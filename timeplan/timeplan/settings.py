@@ -88,7 +88,7 @@ DATABASES = {
 DATABASES = {
     "default": {
         'ENGINE':'django.db.backends.mysql',
-        'NAME':'mydjangotest',
+        'NAME':'my_django_test', #attention avec la base de données (les underscore)
         'USER':'root',
         'PASSWORD':'root', #A ce niveau vous devez redéfinir le mot de passe pour qu'il corresponde au mot de passe de votre root sql
         'HOST':'localhost',
