@@ -16,7 +16,7 @@
             </div>
             <form action="{% url 'dashboardStudent' %}" method="post">
               {% csrf_token %}
-            <select id="group-filter" name="filtre" onchange="toggleCustomFiltre(this.value)">
+            <select id="group-filter" name="filtre" style="width: 150px;height: 30px;margin-left: 30px;" onchange="toggleCustomFiltre(this.value)">
               <option value="">Filtrer</option>
               
               <option value="Groupe1">Groupe 1</option>
@@ -26,13 +26,13 @@
            
             </select>
             <input type="text" id="teacherName" placeholder="Le nom du prof" name="nomprof" class="hidden">
-            <button type="submit" class="btn">OK</button>
+            <button type="submit" class="btn" style="margin-right: 30px;height: 30px;">OK</button>
             </form>
 
-            <!-- Filtrage par filiere -->
-            <form action="{% url 'dashboardStudent' %}" method="post">
+            <!-- Filtrage par promotion-->
+            <form action="{% url 'dashboardStudent' %}" method="post" >
               {% csrf_token %}
-            <select id="" name="filtre-filiere" >
+            <select id="" name="filtre-Promotion" style="width: 150px;height: 30px;margin-left: 30px;">
               
               
               <option value="L1">Licence 1</option>
@@ -42,7 +42,7 @@
            
             </select>
             
-            <button type="submit" class="btn">OK</button>
+            <button type="submit" class="btn" style="margin-right: 30px;height: 30px;">OK</button>
             </form>
 
             <script>
@@ -129,7 +129,7 @@
                    
                   <div class="cours"> <a href="{% url 'plusinfo' cours.matiere_id %}">
                     <p> {{cours.martiere_id}}</p>
-                    <p class="groupe-color"> <span class="groupe">{{ cours.groupe }}</span> <span class="salle">{{ cours.salle }}</span></p>
+                    <p class="groupe-color"> <span class="groupe">{{ cours.groupe }}  </span>    <span class="groupe">{{ cours.filiere }} | </span> <span class="salle">{{ cours.salle }}</span></p>
                     <p > <span class="heure_debut">{{ cours.heure_debut }}</span>/<span class="heure_fin">{{ cours.heure_fin }}</span> <span class="matiere">{{cours.matiere}}</span></p>
                     <p class="teacher">{{ cours.teacher }}</p></a>
                   </div>
@@ -147,7 +147,7 @@
                    
                   <div class="cours"> <a href="{% url 'plusinfo' cours.matiere_id %}">
                     <p> {{cours.martiere_id}}</p>
-                    <p class="groupe-color"> <span class="groupe">{{ cours.groupe }}</span> <span class="salle">{{ cours.salle }}</span></p>
+                    <p class="groupe-color">  <span class="groupe">{{ cours.groupe }}  </span> <span class="groupe">{{ cours.filiere }} | </span> <span class="salle">{{ cours.salle }}</span></p>
                     <p > <span class="heure_debut">{{ cours.heure_debut }}</span>/<span class="heure_fin">{{ cours.heure_fin }}</span> <span class="matiere">{{cours.matiere}}</span></p>
                     <p class="teacher">{{ cours.teacher }}</p></a>
                   </div>
@@ -163,7 +163,7 @@
                    
                   <div class="cours"> <a href="{% url 'plusinfo' cours.matiere_id %}">
                     <p> {{cours.martiere_id}}</p>
-                    <p class="groupe-color"> <span class="groupe">{{ cours.groupe }}</span> <span class="salle">{{ cours.salle }}</span></p>
+                    <p class="groupe-color">  <span class="groupe">{{ cours.groupe }}  </span> <span class="groupe">{{ cours.filiere }} | </span>   <span class="salle">{{ cours.salle }}</span></p>
                     <p > <span class="heure_debut">{{ cours.heure_debut }}</span>/<span class="heure_fin">{{ cours.heure_fin }}</span> <span class="matiere">{{cours.matiere}}</span></p>
                     <p class="teacher">{{ cours.teacher }}</p></a>
                   </div>
@@ -179,7 +179,7 @@
                    
                   <div class="cours"> <a href="{% url 'plusinfo' cours.matiere_id %}">
                     <p> {{cours.martiere_id}}</p>
-                    <p class="groupe-color"> <span class="groupe">{{ cours.groupe }}</span> <span class="salle">{{ cours.salle }}</span></p>
+                    <p class="groupe-color"> <span class="groupe">{{ cours.groupe }}  </span> <span class="groupe">{{ cours.filiere }} | </span>  <span class="salle">{{ cours.salle }}</span></p>
                     <p > <span class="heure_debut">{{ cours.heure_debut }}</span>/<span class="heure_fin">{{ cours.heure_fin }}</span> <span class="matiere">{{cours.matiere}}</span></p>
                     <p class="teacher">{{ cours.teacher }}</p></a>
                   </div>
@@ -195,7 +195,7 @@
                    
                   <div class="cours"> <a href="{% url 'plusinfo' cours.matiere_id %}">
                     <p> {{cours.martiere_id}}</p>
-                    <p class="groupe-color"> <span class="groupe">{{ cours.groupe }}</span> <span class="salle">{{ cours.salle }}</span></p>
+                    <p class="groupe-color">  <span class="groupe">{{ cours.groupe }}  </span> <span class="groupe">{{ cours.filiere }} | </span> <span class="salle">{{ cours.salle }}</span></p>
                     <p > <span class="heure_debut">{{ cours.heure_debut }}</span>/<span class="heure_fin">{{ cours.heure_fin }}</span> <span class="matiere">{{cours.matiere}}</span></p>
                     <p class="teacher">{{ cours.teacher }}</p></a>
                   </div>
@@ -211,7 +211,7 @@
                
               <div class="cours"> <a href="{% url 'plusinfo' cours.matiere_id %}">
                 <p> {{cours.martiere_id}}</p>
-                <p class="groupe-color"> <span class="groupe">{{ cours.groupe }}</span> <span class="salle">{{ cours.salle }}</span></p>
+                <p class="groupe-color">  <span class="groupe">{{ cours.groupe }}  </span> <span class="groupe">{{ cours.filiere }} | </span>  <span class="salle">{{ cours.salle }}</span></p>
                 <p > <span class="heure_debut">{{ cours.heure_debut }}</span>/<span class="heure_fin">{{ cours.heure_fin }}</span> <span class="matiere">{{cours.matiere}}</span></p>
                 <p class="teacher">{{ cours.teacher }}</p></a>
               </div>

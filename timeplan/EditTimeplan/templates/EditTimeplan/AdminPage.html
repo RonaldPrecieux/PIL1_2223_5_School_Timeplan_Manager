@@ -13,7 +13,7 @@
               <a class="navbar-logo" href="{% url 'accueil' %}">SchedEase</a>
           </div>
 
-
+          
           
             
             <!--  --><span style="margin-left: 15px;">{{InfoSchedule}}</span>
@@ -32,9 +32,9 @@
             <label for="menu-toggle" class="menu-btn">&#9776;</label>
             <ul class="menu-items" style="list-style: none;">
               <li><a href="{% url 'login' %}">Déconnexion</a></li>
-            <li><a href="#">Créer un emploie du temps</a></li> 
-            <li><a href="{% url 'accueil' %}">Enrégistrer un cours</a></li>
-            <li><a href="#">
+            <li><a href="{% url 'accueil' %}">Acceuil</a></li> 
+            <li><a href="{% url 'ajouter_cours' %}">Enrégistrer un cours</a></li>
+           
             </ul>
           </div>
            
@@ -52,7 +52,11 @@
             </span>
           </button>
         </div>
-          <!--  -->
+          <!--  --> 
+          <button style ="position:relative; left: 150px; bottom: 4px;padding:6px 14px 6px 14px;border-radius: 6px; border:none;background-color: rgb(127, 146, 205);font-size: 17px;">
+            <span style="height: 27px; width: 350px;"><a href = "{% url 'ajouter_cours' %}" style="color:whitesmoke">+ Ajouter une nouvelle matière</a></span>
+          </button>
+
            <form class='Semaine' action="{% url 'dashboardAdmin' %}" method="post">
           {% csrf_token %}
           <div class="form-group">
