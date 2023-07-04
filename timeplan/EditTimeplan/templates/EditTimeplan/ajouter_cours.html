@@ -76,31 +76,42 @@
         font-size: 24px;
         
     }
+    .revenir{
+
+    }
+    .lien_revenir, .lien_revenir:visited{
+        color:white;
+        text-decoration: none;
+    }
+    .lien_revenir:hover{
+      color:red;
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
   <h1>SchedEase</h1>
   <p class="welcome">Bienvenue dans le menu de création, de modification et de suppression de matières</p>
   <button class="btn-create" onclick="toggleCreateForm()">Créer une nouvelle matière</button>
-  
+  <button class="revenir"><a href="{% url 'dashboardAdmin' %}" class="lien_revenir">Revenir sur la page d'édition des emplois du temps</a></button>
   <form class="create-form" id="create-form" method="post" action ="{% url 'definir_matiere' %}">
     {% csrf_token %}
-    <label for="nom">Nom :</label>
+    <label for="nom">Nom :</label><br>
     <input type="text" id="nom" name="nom" required><br><br>
     
-    <label for="enseignant">Enseignant :</label>
+    <label for="enseignant">Enseignant :</label><br>
     <input type="text" id="enseignant" name="enseignant" required><br><br>
     
-    <label for="timing">Timing :</label>
+    <label for="timing">Timing :</label><br>
     <input type="number" id="timing" name="timing" required><br><br>
     
-    <label for="informations">Informations :</label>
+    <label for="informations">Informations :</label><br>
     <textarea id="informations" name="informations" required></textarea><br><br>
     
-    <label for="promotion">Promotion :</label>
+    <label for="promotion">Promotion :</label><br>
     <input type="text" id="promotion" name="promotion" required><br><br>
     
-    <button type="submit">Enregistrer</button>
+    <button type="submit">Enregistrer</button><br><br><br>
   </form>
   
   <table id="courses-table">
