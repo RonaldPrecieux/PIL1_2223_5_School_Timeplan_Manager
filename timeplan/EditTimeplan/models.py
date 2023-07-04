@@ -47,10 +47,8 @@ class Matiere(models.Model):
     promotion=models.CharField(max_length=28,default='')
     
 
-    def __str__(self):
-        return self.nom
-    class Meta:
-        db_table = "Matiere"
+
+    
 
 class Salle(models.Model):
     nom = models.CharField(max_length=100)
@@ -106,6 +104,16 @@ class CoursProgrammer(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
+class Matiere(models.Model):
+    nom = models.CharField(max_length=100)
+    enseignant = models.CharField(max_length=128)
+    timing= models.IntegerField(default=0)
+    Informations=models.CharField(max_length=500)
+    promotion=models.CharField(max_length=28,default='')
+    def __str__(self):
+        return self.nom
+    class Meta:
+        db_table = "Matiere"
 
 #ForeignKey(Promotion, on_delete=models.CASCADE)
 #models.ForeignKey(Matiere, on_delete=models.CASCADE)
@@ -137,6 +145,4 @@ class CoursProgrammerL1(models.Model):
     
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-
-
 

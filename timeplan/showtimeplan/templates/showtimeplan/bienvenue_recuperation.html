@@ -4,14 +4,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body{
+            background-color: #9ab7ca;
+            text-align: center;
+        }
+        button{
+            background-color: black;
+            text-decoration: none;
+            color: white;
+            height: 40px;
+            width: 250px;
+            border-radius: 25px;
+        }
+        a:hover{
+            color: red;
+            text-decoration: underline;
+        }
+        a:visited{
+            color: red;
+            text-decoration: none;
+        }
+    </style>
     <title>Bienvenue|Compte récupéré</title>
 </head>
 <body>
     <h1>Bienvenue, {{ prenom }}</h1>
-    <p>Vous avez récupéré votre compte avec succès</p>
-<<<<<<< HEAD
-    <a href = "{% url 'accueil' %}">Lien vers la page  d'accueil</a>
-=======
->>>>>>> 232cd7c1601646cd859b349d4612fcb14483fd73
-</body>
+    <p>Vous avez récupéré votre compte avec succès. Votre mot de passe a été modifié. Essayez de vous reconnecter avec le nouveau mot de passe :</p>
+    <button><a href="{% url 'login' %}">Se connecter</a></button><br><br>
+    <button><a href = "{% url 'accueil' %}">Accueil</a></button>
+
 </html>

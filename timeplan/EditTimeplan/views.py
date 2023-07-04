@@ -1,3 +1,4 @@
+import re
 from django.shortcuts import render, redirect
 from EditTimeplan import models
 from EditTimeplan.models import CoursProgrammer
@@ -6,6 +7,7 @@ from EditTimeplan.models import AdminUser,Matiere,Filiere
 from showtimeplan.models import CoursProgrammerL1Etu
 from showtimeplan.models import  User
 from django.conf import settings
+from django.http import JsonResponse
 from django.core.mail import send_mail
 from django.db import connection
 from datetime import datetime, timedelta,time
@@ -382,5 +384,57 @@ def copier_table(request):
 
     return redirect('dashboardAdmin',label=label)
 
+def ajouter_cours(request) :
+    matieres = Matiere.objects.all()
+    return render(request, 'EditTimeplan/ajouter_cours.html', {'matieres' : matieres})
 
+def definir_matiere(request):
+    
+    if request.method == 'POST':
+        nom = request.POST.get('nom')
+        enseignant = request.POST.get('enseignant')
+        timing = request.POST.get('timing')
+        informations = request.POST.get('informations')
+        promotion = request.POST.get('promotion')
+        
+        matiere = Matiere(
+            nom=nom,
+            enseignant=enseignant,
+            timing=timing,
+            Informations=informations,
+            promotion=promotion,
+
+        )
+        matiere.save()
+        
+        
+    
+    return redirect('ajouter_cours')
+
+
+
+def modifier_matiere(request):
+    if request.method == 'POST':
+        matiere_id = request.GET.get('id')
+        matiere = Matiere.objects.get(id=matiere_id)
+        
+        # Mettez à jour les champs de la matière en fonction des données soumises
+        matiere.nom = request.POST.get('nom')
+        matiere.enseignant = request.POST.get('enseignant')
+        matiere.timing = request.POST.get('timing')
+        matiere.Informations = request.POST.get('informations')
+        matiere.promotion = request.POST.get('promotion')
+        # Mettez à jour les autres champs de la matière
+        
+        matiere.save()
+        
+        return redirect('ajouter_cours')  # Redirigez l'utilisateur vers la page contenant le tableau des cours
+
+def supprimer_matiere(request):
+    if request.method == 'POST':
+        matiere_id = request.POST.get('matiere_id')
+        matiere = Matiere.objects.get(id=matiere_id)
+        matiere.delete()
+        
+        return redirect('ajouter_cours')  # Redirigez l'utilisateur vers la page contenant le tableau des cours
 

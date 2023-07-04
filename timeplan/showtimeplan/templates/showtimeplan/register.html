@@ -13,13 +13,17 @@
             padding: 0; 
             margin: 0; 
         }
+        input[type="submit"]:hover{
+          color: red;
+          text-decoration: underline;
+        }
     </style>
     <title>Skedise|Register</title>
 </head>
 <body>
-    <p><b>SchedEase</b></p>
+    <p><b><a href="{% url 'accueil' %}">SchedEase</a></b></p>
     <div class="intro">
-        <h1>Devenez cinq fois plus productif avec SkedEase</h1>
+        <h1>Devenez cinq fois plus productif avec SchedEase</h1>
         <p>Vous avez un compte ? <a href="{% url 'login' %}">Connectez-vous !</a></p>
     </div>
     
