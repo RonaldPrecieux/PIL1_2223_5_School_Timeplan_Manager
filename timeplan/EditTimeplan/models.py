@@ -37,7 +37,7 @@ class Filiere(models.Model):
         return self.nom
     class Meta :
         db_table = "Filiere"
-
+"""
 class Matiere(models.Model):
     nom = models.CharField(max_length=100)
     enseignant = models.CharField(max_length=128)
@@ -46,10 +46,12 @@ class Matiere(models.Model):
     Informations=models.CharField(max_length=500)
     promotion=models.CharField(max_length=28,default='')
     
-
-
+    def __str__(self):
+        return self.nom
+    class Meta :
+        db_table = "Matiere"
     
-
+"""
 class Salle(models.Model):
     nom = models.CharField(max_length=100)
 
@@ -79,6 +81,16 @@ class AdminUser(models.Model):
         #self.mot_de_passe = make_password(self.mot_de_passe)
         super().save(*args, **kwargs)
 
+class Matiere(models.Model):
+    nom = models.CharField(max_length=100)
+    enseignant = models.CharField(max_length=128)
+    timing= models.IntegerField(default=0)
+    Informations=models.CharField(max_length=500)
+    promotion=models.CharField(max_length=28,default='')
+    def __str__(self):
+        return self.nom
+    class Meta:
+        db_table = "Matiere"
 
 class CoursProgrammer(models.Model):
     Date= models.CharField(default='10/05/2023', max_length=128 ,validators=[
@@ -104,16 +116,6 @@ class CoursProgrammer(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
-class Matiere(models.Model):
-    nom = models.CharField(max_length=100)
-    enseignant = models.CharField(max_length=128)
-    timing= models.IntegerField(default=0)
-    Informations=models.CharField(max_length=500)
-    promotion=models.CharField(max_length=28,default='')
-    def __str__(self):
-        return self.nom
-    class Meta:
-        db_table = "Matiere"
 
 #ForeignKey(Promotion, on_delete=models.CASCADE)
 #models.ForeignKey(Matiere, on_delete=models.CASCADE)
